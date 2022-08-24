@@ -10,6 +10,12 @@ const csurf = require("csurf");
 const helmet = require("helmet");
 const cookieParser = require("cookie-parser");
 
+/**
+ * The second error handler is for catching Sequelize errors and formatting them before sending the error response.
+ */
+
+const { ValidationError } = require("sequelize");
+
 /**Add the routes to the Express application by importing with the other imports in backend/app.js and connecting the exported router to app after all the middlewares. */
 const routes = require("./routes");
 
@@ -69,5 +75,45 @@ app.use(
  */
 
 app.use(routes); // Connect all the routes
+
+// Catch unhandled requests and forward to error handler.
+/*
+If this resource-not-found middleware is called, an error will be created with the message "The requested resource couldn't be found." and a status code of 404. Afterwards, next will be invoked with the error. Remember, next invoked with nothing means that error handlers defined after this middleware will not be invoked. However, next invoked with an error means that error handlers defined after this middleware will be invoked.
+**/
+app.use((_req, _res, next) => {
+	const err = new Error("The requested resource couldn't be found.");
+	err.title = "Resource Not Found";
+	err.errors = ["The requested resource couldn't be found."];
+	err.status = 404;
+	next(err);
+});
+
+// Process sequelize errors
+/**
+ * If the error that caused this error-handler to be called is an instance of ValidationError from the sequelize package, then the error was created from a Sequelize database validation error and the additional keys of title string and errors array will be added to the error and passed into the next error handling middleware.
+ */
+app.use((err, _req, _res, next) => {
+	// check if error is a Sequelize error:
+	if (err instanceof ValidationError) {
+		err.errors = err.errors.map((e) => e.message);
+		err.title = "Validation error";
+	}
+	next(err);
+});
+
+/**
+ * The last error handler is for formatting all the errors before returning a JSON response. It will include the error message, the errors array, and the error stack trace (if the environment is in development) with the status code of the error message.
+ */
+// Error formatter
+app.use((err, _req, res, _next) => {
+	res.status(err.status || 500);
+	console.error(err);
+	res.json({
+		title: err.title || "Server Error",
+		message: err.message,
+		errors: err.errors,
+		stack: isProduction ? null : err.stack
+	});
+});
 
 module.exports = app;
