@@ -3,7 +3,9 @@
 /**Create an index.js file in the routes folder. In this file, create an Express router, create a test route, and export the router at the bottom of the file. */
 const express = require("express");
 const router = express.Router();
+const apiRouter = require("./api");
 
+router.use("/api", apiRouter);
 // router.get("/hello/world", function (req, res) {
 // 	res.cookie("XSRF-TOKEN", req.csrfToken());
 // 	res.send("Hello World!");
