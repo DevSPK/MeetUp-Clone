@@ -1903,8 +1903,8 @@ Delete an existing image for a Group.
 * Require proper authorization: Current user must be the organizer or "co-host"
   of the Group
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: DELETE
+  * URL: /GroupImages/:id
   * Body: none
 
 * Successful Response
@@ -1942,8 +1942,8 @@ Delete an existing image for an Event.
 * Require proper authorization: Current user must be the organizer or "co-host"
   of the Group that the Event belongs to
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: DELETE
+  * URL: /EventImages/:id
   * Body: none
 
 * Successful Response
@@ -1979,8 +1979,12 @@ Return events filtered by query parameters.
 
 * Require Authentication: false
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: GET
+  * URL: /events/?page=integer&minimum=0&maximum=10&default=0
+  * /events/?size=integer&minimum=0&maximum=10&default=20
+  * /events/?name=string
+  * /events/?type=string
+  * /events/?startDate=string
   * Query Parameters
     * page: integer, minimum: 0, maximum: 10, default: 0
     * size: integer, minimum: 0, maximum: 20, default: 20
