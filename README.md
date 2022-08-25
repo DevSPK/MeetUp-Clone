@@ -429,7 +429,7 @@ Create and return a new image for a group specified by id.
 * Require proper authorization: Current User must be the organizer for the group
 * Request
   * Method: POST
-  * URL: /groups/:groupId/groupimages
+  * URL: /groups/:groupId/GroupImages
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -1083,7 +1083,7 @@ Create and return a new image for an event specified by id.
 * Require proper authorization: Current User must be an attendee of the event
 * Request
   * Method: POST
-  * URL: /events/:eventId/eventimages
+  * URL: /events/:eventId/EventImages
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -1225,8 +1225,8 @@ Delete an event specified by its id
 * Require Authorization: Current User must be the organizer of the group or a member of
   the group with a status of "co-host"
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: DELETE
+  * URL: /events/:eventId
   * Body: none
 
 * Successful Response
