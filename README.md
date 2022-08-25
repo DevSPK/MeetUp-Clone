@@ -1593,8 +1593,8 @@ Returns the attendees of an event specified by its id.
 
 * Require Authentication: false
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: GET
+  * URL: /events/:eventId/attendees
   * Body: none
 
 * Successful Response: If you ARE the organizer of the group or a member of the
@@ -1687,8 +1687,8 @@ Request attendance for an event specified by id.
 * Require Authentication: true
 * Require Authorization: Current User must be a member of the group
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: POST
+  * URL: /events/:eventId/attendees
   * Headers:
     * Content-Type: application/json
   * Body: none
@@ -1755,8 +1755,8 @@ Change the status of an attendance for an event specified by id.
 * Require proper authorization: Current User must already be the organizer or
   have a membership to the group with the status of "co-host"
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: PATCH
+  * URL: /events/:eventId/attendees
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -1830,8 +1830,8 @@ Delete an attendance to an event specified by id.
 * Require proper authorization: Current User must be the host of the group, or
   the user whose attendance is being deleted
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: DELETE
+  * URL: /events/:eventId/attendees
   * Headers:
     * Content-Type: application/json
   * Body:
