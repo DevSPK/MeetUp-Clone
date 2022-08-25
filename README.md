@@ -6,7 +6,8 @@
 
 ## Database Schema Design
 
-![MeetUp Clone (2)](https://user-images.githubusercontent.com/98563049/186529411-6cd9e63d-db71-42a9-ab5c-df602daa0748.png)
+![MeetUp Clone (2)](https://user-images.githubusercontent.com/98563049/186738347-2bfb6658-d560-4452-90fb-abc4306e7f88.png)
+
 
 ## API Documentation
 
@@ -55,8 +56,8 @@ Returns the information about the current user that is logged in.
 
 * Require Authentication: true
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: GET
+  * URL: /users/:userId
   * Body: none
 
 * Successful Response
