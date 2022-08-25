@@ -1262,8 +1262,8 @@ Returns the members of a group specified by its id.
 
 * Require Authentication: false
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: GET
+  * URL: /groups/:groupId/memberships
   * Body: none
 
 * Successful Response: If you ARE the organizer or a co-host of the group. Shows
@@ -1353,8 +1353,8 @@ Request a new membership for a group specified by id.
 
 * Require Authentication: true
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: POST
+  * URL: /groups/:groupId/memberships
   * Headers:
     * Content-Type: application/json
   * Body: none
@@ -1425,8 +1425,8 @@ Change the status of a membership for a group specified by id.
   * To change the status from "member" to "co-host":
     * Current User must already be the organizer
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: PATCH
+  * URL: /groups/:groupId/memberships
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -1519,8 +1519,8 @@ Delete a membership to a group specified by id.
 * Require proper authorization: Current User must be the host of the group, or
   the user whose membership is being deleted
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: DELETE
+  * URL: /groups/:groupId/memberships
   * Headers:
     * Content-Type: application/json
   * Body:
