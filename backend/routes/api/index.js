@@ -28,15 +28,15 @@ router.use("/users", usersRouter);
 // Connect restoreUser middleware to the API router
 // If current user session is valid, set req.user to the user in the database
 // If current user session is not valid, set req.user to null
-// router.get("/restore-user", (req, res) => {
-// 	return res.json(req.user);
-// });
+router.get("/restore-user", (req, res) => {
+	return res.json(req.user);
+});
 
 // // GET /api/require-auth
-// const { requireAuth } = require("../../utils/auth.js");
-// router.get("/require-auth", requireAuth, (req, res) => {
-// 	return res.json(req.user);
-// });
+const { requireAuth } = require("../../utils/auth.js");
+router.get("/require-auth", requireAuth, (req, res) => {
+	return res.json(req.user);
+});
 
 router.post("/test", function (req, res) {
 	res.json({ requestBody: req.body });
