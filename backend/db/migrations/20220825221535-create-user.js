@@ -22,7 +22,7 @@ module.exports = {
 				type: Sequelize.STRING.BINARY,
 				allowNull: false
 			},
-			fistName: {
+			firstName: {
 				type: Sequelize.STRING,
 				allowNull: false
 			},
