@@ -17,5 +17,9 @@ npx sequelize-cli model:generate --name Membership --attributes userId:integer,g
 
 npx sequelize-cli model:generate --name GroupImage --attributes groupId:integer,url:string,preview:boolean
 
+# fifth Events model and migrations
+
+npx sequelize-cli model:generate --name Event --attributes venueId:integer,groupId:integer,name:string,description:text,type:enum,capacity:integer,price:integer,startDate:date,endDate:date
+
 # last
 npx sequelize-cli model:generate --name Attendance --attributes eventId:integer,userId:integer,status:enum
