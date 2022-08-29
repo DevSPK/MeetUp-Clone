@@ -1,33 +1,37 @@
-'use strict';
+"use strict";
 module.exports = {
-  async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Attendances', {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER
-      },
-      eventId: {
-        type: Sequelize.INTEGER
-      },
-      userId: {
-        type: Sequelize.INTEGER
-      },
-      status: {
-        type: Sequelize.ENUM
-      },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      }
-    });
-  },
-  async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Attendances');
-  }
+	async up(queryInterface, Sequelize) {
+		await queryInterface.createTable("Attendances", {
+			id: {
+				allowNull: false,
+				autoIncrement: true,
+				primaryKey: true,
+				type: Sequelize.INTEGER
+			},
+			eventId: {
+				type: Sequelize.INTEGER,
+				references: { model: "Events" }
+			},
+			userId: {
+				type: Sequelize.INTEGER,
+				references: { model: "Users" }
+			},
+			status: {
+				type: Sequelize.ENUM("member", "waitlist", "pending")
+			},
+			createdAt: {
+				allowNull: false,
+				type: Sequelize.DATE,
+				defaultValue: Sequelize.literal("CURRENT_TIMESTAMP")
+			},
+			updatedAt: {
+				allowNull: false,
+				type: Sequelize.DATE,
+				defaultValue: Sequelize.literal("CURRENT_TIMESTAMP")
+			}
+		});
+	},
+	async down(queryInterface, Sequelize) {
+		await queryInterface.dropTable("Attendances");
+	}
 };
