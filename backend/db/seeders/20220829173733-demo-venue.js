@@ -15,6 +15,7 @@ module.exports = {
 			"Venues",
 			[
 				{
+					groupId: 1,
 					address: "123 Rock Street",
 					city: "Bedrock",
 					state: "Granite",
@@ -22,6 +23,7 @@ module.exports = {
 					lng: -122.4730327
 				},
 				{
+					groupId: 2,
 					address: "124 Rock Street",
 					city: "Bedrock",
 					state: "Granite",
@@ -29,6 +31,7 @@ module.exports = {
 					lng: -122.4730327
 				},
 				{
+					groupId: 3,
 					address: "125 Rock Street",
 					city: "Bedrock",
 					state: "Granite",

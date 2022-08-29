@@ -16,6 +16,7 @@ module.exports = {
 			"Groups",
 			[
 				{
+					organizerId: 1,
 					name: "Bedrock Bowlers",
 					about:
 						"et malesuada fames ac turpis egestas maecenas pharetra convallis posuere morbi leo urna molestie at elementum eu facilisis sed odio morbi quis commodo odio aenean sed adipiscing diam donec adipiscing tristique risus nec feugiat in fermentum posuere urna nec tincidunt praesent semper feugiat nibh sed pulvinar proin gravida hendrerit lectus",
@@ -25,6 +26,7 @@ module.exports = {
 					state: "Granite"
 				},
 				{
+					organizerId: 2,
 					name: "Dinosaur Lovers",
 					about:
 						"et malesuada fames ac turpis egestas maecenas pharetra convallis posuere morbi leo urna molestie at elementum eu facilisis sed odio morbi quis commodo odio aenean sed adipiscing diam donec adipiscing tristique risus nec feugiat in fermentum posuere urna nec tincidunt praesent semper feugiat nibh sed pulvinar proin gravida hendrerit lectus",
@@ -34,6 +36,7 @@ module.exports = {
 					state: "Granite"
 				},
 				{
+					organizerId: 3,
 					name: "Rock Carving Enthusiasts",
 					about:
 						"et malesuada fames ac turpis egestas maecenas pharetra convallis posuere morbi leo urna molestie at elementum eu facilisis sed odio morbi quis commodo odio aenean sed adipiscing diam donec adipiscing tristique risus nec feugiat in fermentum posuere urna nec tincidunt praesent semper feugiat nibh sed pulvinar proin gravida hendrerit lectus",
@@ -56,18 +59,6 @@ module.exports = {
 		 */
 
 		const Op = Sequelize.Op;
-		return queryInterface.bulkDelete(
-			"Groups",
-			{
-				name: {
-					[Op.in]: [
-						"Bedrock Bowlers",
-						"Dinosaur Lovers",
-						"Rock Carving Enthusiasts"
-					]
-				}
-			},
-			{}
-		);
+		return queryInterface.bulkDelete("Groups", {}, {});
 	}
 };
