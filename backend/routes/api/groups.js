@@ -13,6 +13,27 @@ const { handleValidationErrors } = require("../../utils/validation");
 const membership = require("../../db/models/membership");
 const router = express.Router();
 
+router.get("/current", requireAuth, async (req, res, next) => {
+	res.send("success");
+});
+
+router.post("/", requireAuth, async (req, res, next) => {
+	const userId = req.user.id;
+
+	const { name, about, type, private, city, state } = req.body;
+
+	const group = await Group.create({
+		organizerId: userId,
+		name,
+		about,
+		type,
+		private,
+		city,
+		state
+	});
+	res.json(group);
+});
+
 router.get("/", async (req, res) => {
 	const groups = await Group.findAll({
 		attributes: {
