@@ -5,7 +5,8 @@ const {
 	Group,
 	sequelize,
 	Membership,
-	GroupImage
+	GroupImage,
+	Sequelize
 } = require("../../db/models");
 const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
@@ -17,7 +18,7 @@ router.get("/", async (req, res) => {
 		attributes: {
 			include: [
 				[sequelize.fn("COUNT", sequelize.col("Memberships.id")), "numMembers"],
-				["GroupImages.url", "previewImage"]
+				[sequelize.col("GroupImages.url"), "previewImage"]
 			]
 		},
 		include: [
@@ -34,7 +35,7 @@ router.get("/", async (req, res) => {
 		raw: true,
 		group: ["Group.id"]
 	});
-	res.json({ Groups: [...groups] });
+	res.json({ Groups: [groups] });
 });
 
 module.exports = router;
