@@ -1,4 +1,6 @@
-"use strict";
+require("pg").defaults.parseInt8 = true;
+
+("use strict");
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
 	class Membership extends Model {
