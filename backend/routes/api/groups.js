@@ -5,8 +5,9 @@ const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
 const router = express.Router();
 
-router.get("/", (req, res) => {
-	res.json({ success: "success message" });
+router.get("/", async (req, res) => {
+	const groups = await Group.findAll();
+	res.json(groups);
 });
 
 module.exports = router;
