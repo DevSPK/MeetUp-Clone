@@ -33,9 +33,9 @@ router.get("/", async (req, res) => {
 			}
 		],
 		raw: true,
-		group: ["Group.id"]
+		group: ["Group.id", "GroupImages.url"]
 	});
-	res.json({ Groups: [groups] });
+	res.json({ Groups: groups });
 });
 
 module.exports = router;
