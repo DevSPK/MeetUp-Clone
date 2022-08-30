@@ -17,7 +17,7 @@ router.get("/", async (req, res) => {
 		attributes: {
 			include: [
 				[sequelize.fn("COUNT", sequelize.col("Memberships.id")), "numMembers"],
-				[["GroupImages.url", "previewImage"]]
+				["GroupImages.url", "previewImage"]
 			]
 		},
 		include: [
