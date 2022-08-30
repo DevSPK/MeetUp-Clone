@@ -1,13 +1,10 @@
-# MeetUp-Clone
-
-# API-Project
-
-# `<name of application here>`
+# Meetup Clone
 
 ## Database Schema Design
 
-![MeetUp Clone (2)](https://user-images.githubusercontent.com/98563049/186738347-2bfb6658-d560-4452-90fb-abc4306e7f88.png)
+![meetup-dbdiagram]
 
+[meetup-dbdiagram]: ./assets/meetup_dbdiagram.png
 
 ## API Documentation
 
@@ -17,17 +14,18 @@
 
 All endpoints that require a current user to be logged in.
 
-* Request: endpoints that require authentication
-* Error Response: Require authentication
-  * Status Code: 401
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Request: endpoints that require authentication
+- Error Response: Require authentication
+
+  - Status Code: 401
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Authentication required",
-      "statusCode": 401
+    	"message": "Authentication required",
+    	"statusCode": 401
     }
     ```
 
@@ -36,17 +34,18 @@ All endpoints that require a current user to be logged in.
 All endpoints that require authentication and the current user does not have the
 correct role(s) or permission(s).
 
-* Request: endpoints that require proper authorization
-* Error Response: Require proper authorization
-  * Status Code: 403
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Request: endpoints that require proper authorization
+- Error Response: Require proper authorization
+
+  - Status Code: 403
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Forbidden",
-      "statusCode": 403
+    	"message": "Forbidden",
+    	"statusCode": 403
     }
     ```
 
@@ -54,24 +53,26 @@ correct role(s) or permission(s).
 
 Returns the information about the current user that is logged in.
 
-* Require Authentication: true
-* Request
-  * Method: GET
-  * URL: /users/:userId
-  * Body: none
+- Require Authentication: true
+- Request
 
-* Successful Response
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+  - Method: GET
+  - URL: /api/session
+  - Body: none
+
+- Successful Response
+
+  - Status Code: 200
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "id": 1,
-      "firstName": "John",
-      "lastName": "Smith",
-      "email": "john.smith@gmail.com"
+    	"id": 1,
+    	"firstName": "John",
+    	"lastName": "Smith",
+    	"email": "john.smith@gmail.com"
     }
     ```
 
@@ -80,64 +81,68 @@ Returns the information about the current user that is logged in.
 Logs in a current user with valid credentials and returns the current user's
 information.
 
-* Require Authentication: false
-* Request
-  * Method: POST
-  * URL: /login
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Require Authentication: false
+- Request
+
+  - Method: POST
+  - URL: /api/session
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "email": "john.smith@gmail.com",
-      "password": "secret password"
+    	"email": "john.smith@gmail.com",
+    	"password": "secret password"
     }
     ```
 
-* Successful Response
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Successful Response
+
+  - Status Code: 200
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "id": 1,
-      "firstName": "John",
-      "lastName": "Smith",
-      "email": "john.smith@gmail.com",
-      "token": ""
+    	"id": 1,
+    	"firstName": "John",
+    	"lastName": "Smith",
+    	"email": "john.smith@gmail.com",
+    	"token": ""
     }
     ```
 
-* Error Response: Invalid credentials
-  * Status Code: 401
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Error Response: Invalid credentials
+
+  - Status Code: 401
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Invalid credentials",
-      "statusCode": 401
+    	"message": "Invalid credentials",
+    	"statusCode": 401
     }
     ```
 
-* Error response: Body validation errors
-  * Status Code: 400
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Error response: Body validation errors
+
+  - Status Code: 400
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Validation error",
-      "statusCode": 400,
-      "errors": {
-        "email": "Email is required",
-        "password": "Password is required"
-      }
+    	"message": "Validation error",
+    	"statusCode": 400,
+    	"errors": {
+    		"email": "Email is required",
+    		"password": "Password is required"
+    	}
     }
     ```
 
@@ -146,70 +151,74 @@ information.
 Creates a new user, logs them in as the current user, and returns the current
 user's information.
 
-* Require Authentication: false
-* Request
-  * Method: POST
-  * URL: /users
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Require Authentication: false
+- Request
+
+  - Method: POST
+  - URL: /api/users
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "firstName": "John",
-      "lastName": "Smith",
-      "email": "john.smith@gmail.com",
-      "password": "secret password"
+    	"firstName": "John",
+    	"lastName": "Smith",
+    	"email": "john.smith@gmail.com",
+    	"password": "secret password"
     }
     ```
 
-* Successful Response
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Successful Response
+
+  - Status Code: 200
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "id": 1,
-      "firstName": "John",
-      "lastName": "Smith",
-      "email": "john.smith@gmail.com",
-      "token": ""
+    	"id": 1,
+    	"firstName": "John",
+    	"lastName": "Smith",
+    	"email": "john.smith@gmail.com",
+    	"token": ""
     }
     ```
 
-* Error response: User already exists with the specified email
-  * Status Code: 403
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Error response: User already exists with the specified email
+
+  - Status Code: 403
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "User already exists",
-      "statusCode": 403,
-      "errors": {
-        "email": "User with that email already exists"
-      }
+    	"message": "User already exists",
+    	"statusCode": 403,
+    	"errors": {
+    		"email": "User with that email already exists"
+    	}
     }
     ```
 
-* Error response: Body validation errors
-  * Status Code: 400
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Error response: Body validation errors
+
+  - Status Code: 400
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Validation error",
-      "statusCode": 400,
-      "errors": {
-        "email": "Invalid email",
-        "firstName": "First Name is required",
-        "lastName": "Last Name is required"
-      }
+    	"message": "Validation error",
+    	"statusCode": 400,
+    	"errors": {
+    		"email": "Invalid email",
+    		"firstName": "First Name is required",
+    		"lastName": "Last Name is required"
+    	}
     }
     ```
 
@@ -219,36 +228,38 @@ user's information.
 
 Returns all the groups.
 
-* Require Authentication: false
-* Request
-  * Method: GET
-  * URL: /groups
-  * Body: none
+- Require Authentication: false
+- Request
 
-* Successful Response
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+  - Method: GET
+  - URL: /api/groups
+  - Body: none
+
+- Successful Response
+
+  - Status Code: 200
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "Groups":[
-        {
-          "id": 1,
-          "organizerId": 1,
-          "name": "Evening Tennis on the Water",
-          "about": "Enjoy rounds of tennis with a tight-nit group of people on the water facing the Brooklyn Bridge. Singles or doubles.",
-          "type": "In person",
-          "private": true,
-          "city": "New York",
-          "state": "NY",
-          "createdAt": "2021-11-19 20:39:36",
-          "updatedAt": "2021-11-19 20:39:36",
-          "numMembers": 10,
-          "previewImage": "image url",
-        }
-      ]
+    	"Groups": [
+    		{
+    			"id": 1,
+    			"organizerId": 1,
+    			"name": "Evening Tennis on the Water",
+    			"about": "Enjoy rounds of tennis with a tight-nit group of people on the water facing the Brooklyn Bridge. Singles or doubles.",
+    			"type": "In person",
+    			"private": true,
+    			"city": "New York",
+    			"state": "NY",
+    			"createdAt": "2021-11-19 20:39:36",
+    			"updatedAt": "2021-11-19 20:39:36",
+    			"numMembers": 10,
+    			"previewImage": "image url"
+    		}
+    	]
     }
     ```
 
@@ -256,36 +267,38 @@ Returns all the groups.
 
 Returns all the groups.
 
-* Require Authentication: true
-* Request
-  * Method: GET
-  * URL: /users/:userId/groups
-  * Body: none
+- Require Authentication: true
+- Request
 
-* Successful Response
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+  - Method: GET
+  - URL: /api/groups/current
+  - Body: none
+
+- Successful Response
+
+  - Status Code: 200
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "Groups":[
-        {
-          "id": 1,
-          "organizerId": 1,
-          "name": "Evening Tennis on the Water",
-          "about": "Enjoy rounds of tennis with a tight-nit group of people on the water facing the Brooklyn Bridge. Singles or doubles.",
-          "type": "In person",
-          "private": true,
-          "city": "New York",
-          "state": "NY",
-          "createdAt": "2021-11-19 20:39:36",
-          "updatedAt": "2021-11-19 20:39:36",
-          "numMembers": 10,
-          "previewImage": "image url",
-        }
-      ]
+    	"Groups": [
+    		{
+    			"id": 1,
+    			"organizerId": 1,
+    			"name": "Evening Tennis on the Water",
+    			"about": "Enjoy rounds of tennis with a tight-nit group of people on the water facing the Brooklyn Bridge. Singles or doubles.",
+    			"type": "In person",
+    			"private": true,
+    			"city": "New York",
+    			"state": "NY",
+    			"createdAt": "2021-11-19 20:39:36",
+    			"updatedAt": "2021-11-19 20:39:36",
+    			"numMembers": 10,
+    			"previewImage": "image url"
+    		}
+    	]
     }
     ```
 
@@ -293,66 +306,75 @@ Returns all the groups.
 
 Returns the details of a group specified by its id.
 
-* Require Authentication: false
-* Request
-  * Method: GET
-  * URL: /groups/:groupId
-  * Body: none
+- Require Authentication: false
+- Request
 
-* Successful Response
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+  - Method: GET
+  - URL: /api/groups/:groupId
+  - Body: none
+
+- Successful Response
+
+  - Status Code: 200
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "id": 1,
-      "organizerId": 1,
-      "name": "Evening Tennis on the Water",
-      "about": "Enjoy rounds of tennis with a tight-nit group of people on the water facing the Brooklyn Bridge. Singles or doubles.",
-      "type": "In person",
-      "private": true,
-      "city": "New York",
-      "state": "NY",
-      "createdAt": "2021-11-19 20:39:36",
-      "updatedAt": "2021-11-19 20:39:36",
-      "numMembers": 10,
-      "GroupImages": [
-        {
-          "id": 1,
-          "url": "image url"
-        }
-      ],
-      "Organizer": {
-        "id": 1,
-        "firstName": "John",
-        "lastName": "Smith"
-      },
-      "Venues": [
-        {
-          "id": 1,
-          "groupId": 1,
-          "address": "123 Disney Lane",
-          "city": "New York",
-          "state": "NY",
-          "lat": 37.7645358,
-          "lng": -122.4730327
-        }
-      ]
+    	"id": 1,
+    	"organizerId": 1,
+    	"name": "Evening Tennis on the Water",
+    	"about": "Enjoy rounds of tennis with a tight-nit group of people on the water facing the Brooklyn Bridge. Singles or doubles.",
+    	"type": "In person",
+    	"private": true,
+    	"city": "New York",
+    	"state": "NY",
+    	"createdAt": "2021-11-19 20:39:36",
+    	"updatedAt": "2021-11-19 20:39:36",
+    	"numMembers": 10,
+    	"GroupImages": [
+    		{
+    			"id": 1,
+    			"url": "image url",
+    			"preview": true
+    		},
+    		{
+    			"id": 2,
+    			"url": "image url",
+    			"preview": false
+    		}
+    	],
+    	"Organizer": {
+    		"id": 1,
+    		"firstName": "John",
+    		"lastName": "Smith"
+    	},
+    	"Venues": [
+    		{
+    			"id": 1,
+    			"groupId": 1,
+    			"address": "123 Disney Lane",
+    			"city": "New York",
+    			"state": "NY",
+    			"lat": 37.7645358,
+    			"lng": -122.4730327
+    		}
+    	]
     }
     ```
 
-* Error response: Couldn't find a Group with the specified id
-  * Status Code: 404
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Error response: Couldn't find a Group with the specified id
+
+  - Status Code: 404
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Group couldn't be found",
-      "statusCode": 404
+    	"message": "Group couldn't be found",
+    	"statusCode": 404
     }
     ```
 
@@ -360,64 +382,67 @@ Returns the details of a group specified by its id.
 
 Creates and returns a new group.
 
-* Require Authentication: true
-* Request
-  * Method: POST
-  * URL: /groups
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Require Authentication: true
+- Request
+
+  - Method: POST
+  - URL: /api/groups
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "name": "Evening Tennis on the Water",
-      "about": "Enjoy rounds of tennis with a tight-nit group of people on the water facing the Brooklyn Bridge. Singles or doubles.",
-      "type": "In person",
-      "private": true,
-      "city": "New York",
-      "state": "NY",
+    	"name": "Evening Tennis on the Water",
+    	"about": "Enjoy rounds of tennis with a tight-nit group of people on the water facing the Brooklyn Bridge. Singles or doubles.",
+    	"type": "In person",
+    	"private": true,
+    	"city": "New York",
+    	"state": "NY"
     }
     ```
 
-* Successful Response
-  * Status Code: 201
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Successful Response
+
+  - Status Code: 201
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "id": 1,
-      "organizerId": 1,
-      "name": "Evening Tennis on the Water",
-      "about": "Enjoy rounds of tennis with a tight-nit group of people on the water facing the Brooklyn Bridge. Singles or doubles.",
-      "type": "In person",
-      "private": true,
-      "city": "New York",
-      "state": "NY",
-      "createdAt": "2021-11-19 20:39:36",
-      "updatedAt": "2021-11-19 20:39:36"
+    	"id": 1,
+    	"organizerId": 1,
+    	"name": "Evening Tennis on the Water",
+    	"about": "Enjoy rounds of tennis with a tight-nit group of people on the water facing the Brooklyn Bridge. Singles or doubles.",
+    	"type": "In person",
+    	"private": true,
+    	"city": "New York",
+    	"state": "NY",
+    	"createdAt": "2021-11-19 20:39:36",
+    	"updatedAt": "2021-11-19 20:39:36"
     }
     ```
 
-* Error Response: Body validation error
-  * Status Code: 400
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Error Response: Body validation error
+
+  - Status Code: 400
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Validation Error",
-      "statusCode": 400,
-      "errors": {
-        "name": "Name must be 60 characters or less",
-        "about": "About must be 50 characters or more",
-        "type": "Type must be 'Online' or 'In person'",
-        "private": "Private must be a boolean",
-        "city": "City is required",
-        "state": "State is required",
-      }
+    	"message": "Validation Error",
+    	"statusCode": 400,
+    	"errors": {
+    		"name": "Name must be 60 characters or less",
+    		"about": "About must be 50 characters or more",
+    		"type": "Type must be 'Online' or 'In person'",
+    		"private": "Private must be a boolean",
+    		"city": "City is required",
+    		"state": "State is required"
+    	}
     }
     ```
 
@@ -425,44 +450,49 @@ Creates and returns a new group.
 
 Create and return a new image for a group specified by id.
 
-* Require Authentication: true
-* Require proper authorization: Current User must be the organizer for the group
-* Request
-  * Method: POST
-  * URL: /groups/:groupId/GroupImages
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Require Authentication: true
+- Require proper authorization: Current User must be the organizer for the group
+- Request
+
+  - Method: POST
+  - URL: /api/groups/:groupId/images
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "url": "image url"
+    	"url": "image url",
+    	"preview": true
     }
     ```
 
-* Successful Response
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Successful Response
+
+  - Status Code: 200
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "id": 1,
-      "url": "image url",
+    	"id": 1,
+    	"url": "image url",
+    	"preview": true
     }
     ```
 
-* Error response: Couldn't find a Group with the specified id
-  * Status Code: 404
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Error response: Couldn't find a Group with the specified id
+
+  - Status Code: 404
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Group couldn't be found",
-      "statusCode": 404
+    	"message": "Group couldn't be found",
+    	"statusCode": 404
     }
     ```
 
@@ -470,78 +500,82 @@ Create and return a new image for a group specified by id.
 
 Updates and returns an existing group.
 
-* Require Authentication: true
-* Require proper authorization: Group must belong to the current user
-* Request
-  * Method: PUT
-  * URL: /groups/:groupId
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Require Authentication: true
+- Require proper authorization: Group must belong to the current user
+- Request
+
+  - Method: PUT
+  - URL: /api/groups/:groupId
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "name": "Evening Tennis on the Water",
-      "about": "Enjoy rounds of tennis with a tight-nit group of people on the water facing the Brooklyn Bridge. Singles or doubles.",
-      "type": "In person",
-      "private": true,
-      "city": "New York",
-      "state": "NY",
+    	"name": "Evening Tennis on the Water",
+    	"about": "Enjoy rounds of tennis with a tight-nit group of people on the water facing the Brooklyn Bridge. Singles or doubles.",
+    	"type": "In person",
+    	"private": true,
+    	"city": "New York",
+    	"state": "NY"
     }
     ```
 
-* Successful Response
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Successful Response
+
+  - Status Code: 200
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "id": 1,
-      "organizerId": 1,
-      "name": "Evening Tennis on the Water",
-      "about": "Enjoy rounds of tennis with a tight-nit group of people on the water facing the Brooklyn Bridge. Singles or doubles.",
-      "type": "In person",
-      "private": true,
-      "city": "New York",
-      "state": "NY",
-      "createdAt": "2021-11-19 20:39:36",
-      "updatedAt": "2021-11-20 10:06:40"
+    	"id": 1,
+    	"organizerId": 1,
+    	"name": "Evening Tennis on the Water",
+    	"about": "Enjoy rounds of tennis with a tight-nit group of people on the water facing the Brooklyn Bridge. Singles or doubles.",
+    	"type": "In person",
+    	"private": true,
+    	"city": "New York",
+    	"state": "NY",
+    	"createdAt": "2021-11-19 20:39:36",
+    	"updatedAt": "2021-11-20 10:06:40"
     }
     ```
 
-* Error Response: Body validation error
-  * Status Code: 400
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Error Response: Body validation error
+
+  - Status Code: 400
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Validation Error",
-      "statusCode": 400,
-      "errors": {
-        "name": "Name must be 60 characters or less",
-        "about": "About must be 50 characters or more",
-        "type": "Type must be 'Online' or 'In person'",
-        "private": "Private must be a boolean",
-        "city": "City is required",
-        "state": "State is required",
-      }
+    	"message": "Validation Error",
+    	"statusCode": 400,
+    	"errors": {
+    		"name": "Name must be 60 characters or less",
+    		"about": "About must be 50 characters or more",
+    		"type": "Type must be 'Online' or 'In person'",
+    		"private": "Private must be a boolean",
+    		"city": "City is required",
+    		"state": "State is required"
+    	}
     }
     ```
 
-* Error response: Couldn't find a Group with the specified id
-  * Status Code: 404
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Error response: Couldn't find a Group with the specified id
+
+  - Status Code: 404
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Group couldn't be found",
-      "statusCode": 404
+    	"message": "Group couldn't be found",
+    	"statusCode": 404
     }
     ```
 
@@ -549,36 +583,39 @@ Updates and returns an existing group.
 
 Deletes an existing group.
 
-* Require Authentication: true
-* Require proper authorization: Group must belong to the current user
-* Request
-  * Method: DELETE
-  * URL: /groups/:groupId
-  * Body: none
+- Require Authentication: true
+- Require proper authorization: Group must belong to the current user
+- Request
 
-* Successful Response
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+  - Method: DELETE
+  - URL: /api/groups/:groupId
+  - Body: none
+
+- Successful Response
+
+  - Status Code: 200
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Successfully deleted",
-      "statusCode": 200
+    	"message": "Successfully deleted",
+    	"statusCode": 200
     }
     ```
 
-* Error response: Couldn't find a Group with the specified id
-  * Status Code: 404
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Error response: Couldn't find a Group with the specified id
+
+  - Status Code: 404
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Group couldn't be found",
-      "statusCode": 404
+    	"message": "Group couldn't be found",
+    	"statusCode": 404
     }
     ```
 
@@ -588,49 +625,51 @@ Deletes an existing group.
 
 Returns all venues for a group specified by its id
 
-* Require Authentication: true
-* Require Authentication: Current User must be the organizer of the group or a member of
+- Require Authentication: true
+- Require Authentication: Current User must be the organizer of the group or a member of
   the group with a status of "co-host"
-* Request
-  * Method: GET
-  * URL: /groups/:groupId/venues
-  * Headers:
-    * Content-Type: application/json
-  * Body: none
+- Request
 
-* Successful Response
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+  - Method: GET
+  - URL: /api/groups/:groupId/venues
+  - Headers:
+    - Content-Type: application/json
+  - Body: none
+
+- Successful Response
+
+  - Status Code: 200
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
   ```json
   {
-    "Venues": [
-      {
-        "id": 1,
-        "groupId": 1,
-        "address": "123 Disney Lane",
-        "city": "New York",
-        "state": "NY",
-        "lat": 37.7645358,
-        "lng": -122.4730327,
-      }
-    ]
+  	"Venues": [
+  		{
+  			"id": 1,
+  			"groupId": 1,
+  			"address": "123 Disney Lane",
+  			"city": "New York",
+  			"state": "NY",
+  			"lat": 37.7645358,
+  			"lng": -122.4730327
+  		}
+  	]
   }
-  
   ```
 
-* Error response: Couldn't find a Group with the specified id
-  * Status Code: 404
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Error response: Couldn't find a Group with the specified id
+
+  - Status Code: 404
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Group couldn't be found",
-      "statusCode": 404
+    	"message": "Group couldn't be found",
+    	"statusCode": 404
     }
     ```
 
@@ -638,74 +677,78 @@ Returns all venues for a group specified by its id
 
 Creates and returns a new venue for a group specified by its id
 
-* Require Authentication: true
-* Require Authentication: Current User must be the organizer of the group or a member of
+- Require Authentication: true
+- Require Authentication: Current User must be the organizer of the group or a member of
   the group with a status of "co-host"
-* Request
-  * Method: POST
-  * URL: /groups/:groupId/venues
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Request
+
+  - Method: POST
+  - URL: /api/groups/:groupId/venues
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
   ```json
   {
-    "address": "123 Disney Lane",
-    "city": "New York",
-    "state": "NY",
-    "lat": 37.7645358,
-    "lng": -122.4730327,
+  	"address": "123 Disney Lane",
+  	"city": "New York",
+  	"state": "NY",
+  	"lat": 37.7645358,
+  	"lng": -122.4730327
   }
   ```
 
-* Successful Response
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Successful Response
+
+  - Status Code: 200
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
   ```json
   {
-    "id": 1,
-    "groupId": 1,
-    "address": "123 Disney Lane",
-    "city": "New York",
-    "state": "NY",
-    "lat": 37.7645358,
-    "lng": -122.4730327,
+  	"id": 1,
+  	"groupId": 1,
+  	"address": "123 Disney Lane",
+  	"city": "New York",
+  	"state": "NY",
+  	"lat": 37.7645358,
+  	"lng": -122.4730327
   }
   ```
 
-* Error response: Couldn't find a Group with the specified id
-  * Status Code: 404
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Error response: Couldn't find a Group with the specified id
+
+  - Status Code: 404
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Group couldn't be found",
-      "statusCode": 404
+    	"message": "Group couldn't be found",
+    	"statusCode": 404
     }
     ```
 
-* Error Response: Body validation errors
-  * Status Code: 400
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Error Response: Body validation errors
+
+  - Status Code: 400
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Validation error",
-      "statusCode": 400,
-      "errors": {
-        "address": "Street address is required",
-        "city": "City is required",
-        "state": "State is required",
-        "lat": "Latitude is not valid",
-        "lng": "Longitude is not valid",
-      }
+    	"message": "Validation error",
+    	"statusCode": 400,
+    	"errors": {
+    		"address": "Street address is required",
+    		"city": "City is required",
+    		"state": "State is required",
+    		"lat": "Latitude is not valid",
+    		"lng": "Longitude is not valid"
+    	}
     }
     ```
 
@@ -713,74 +756,78 @@ Creates and returns a new venue for a group specified by its id
 
 Edit a new venue specified by its id
 
-* Require Authentication: true
-* Require Authentication: Current User must be the organizer of the group or a member of
+- Require Authentication: true
+- Require Authentication: Current User must be the organizer of the group or a member of
   the group with a status of "co-host"
-* Request
-  * Method: PUT
-  * URL: /venues/:venueId
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Request
+
+  - Method: PUT
+  - URL: /api/venues/:venueId
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
   ```json
   {
-    "address": "123 Disney Lane",
-    "city": "New York",
-    "state": "NY",
-    "lat": 37.7645358,
-    "lng": -122.4730327,
+  	"address": "123 Disney Lane",
+  	"city": "New York",
+  	"state": "NY",
+  	"lat": 37.7645358,
+  	"lng": -122.4730327
   }
   ```
 
-* Successful Response
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Successful Response
+
+  - Status Code: 200
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
   ```json
   {
-    "id": 1,
-    "groupId": 1,
-    "address": "123 Disney Lane",
-    "city": "New York",
-    "state": "NY",
-    "lat": 37.7645358,
-    "lng": -122.4730327,
+  	"id": 1,
+  	"groupId": 1,
+  	"address": "123 Disney Lane",
+  	"city": "New York",
+  	"state": "NY",
+  	"lat": 37.7645358,
+  	"lng": -122.4730327
   }
   ```
 
-* Error response: Couldn't find a Venue with the specified id
-  * Status Code: 404
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Error response: Couldn't find a Venue with the specified id
+
+  - Status Code: 404
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Venue couldn't be found",
-      "statusCode": 404
+    	"message": "Venue couldn't be found",
+    	"statusCode": 404
     }
     ```
 
-* Error Response: Body validation errors
-  * Status Code: 400
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Error Response: Body validation errors
+
+  - Status Code: 400
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Validation error",
-      "statusCode": 400,
-      "errors": {
-        "address": "Street address is required",
-        "city": "City is required",
-        "state": "State is required",
-        "lat": "Latitude is not valid",
-        "lng": "Longitude is not valid",
-      }
+    	"message": "Validation error",
+    	"statusCode": 400,
+    	"errors": {
+    		"address": "Street address is required",
+    		"city": "City is required",
+    		"state": "State is required",
+    		"lat": "Latitude is not valid",
+    		"lng": "Longitude is not valid"
+    	}
     }
     ```
 
@@ -790,62 +837,64 @@ Edit a new venue specified by its id
 
 Returns all the events.
 
-* Require Authentication: false
-* Request
-  * Method: GET
-  * URL: /events
-  * Body: none
+- Require Authentication: false
+- Request
 
-* Successful Response
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+  - Method: GET
+  - URL: /api/events
+  - Body: none
+
+- Successful Response
+
+  - Status Code: 200
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "Events": [
-        {
-          "id": 1,
-          "groupId": 1,
-          "venueId": null,
-          "name": "Tennis Group First Meet and Greet",
-          "type": "Online",
-          "startDate": "2021-11-19 20:00:00",
-          "endDate": "2021-11-19 22:00:00",
-          "numAttending": 8,
-          "previewImage": "image url",
-          "Group": {
-            "id": 1,
-            "name": "Evening Tennis on the Water",
-            "city": "New York",
-            "state": "NY"
-          },
-          "Venue": null,
-        },
-        {
-          "id": 1,
-          "groupId": 1,
-          "venueId": 1,
-          "name": "Tennis Singles",
-          "type": "In Person",
-          "startDate": "2021-11-20 20:00:00",
-          "endDate": "2021-11-19 22:00:00",
-          "numAttending": 4,
-          "previewImage": "image url",
-          "Group": {
-            "id": 1,
-            "name": "Evening Tennis on the Water",
-            "city": "New York",
-            "state": "NY"
-          },
-          "Venue": {
-            "id": 1,
-            "city": "New York",
-            "state": "NY",
-          },
-        },
-      ]
+    	"Events": [
+    		{
+    			"id": 1,
+    			"groupId": 1,
+    			"venueId": null,
+    			"name": "Tennis Group First Meet and Greet",
+    			"type": "Online",
+    			"startDate": "2021-11-19 20:00:00",
+    			"endDate": "2021-11-19 22:00:00",
+    			"numAttending": 8,
+    			"previewImage": "image url",
+    			"Group": {
+    				"id": 1,
+    				"name": "Evening Tennis on the Water",
+    				"city": "New York",
+    				"state": "NY"
+    			},
+    			"Venue": null
+    		},
+    		{
+    			"id": 1,
+    			"groupId": 1,
+    			"venueId": 1,
+    			"name": "Tennis Singles",
+    			"type": "In Person",
+    			"startDate": "2021-11-20 20:00:00",
+    			"endDate": "2021-11-19 22:00:00",
+    			"numAttending": 4,
+    			"previewImage": "image url",
+    			"Group": {
+    				"id": 1,
+    				"name": "Evening Tennis on the Water",
+    				"city": "New York",
+    				"state": "NY"
+    			},
+    			"Venue": {
+    				"id": 1,
+    				"city": "New York",
+    				"state": "NY"
+    			}
+    		}
+    	]
     }
     ```
 
@@ -853,75 +902,78 @@ Returns all the events.
 
 Returns all the events of a group specified by its id
 
-* Require Authentication: false
-* Request
-  * Method: GET
-  * URL: /groups/:groupId/events
-  * Body: none
+- Require Authentication: false
+- Request
 
-* Successful Response
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+  - Method: GET
+  - URL: /api/groups/:groupId/events
+  - Body: none
+
+- Successful Response
+
+  - Status Code: 200
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "Events": [
-        {
-          "id": 1,
-          "groupId": 1,
-          "venueId": null,
-          "name": "Tennis Group First Meet and Greet",
-          "type": "Online",
-          "startDate": "2021-11-19 20:00:00",
-          "endDate": "2021-11-19 22:00:00",
-          "numAttending": 8,
-          "previewImage": "image url",
-          "Group": {
-            "id": 1,
-            "name": "Evening Tennis on the Water",
-            "city": "New York",
-            "state": "NY"
-          },
-          "Venue": null,
-        },
-        {
-          "id": 1,
-          "groupId": 1,
-          "venueId": 1,
-          "name": "Tennis Singles",
-          "type": "In Person",
-          "startDate": "2021-11-20 20:00:00",
-          "endDate": "2021-11-19 22:00:00",
-          "numAttending": 4,
-          "previewImage": "image url",
-          "Group": {
-            "id": 1,
-            "name": "Evening Tennis on the Water",
-            "city": "New York",
-            "state": "NY"
-          },
-          "Venue": {
-            "id": 1,
-            "city": "New York",
-            "state": "NY",
-          },
-        },
-      ]
+    	"Events": [
+    		{
+    			"id": 1,
+    			"groupId": 1,
+    			"venueId": null,
+    			"name": "Tennis Group First Meet and Greet",
+    			"type": "Online",
+    			"startDate": "2021-11-19 20:00:00",
+    			"endDate": "2021-11-19 22:00:00",
+    			"numAttending": 8,
+    			"previewImage": "image url",
+    			"Group": {
+    				"id": 1,
+    				"name": "Evening Tennis on the Water",
+    				"city": "New York",
+    				"state": "NY"
+    			},
+    			"Venue": null
+    		},
+    		{
+    			"id": 1,
+    			"groupId": 1,
+    			"venueId": 1,
+    			"name": "Tennis Singles",
+    			"type": "In Person",
+    			"startDate": "2021-11-20 20:00:00",
+    			"endDate": "2021-11-19 22:00:00",
+    			"numAttending": 4,
+    			"previewImage": "image url",
+    			"Group": {
+    				"id": 1,
+    				"name": "Evening Tennis on the Water",
+    				"city": "New York",
+    				"state": "NY"
+    			},
+    			"Venue": {
+    				"id": 1,
+    				"city": "New York",
+    				"state": "NY"
+    			}
+    		}
+    	]
     }
     ```
 
-* Error response: Couldn't find a Group with the specified id
-  * Status Code: 404
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Error response: Couldn't find a Group with the specified id
+
+  - Status Code: 404
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Group couldn't be found",
-      "statusCode": 404
+    	"message": "Group couldn't be found",
+    	"statusCode": 404
     }
     ```
 
@@ -929,65 +981,74 @@ Returns all the events of a group specified by its id
 
 Returns the details of an event specified by its id.
 
-* Require Authentication: false
-* Request
-  * Method: GET
-  * URL: /events/:eventId
-  * Body: none
+- Require Authentication: false
+- Request
 
-* Successful Response
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+  - Method: GET
+  - URL: /api/events/:eventId
+  - Body: none
+
+- Successful Response
+
+  - Status Code: 200
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "id": 1,
-      "groupId": 1,
-      "venueId": 1,
-      "name": "Tennis Group First Meet and Greet",
-      "description": "First meet and greet event for the evening tennis on the water group! Join us online for happy times!",
-      "type": "Online",
-      "capacity": 10,
-      "price": 18.50,
-      "startDate": "2021-11-19 20:00:00",
-      "endDate": "2021-11-19 22:00:00",
-      "numAttending": 8,
-      "Group": {
-        "id": 1,
-        "name": "Evening Tennis on the Water",
-        "private": true,
-        "city": "New York",
-        "state": "NY"
-      },
-      "Venue": {
-        "id": 1,
-        "address": "123 Disney Lane",
-        "city": "New York",
-        "state": "NY",
-        "lat": 37.7645358,
-        "lng": -122.4730327,
-      },
-      "EventImages": [
-        {
-          "id": 1,
-          "url": "image url"
-        }
-      ],
+    	"id": 1,
+    	"groupId": 1,
+    	"venueId": 1,
+    	"name": "Tennis Group First Meet and Greet",
+    	"description": "First meet and greet event for the evening tennis on the water group! Join us online for happy times!",
+    	"type": "Online",
+    	"capacity": 10,
+    	"price": 18.5,
+    	"startDate": "2021-11-19 20:00:00",
+    	"endDate": "2021-11-19 22:00:00",
+    	"numAttending": 8,
+    	"Group": {
+    		"id": 1,
+    		"name": "Evening Tennis on the Water",
+    		"private": true,
+    		"city": "New York",
+    		"state": "NY"
+    	},
+    	"Venue": {
+    		"id": 1,
+    		"address": "123 Disney Lane",
+    		"city": "New York",
+    		"state": "NY",
+    		"lat": 37.7645358,
+    		"lng": -122.4730327
+    	},
+    	"EventImages": [
+    		{
+    			"id": 1,
+    			"url": "image url",
+    			"preview": true
+    		},
+    		{
+    			"id": 2,
+    			"url": "image url",
+    			"preview": false
+    		}
+    	]
     }
     ```
 
-* Error response: Couldn't find a Event with the specified id
-  * Status Code: 404
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Error response: Couldn't find a Event with the specified id
+
+  - Status Code: 404
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Event couldn't be found",
-      "statusCode": 404
+    	"message": "Event couldn't be found",
+    	"statusCode": 404
     }
     ```
 
@@ -995,83 +1056,87 @@ Returns the details of an event specified by its id.
 
 Creates and returns a new event for a group specified by its id
 
-* Require Authentication: true
-* Require Authorization: Current User must be the organizer of the group or a member of
+- Require Authentication: true
+- Require Authorization: Current User must be the organizer of the group or a member of
   the group with a status of "co-host"
-* Request
-  * Method: POST
-  * URL: /groups/:groupId/events
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Request
+
+  - Method: POST
+  - URL: /api/groups/:groupId/events
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "venueId": 1,
-      "name": "Tennis Group First Meet and Greet",
-      "type": "Online",
-      "capacity": 10,
-      "price": 18.50,
-      "description": "The first meet and greet for our group! Come say hello!",
-      "startDate": "2021-11-19 20:00:00",
-      "endDate": "2021-11-19 22:00:00",
+    	"venueId": 1,
+    	"name": "Tennis Group First Meet and Greet",
+    	"type": "Online",
+    	"capacity": 10,
+    	"price": 18.5,
+    	"description": "The first meet and greet for our group! Come say hello!",
+    	"startDate": "2021-11-19 20:00:00",
+    	"endDate": "2021-11-19 22:00:00"
     }
     ```
 
-* Successful Response
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Successful Response
+
+  - Status Code: 200
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "id": 1,
-      "groupId": 1,
-      "venueId": 1,
-      "name": "Tennis Group First Meet and Greet",
-      "type": "Online",
-      "capacity": 10,
-      "price": 18.50,
-      "description": "The first meet and greet for our group! Come say hello!",
-      "startDate": "2021-11-19 20:00:00",
-      "endDate": "2021-11-19 22:00:00",
+    	"id": 1,
+    	"groupId": 1,
+    	"venueId": 1,
+    	"name": "Tennis Group First Meet and Greet",
+    	"type": "Online",
+    	"capacity": 10,
+    	"price": 18.5,
+    	"description": "The first meet and greet for our group! Come say hello!",
+    	"startDate": "2021-11-19 20:00:00",
+    	"endDate": "2021-11-19 22:00:00"
     }
     ```
 
-* Error Response: Body validation errors
-  * Status Code: 400
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Error Response: Body validation errors
+
+  - Status Code: 400
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Validation error",
-      "statusCode": 400,
-      "errors": {
-        "venueId": "Venue does not exist",
-        "name": "Name must be at least 5 characters",
-        "type": "Type must be Online or In person",
-        "capacity": "Capacity must be an integer",
-        "price": "Price is invalid",
-        "description": "Description is required",
-        "startDate": "Start date must be in the future",
-        "endDate": "End date is less than start date",
-      }
+    	"message": "Validation error",
+    	"statusCode": 400,
+    	"errors": {
+    		"venueId": "Venue does not exist",
+    		"name": "Name must be at least 5 characters",
+    		"type": "Type must be Online or In person",
+    		"capacity": "Capacity must be an integer",
+    		"price": "Price is invalid",
+    		"description": "Description is required",
+    		"startDate": "Start date must be in the future",
+    		"endDate": "End date is less than start date"
+    	}
     }
     ```
 
-* Error response: Couldn't find a Group with the specified id
-  * Status Code: 404
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Error response: Couldn't find a Group with the specified id
+
+  - Status Code: 404
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Group couldn't be found",
-      "statusCode": 404
+    	"message": "Group couldn't be found",
+    	"statusCode": 404
     }
     ```
 
@@ -1079,44 +1144,49 @@ Creates and returns a new event for a group specified by its id
 
 Create and return a new image for an event specified by id.
 
-* Require Authentication: true
-* Require proper authorization: Current User must be an attendee of the event
-* Request
-  * Method: POST
-  * URL: /events/:eventId/EventImages
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Require Authentication: true
+- Require proper authorization: Current User must be an attendee of the event
+- Request
+
+  - Method: POST
+  - URL: /api/events/:eventId/images
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "url": "image url"
+    	"url": "image url",
+    	"preview": false
     }
     ```
 
-* Successful Response
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Successful Response
+
+  - Status Code: 200
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "id": 1,
-      "url": "image url",
+    	"id": 1,
+    	"url": "image url",
+    	"preview": false
     }
     ```
 
-* Error response: Couldn't find an Event with the specified id
-  * Status Code: 404
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Error response: Couldn't find an Event with the specified id
+
+  - Status Code: 404
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Event couldn't be found",
-      "statusCode": 404
+    	"message": "Event couldn't be found",
+    	"statusCode": 404
     }
     ```
 
@@ -1124,96 +1194,101 @@ Create and return a new image for an event specified by id.
 
 Edit and returns an event specified by its id
 
-* Require Authentication: true
-* Require Authorization: Current User must be the organizer of the group or a member of
+- Require Authentication: true
+- Require Authorization: Current User must be the organizer of the group or a member of
   the group with a status of "co-host"
-* Request
-  * Method: PUT
-  * URL: /events/:eventId
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Request
+
+  - Method: PUT
+  - URL: /api/events/:eventId
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "venueId": 1,
-      "name": "Tennis Group First Meet and Greet",
-      "type": "Online",
-      "capacity": 10,
-      "price": 18.50,
-      "description": "The first meet and greet for our group! Come say hello!",
-      "startDate": "2021-11-19 20:00:00",
-      "endDate": "2021-11-19 22:00:00",
+    	"venueId": 1,
+    	"name": "Tennis Group First Meet and Greet",
+    	"type": "Online",
+    	"capacity": 10,
+    	"price": 18.5,
+    	"description": "The first meet and greet for our group! Come say hello!",
+    	"startDate": "2021-11-19 20:00:00",
+    	"endDate": "2021-11-19 22:00:00"
     }
     ```
 
-* Successful Response
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Successful Response
+
+  - Status Code: 200
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "id": 1,
-      "groupId": 1,
-      "venueId": 1,
-      "name": "Tennis Group First Meet and Greet",
-      "type": "Online",
-      "capacity": 10,
-      "price": 18.50,
-      "description": "The first meet and greet for our group! Come say hello!",
-      "startDate": "2021-11-19 20:00:00",
-      "endDate": "2021-11-19 22:00:00",
+    	"id": 1,
+    	"groupId": 1,
+    	"venueId": 1,
+    	"name": "Tennis Group First Meet and Greet",
+    	"type": "Online",
+    	"capacity": 10,
+    	"price": 18.5,
+    	"description": "The first meet and greet for our group! Come say hello!",
+    	"startDate": "2021-11-19 20:00:00",
+    	"endDate": "2021-11-19 22:00:00"
     }
     ```
 
-* Error Response: Body validation errors
-  * Status Code: 400
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Error Response: Body validation errors
+
+  - Status Code: 400
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Validation error",
-      "statusCode": 400,
-      "errors": {
-        "venueId": "Venue does not exist",
-        "name": "Name must be at least 5 characters",
-        "type": "Type must be Online or In person",
-        "capacity": "Capacity must be an integer",
-        "price": "Price is invalid",
-        "description": "Description is required",
-        "startDate": "Start date must be in the future",
-        "endDate": "End date is less than start date",
-      }
+    	"message": "Validation error",
+    	"statusCode": 400,
+    	"errors": {
+    		"venueId": "Venue does not exist",
+    		"name": "Name must be at least 5 characters",
+    		"type": "Type must be Online or In person",
+    		"capacity": "Capacity must be an integer",
+    		"price": "Price is invalid",
+    		"description": "Description is required",
+    		"startDate": "Start date must be in the future",
+    		"endDate": "End date is less than start date"
+    	}
     }
     ```
 
-* Error response: Couldn't find a Venue with the specified id
-  * Status Code: 404
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Error response: Couldn't find a Venue with the specified id
+
+  - Status Code: 404
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Venue couldn't be found",
-      "statusCode": 404
+    	"message": "Venue couldn't be found",
+    	"statusCode": 404
     }
     ```
 
-* Error response: Couldn't find an Event with the specified id
-  * Status Code: 404
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Error response: Couldn't find an Event with the specified id
+
+  - Status Code: 404
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Event couldn't be found",
-      "statusCode": 404
+    	"message": "Event couldn't be found",
+    	"statusCode": 404
     }
     ```
 
@@ -1221,36 +1296,39 @@ Edit and returns an event specified by its id
 
 Delete an event specified by its id
 
-* Require Authentication: true
-* Require Authorization: Current User must be the organizer of the group or a member of
+- Require Authentication: true
+- Require Authorization: Current User must be the organizer of the group or a member of
   the group with a status of "co-host"
-* Request
-  * Method: DELETE
-  * URL: /events/:eventId
-  * Body: none
+- Request
 
-* Successful Response
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+  - Method: DELETE
+  - URL: /api/events/:eventId
+  - Body: none
+
+- Successful Response
+
+  - Status Code: 200
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Successfully deleted"
+    	"message": "Successfully deleted"
     }
     ```
 
-* Error response: Couldn't find an Event with the specified id
-  * Status Code: 404
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Error response: Couldn't find an Event with the specified id
+
+  - Status Code: 404
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Event couldn't be found",
-      "statusCode": 404
+    	"message": "Event couldn't be found",
+    	"statusCode": 404
     }
     ```
 
@@ -1260,90 +1338,94 @@ Delete an event specified by its id
 
 Returns the members of a group specified by its id.
 
-* Require Authentication: false
-* Request
-  * Method: GET
-  * URL: /groups/:groupId/memberships
-  * Body: none
+- Require Authentication: false
+- Request
 
-* Successful Response: If you ARE the organizer or a co-host of the group. Shows
+  - Method: GET
+  - URL: /api/groups/:groupId/members
+  - Body: none
+
+- Successful Response: If you ARE the organizer or a co-host of the group. Shows
   all members and their statuses.
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+
+  - Status Code: 200
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "Members": [
-        {
-          "id": 2,
-          "firstName": "Clark",
-          "lastName": "Adams",
-          "Membership": {
-            "status": "co-host"
-          },
-        },
-        {
-          "id": 3,
-          "firstName": "John",
-          "lastName": "Smith",
-          "Membership": {
-            "status": "member"
-          },
-        },
-        {
-          "id": 4,
-          "firstName": "Jane",
-          "lastName": "Doe",
-          "Membership": {
-            "status": "pending"
-          },
-        },
-      ]
+    	"Members": [
+    		{
+    			"id": 2,
+    			"firstName": "Clark",
+    			"lastName": "Adams",
+    			"Membership": {
+    				"status": "co-host"
+    			}
+    		},
+    		{
+    			"id": 3,
+    			"firstName": "John",
+    			"lastName": "Smith",
+    			"Membership": {
+    				"status": "member"
+    			}
+    		},
+    		{
+    			"id": 4,
+    			"firstName": "Jane",
+    			"lastName": "Doe",
+    			"Membership": {
+    				"status": "pending"
+    			}
+    		}
+    	]
     }
     ```
 
-* Successful Response: If you ARE NOT the organizer of the group. Shows only
+- Successful Response: If you ARE NOT the organizer of the group. Shows only
   members that don't have a status of "pending".
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+
+  - Status Code: 200
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "Members": [
-        {
-          "id": 2,
-          "firstName": "Clark",
-          "lastName": "Adams",
-          "Membership": {
-            "status": "co-host"
-          },
-        },
-        {
-          "id": 3,
-          "firstName": "John",
-          "lastName": "Smith",
-          "Membership": {
-            "status": "member"
-          },
-        },
-      ]
+    	"Members": [
+    		{
+    			"id": 2,
+    			"firstName": "Clark",
+    			"lastName": "Adams",
+    			"Membership": {
+    				"status": "co-host"
+    			}
+    		},
+    		{
+    			"id": 3,
+    			"firstName": "John",
+    			"lastName": "Smith",
+    			"Membership": {
+    				"status": "member"
+    			}
+    		}
+    	]
     }
     ```
 
-* Error response: Couldn't find a Group with the specified id
-  * Status Code: 404
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Error response: Couldn't find a Group with the specified id
+
+  - Status Code: 404
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Group couldn't be found",
-      "statusCode": 404
+    	"message": "Group couldn't be found",
+    	"statusCode": 404
     }
     ```
 
@@ -1351,65 +1433,70 @@ Returns the members of a group specified by its id.
 
 Request a new membership for a group specified by id.
 
-* Require Authentication: true
-* Request
-  * Method: POST
-  * URL: /groups/:groupId/memberships
-  * Headers:
-    * Content-Type: application/json
-  * Body: none
+- Require Authentication: true
+- Request
 
-* Successful Response
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+  - Method: POST
+  - URL: /api/groups/:groupId/membership
+  - Headers:
+    - Content-Type: application/json
+  - Body: none
 
-    ```json
-    {
-      "groupId": 1,
-      "memberId": 2,
-      "status": "pending"
-    }
-    ```
+- Successful Response
 
-* Error response: Couldn't find a Group with the specified id
-  * Status Code: 404
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+  - Status Code: 200
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Group couldn't be found",
-      "statusCode": 404
+    	"groupId": 1,
+    	"memberId": 2,
+    	"status": "pending"
     }
     ```
 
-* Error response: Current User already has a pending membership
+- Error response: Couldn't find a Group with the specified id
+
+  - Status Code: 404
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+
+    ```json
+    {
+    	"message": "Group couldn't be found",
+    	"statusCode": 404
+    }
+    ```
+
+- Error response: Current User already has a pending membership
   for the group
-  * Status Code: 400
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+
+  - Status Code: 400
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Membership has already been requested",
-      "statusCode": 400
+    	"message": "Membership has already been requested",
+    	"statusCode": 400
     }
     ```
 
-* Error response: Current User is already an accepted member of the group
-  * Status Code: 400
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Error response: Current User is already an accepted member of the group
+
+  - Status Code: 400
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "User is already a member of the group",
-      "statusCode": 400
+    	"message": "User is already a member of the group",
+    	"statusCode": 400
     }
     ```
 
@@ -1417,97 +1504,103 @@ Request a new membership for a group specified by id.
 
 Change the status of a membership for a group specified by id.
 
-* Require Authentication: true
-* Require proper authorization:
-  * To change the status from "pending" to "member":
-    * Current User must already be the organizer or have a membership to the
+- Require Authentication: true
+- Require proper authorization:
+  - To change the status from "pending" to "member":
+    - Current User must already be the organizer or have a membership to the
       group with the status of "co-host"
-  * To change the status from "member" to "co-host":
-    * Current User must already be the organizer
-* Request
-  * Method: PATCH
-  * URL: /groups/:groupId/memberships
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+  - To change the status from "member" to "co-host":
+    - Current User must already be the organizer
+- Request
+
+  - Method: PUT
+  - URL: /api/groups/:groupId/membership
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "memberId": 2,
-      "status": "member"
+    	"memberId": 2,
+    	"status": "member"
     }
     ```
 
-* Successful Response
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Successful Response
+
+  - Status Code: 200
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "id": 1,
-      "groupId": 1,
-      "memberId": 2,
-      "status": "member"
+    	"id": 1,
+    	"groupId": 1,
+    	"memberId": 2,
+    	"status": "member"
     }
     ```
 
-* Error response: If changing the membership status to "pending".
-  * Status Code: 400
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Error response: If changing the membership status to "pending".
+
+  - Status Code: 400
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Validations Error",
-      "statusCode": 400,
-      "errors": {
-        "status" : "Cannot change a membership status to pending"
-      }
+    	"message": "Validations Error",
+    	"statusCode": 400,
+    	"errors": {
+    		"status": "Cannot change a membership status to pending"
+    	}
     }
     ```
 
-* Error response: Couldn't find a User with the specified memberId
-  * Status Code: 400
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Error response: Couldn't find a User with the specified memberId
+
+  - Status Code: 400
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Validation Error",
-      "statusCode": 400,
-      "errors": {
-        "memberId": "User couldn't be found"
-      }
+    	"message": "Validation Error",
+    	"statusCode": 400,
+    	"errors": {
+    		"memberId": "User couldn't be found"
+    	}
     }
     ```
 
-* Error response: Couldn't find a Group with the specified id
-  * Status Code: 404
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Error response: Couldn't find a Group with the specified id
+
+  - Status Code: 404
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Group couldn't be found",
-      "statusCode": 404
+    	"message": "Group couldn't be found",
+    	"statusCode": 404
     }
     ```
 
-* Error response: If membership does not exist
-  * Status Code: 404
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Error response: If membership does not exist
+
+  - Status Code: 404
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Membership between the user and the group does not exits",
-      "statusCode": 404
+    	"message": "Membership between the user and the group does not exits",
+    	"statusCode": 404
     }
     ```
 
@@ -1515,73 +1608,78 @@ Change the status of a membership for a group specified by id.
 
 Delete a membership to a group specified by id.
 
-* Require Authentication: true
-* Require proper authorization: Current User must be the host of the group, or
+- Require Authentication: true
+- Require proper authorization: Current User must be the host of the group, or
   the user whose membership is being deleted
-* Request
-  * Method: DELETE
-  * URL: /groups/:groupId/memberships
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Request
+
+  - Method: DELETE
+  - URL: /api/groups/:groupId/membership
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "memberId": 1
+    	"memberId": 1
     }
     ```
 
-* Successful Response
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Successful Response
+
+  - Status Code: 200
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Successfully deleted membership from group"
+    	"message": "Successfully deleted membership from group"
     }
     ```
 
-* Error response: Couldn't find a User with the specified memberId
-  * Status Code: 400
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Error response: Couldn't find a User with the specified memberId
+
+  - Status Code: 400
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Validation Error",
-      "statusCode": 400,
-      "errors": {
-        "memberId": "User couldn't be found"
-      }
+    	"message": "Validation Error",
+    	"statusCode": 400,
+    	"errors": {
+    		"memberId": "User couldn't be found"
+    	}
     }
     ```
 
-* Error response: Couldn't find a Group with the specified id
-  * Status Code: 404
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Error response: Couldn't find a Group with the specified id
+
+  - Status Code: 404
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Group couldn't be found",
-      "statusCode": 404
+    	"message": "Group couldn't be found",
+    	"statusCode": 404
     }
     ```
 
-* Error response: Membership does not exist for this User
-  * Status Code: 404
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Error response: Membership does not exist for this User
+
+  - Status Code: 404
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Membership does not exist for this User",
-      "statusCode": 404
+    	"message": "Membership does not exist for this User",
+    	"statusCode": 404
     }
     ```
 
@@ -1591,92 +1689,96 @@ Delete a membership to a group specified by id.
 
 Returns the attendees of an event specified by its id.
 
-* Require Authentication: false
-* Request
-  * Method: GET
-  * URL: /events/:eventId/attendees
-  * Body: none
+- Require Authentication: false
+- Request
 
-* Successful Response: If you ARE the organizer of the group or a member of the
+  - Method: GET
+  - URL: /api/events/:eventId/attendees
+  - Body: none
+
+- Successful Response: If you ARE the organizer of the group or a member of the
   group with a status of "co-host". Shows all attendees including those with a
   status of "pending".
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+
+  - Status Code: 200
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "Attendees": [
-        {
-          "id": 2,
-          "firstName": "Clark",
-          "lastName": "Adams",
-          "Attendance": {
-            "status": "member"
-          },
-        },
-        {
-          "id": 3,
-          "firstName": "John",
-          "lastName": "Smith",
-          "Attendance": {
-            "status": "waitlist"
-          },
-        },
-        {
-          "id": 4,
-          "firstName": "Jane",
-          "lastName": "Doe",
-          "Attendance": {
-            "status": "pending"
-          },
-        },
-      ]
+    	"Attendees": [
+    		{
+    			"id": 2,
+    			"firstName": "Clark",
+    			"lastName": "Adams",
+    			"Attendance": {
+    				"status": "member"
+    			}
+    		},
+    		{
+    			"id": 3,
+    			"firstName": "John",
+    			"lastName": "Smith",
+    			"Attendance": {
+    				"status": "waitlist"
+    			}
+    		},
+    		{
+    			"id": 4,
+    			"firstName": "Jane",
+    			"lastName": "Doe",
+    			"Attendance": {
+    				"status": "pending"
+    			}
+    		}
+    	]
     }
     ```
 
-* Successful Response: If you ARE NOT the organizer of the group or a member of
+- Successful Response: If you ARE NOT the organizer of the group or a member of
   the group with a status of "co-host". Shows all members that don't have a
   status of "pending".
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+
+  - Status Code: 200
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "Attendees": [
-        {
-          "id": 2,
-          "firstName": "Clark",
-          "lastName": "Adams",
-          "Attendance": {
-            "status": "member"
-          },
-        },
-        {
-          "id": 3,
-          "firstName": "John",
-          "lastName": "Smith",
-          "Attendance": {
-            "status": "waitlist"
-          },
-        },
-      ]
+    	"Attendees": [
+    		{
+    			"id": 2,
+    			"firstName": "Clark",
+    			"lastName": "Adams",
+    			"Attendance": {
+    				"status": "member"
+    			}
+    		},
+    		{
+    			"id": 3,
+    			"firstName": "John",
+    			"lastName": "Smith",
+    			"Attendance": {
+    				"status": "waitlist"
+    			}
+    		}
+    	]
     }
     ```
 
-* Error response: Couldn't find an Event with the specified id
-  * Status Code: 404
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Error response: Couldn't find an Event with the specified id
+
+  - Status Code: 404
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Event couldn't be found",
-      "statusCode": 404
+    	"message": "Event couldn't be found",
+    	"statusCode": 404
     }
     ```
 
@@ -1684,66 +1786,71 @@ Returns the attendees of an event specified by its id.
 
 Request attendance for an event specified by id.
 
-* Require Authentication: true
-* Require Authorization: Current User must be a member of the group
-* Request
-  * Method: POST
-  * URL: /events/:eventId/attendees
-  * Headers:
-    * Content-Type: application/json
-  * Body: none
+- Require Authentication: true
+- Require Authorization: Current User must be a member of the group
+- Request
 
-* Successful Response
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+  - Method: POST
+  - URL: /api/events/:eventId/attendance
+  - Headers:
+    - Content-Type: application/json
+  - Body: none
 
-    ```json
-    {
-      "eventId": 1,
-      "userId": 2,
-      "status": "pending"
-    }
-    ```
+- Successful Response
 
-* Error response: Couldn't find an Event with the specified id
-  * Status Code: 404
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+  - Status Code: 200
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Event couldn't be found",
-      "statusCode": 404
+    	"eventId": 1,
+    	"userId": 2,
+    	"status": "pending"
     }
     ```
 
-* Error response: Current User already has a pending attendance
+- Error response: Couldn't find an Event with the specified id
+
+  - Status Code: 404
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+
+    ```json
+    {
+    	"message": "Event couldn't be found",
+    	"statusCode": 404
+    }
+    ```
+
+- Error response: Current User already has a pending attendance
   for the event
-  * Status Code: 400
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+
+  - Status Code: 400
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Attendance has already been requested",
-      "statusCode": 400
+    	"message": "Attendance has already been requested",
+    	"statusCode": 400
     }
     ```
 
-* Error response: Current User is already an accepted attendee of the event
-  * Status Code: 400
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Error response: Current User is already an accepted attendee of the event
+
+  - Status Code: 400
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "User is already an attendee of the event",
-      "statusCode": 400
+    	"message": "User is already an attendee of the event",
+    	"statusCode": 400
     }
     ```
 
@@ -1751,74 +1858,79 @@ Request attendance for an event specified by id.
 
 Change the status of an attendance for an event specified by id.
 
-* Require Authentication: true
-* Require proper authorization: Current User must already be the organizer or
+- Require Authentication: true
+- Require proper authorization: Current User must already be the organizer or
   have a membership to the group with the status of "co-host"
-* Request
-  * Method: PATCH
-  * URL: /events/:eventId/attendees
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Request
+
+  - Method: PUT
+  - URL: /api/events/:eventId/attendance
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "userId": 2,
-      "status": "member"
+    	"userId": 2,
+    	"status": "member"
     }
     ```
 
-* Successful Response
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Successful Response
+
+  - Status Code: 200
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "id": 1,
-      "eventId": 1,
-      "userId": 2,
-      "status": "member"
+    	"id": 1,
+    	"eventId": 1,
+    	"userId": 2,
+    	"status": "member"
     }
     ```
 
-* Error response: Couldn't find an Event with the specified id
-  * Status Code: 404
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Error response: Couldn't find an Event with the specified id
+
+  - Status Code: 404
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Event couldn't be found",
-      "statusCode": 404
+    	"message": "Event couldn't be found",
+    	"statusCode": 404
     }
     ```
 
-* Error response: If changing the attendance status to "pending".
-  * Status Code: 400
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Error response: If changing the attendance status to "pending".
+
+  - Status Code: 400
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Cannot change an attendance status to pending",
-      "statusCode": 400
+    	"message": "Cannot change an attendance status to pending",
+    	"statusCode": 400
     }
     ```
 
-* Error response: If attendance does not exist
-  * Status Code: 404
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Error response: If attendance does not exist
+
+  - Status Code: 404
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Attendance between the user and the event does not exist",
-      "statusCode": 404
+    	"message": "Attendance between the user and the event does not exist",
+    	"statusCode": 404
     }
     ```
 
@@ -1826,70 +1938,75 @@ Change the status of an attendance for an event specified by id.
 
 Delete an attendance to an event specified by id.
 
-* Require Authentication: true
-* Require proper authorization: Current User must be the host of the group, or
+- Require Authentication: true
+- Require proper authorization: Current User must be the host of the group, or
   the user whose attendance is being deleted
-* Request
-  * Method: DELETE
-  * URL: /events/:eventId/attendees
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Request
+
+  - Method: DELETE
+  - URL: /api/events/:eventId/attendance
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "userId": 1
+    	"userId": 1
     }
     ```
 
-* Successful Response
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Successful Response
+
+  - Status Code: 200
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Successfully deleted attendance from event"
+    	"message": "Successfully deleted attendance from event"
     }
     ```
 
-* Error response: Couldn't find an Event with the specified id
-  * Status Code: 404
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Error response: Couldn't find an Event with the specified id
+
+  - Status Code: 404
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Event couldn't be found",
-      "statusCode": 404
+    	"message": "Event couldn't be found",
+    	"statusCode": 404
     }
     ```
 
-* Error response: Attendance does not exist for this User
-  * Status Code: 404
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Error response: Attendance does not exist for this User
+
+  - Status Code: 404
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Attendance does not exist for this User",
-      "statusCode": 404
+    	"message": "Attendance does not exist for this User",
+    	"statusCode": 404
     }
     ```
 
-* Error response: Only the User or organizer may delete an Attendance
-  * Status Code: 403
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Error response: Only the User or organizer may delete an Attendance
+
+  - Status Code: 403
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Only the User or organizer may delete an Attendance",
-      "statusCode": 403
+    	"message": "Only the User or organizer may delete an Attendance",
+    	"statusCode": 403
     }
     ```
 
@@ -1899,171 +2016,172 @@ Delete an attendance to an event specified by id.
 
 Delete an existing image for a Group.
 
-* Require Authentication: true
-* Require proper authorization: Current user must be the organizer or "co-host"
+- Require Authentication: true
+- Require proper authorization: Current user must be the organizer or "co-host"
   of the Group
-* Request
-  * Method: DELETE
-  * URL: /GroupImages/:id
-  * Body: none
+- Request
 
-* Successful Response
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+  - Method: DELETE
+  - URL: /api/group-images/:imageId
+  - Body: none
 
-    ```json
-    {
-      "message": "Successfully deleted",
-      "statusCode": 200
-    }
-    ```
+- Successful Response
 
-* Error response: Couldn't find an Image with the specified id
-  * Status Code: 404
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+  - Status Code: 200
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Group Image couldn't be found",
-      "statusCode": 404
+    	"message": "Successfully deleted",
+    	"statusCode": 200
     }
     ```
 
+- Error response: Couldn't find an Image with the specified id
+
+  - Status Code: 404
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+
+    ```json
+    {
+    	"message": "Group Image couldn't be found",
+    	"statusCode": 404
+    }
+    ```
 
 ### Delete an Image for an Event
 
 Delete an existing image for an Event.
 
-* Require Authentication: true
-* Require proper authorization: Current user must be the organizer or "co-host"
+- Require Authentication: true
+- Require proper authorization: Current user must be the organizer or "co-host"
   of the Group that the Event belongs to
-* Request
-  * Method: DELETE
-  * URL: /EventImages/:id
-  * Body: none
+- Request
 
-* Successful Response
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+  - Method: DELETE
+  - URL: /api/event-images/:imageId
+  - Body: none
 
-    ```json
-    {
-      "message": "Successfully deleted",
-      "statusCode": 200
-    }
-    ```
+- Successful Response
 
-* Error response: Couldn't find an Image with the specified id
-  * Status Code: 404
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+  - Status Code: 200
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Event Image couldn't be found",
-      "statusCode": 404
+    	"message": "Successfully deleted",
+    	"statusCode": 200
     }
     ```
 
+- Error response: Couldn't find an Image with the specified id
+
+  - Status Code: 404
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+
+    ```json
+    {
+    	"message": "Event Image couldn't be found",
+    	"statusCode": 404
+    }
+    ```
 
 ### Add Query Filters to Get All Events
 
 Return events filtered by query parameters.
 
-* Require Authentication: false
-* Request
-  * Method: GET
-  * URL: /events/?page=integer&minimum=0&maximum=10&default=0
-  * /events/?size=integer&minimum=0&maximum=10&default=20
-  * /events/?name=string
-  * /events/?type=string
-  * /events/?startDate=string
-  * Query Parameters
-    * page: integer, minimum: 0, maximum: 10, default: 0
-    * size: integer, minimum: 0, maximum: 20, default: 20
-    * name: string, optional
-    * type: string, optional
-    * startDate: string, optional
-  * Body: none
+- Require Authentication: false
+- Request
 
-* Successful Response
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+  - Method: GET
+  - URL: /api/events
+  - Query Parameters
+    - page: integer, minimum: 0, maximum: 10, default: 0
+    - size: integer, minimum: 0, maximum: 20, default: 20
+    - name: string, optional
+    - type: string, optional
+    - startDate: string, optional
+  - Body: none
+
+- Successful Response
+
+  - Status Code: 200
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "Events": [
-        {
-          "id": 1,
-          "groupId": 1,
-          "venueId": null,
-          "name": "Tennis Group First Meet and Greet",
-          "type": "Online",
-          "startDate": "2021-11-19 20:00:00",
-          "endDate": "2021-11-19 22:00:00",
-          "numAttending": 8,
-          "previewImage": "image url",
-          "Group": {
-            "id": 1,
-            "name": "Evening Tennis on the Water",
-            "city": "New York",
-            "state": "NY"
-          },
-          "Venue": null,
-        },
-        {
-          "id": 1,
-          "groupId": 1,
-          "venueId": 1,
-          "name": "Tennis Singles",
-          "type": "In Person",
-          "startDate": "2021-11-20 20:00:00",
-          "endDate": "2021-11-19 22:00:00",
-          "numAttending": 4,
-          "previewImage": "image url",
-          "Group": {
-            "id": 1,
-            "name": "Evening Tennis on the Water",
-            "city": "New York",
-            "state": "NY"
-          },
-          "Venue": {
-            "id": 1,
-            "city": "New York",
-            "state": "NY",
-          },
-        },
-      ]
+    	"Events": [
+    		{
+    			"id": 1,
+    			"groupId": 1,
+    			"venueId": null,
+    			"name": "Tennis Group First Meet and Greet",
+    			"type": "Online",
+    			"startDate": "2021-11-19 20:00:00",
+    			"endDate": "2021-11-19 22:00:00",
+    			"numAttending": 8,
+    			"previewImage": "image url",
+    			"Group": {
+    				"id": 1,
+    				"name": "Evening Tennis on the Water",
+    				"city": "New York",
+    				"state": "NY"
+    			},
+    			"Venue": null
+    		},
+    		{
+    			"id": 1,
+    			"groupId": 1,
+    			"venueId": 1,
+    			"name": "Tennis Singles",
+    			"type": "In Person",
+    			"startDate": "2021-11-20 20:00:00",
+    			"endDate": "2021-11-19 22:00:00",
+    			"numAttending": 4,
+    			"previewImage": "image url",
+    			"Group": {
+    				"id": 1,
+    				"name": "Evening Tennis on the Water",
+    				"city": "New York",
+    				"state": "NY"
+    			},
+    			"Venue": {
+    				"id": 1,
+    				"city": "New York",
+    				"state": "NY"
+    			}
+    		}
+    	]
     }
     ```
 
-* Error Response: Query parameter validation errors
-  * Status Code: 400
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+- Error Response: Query parameter validation errors
+
+  - Status Code: 400
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
     ```json
     {
-      "message": "Validation Error",
-      "statusCode": 400,
-      "errors": {
-        "page": "Page must be greater than or equal to 0",
-        "size": "Size must be greater than or equal to 0",
-        "name": "Name must be a string",
-        "type": "Type must be 'Online' or 'In Person'",
-        "startDate": "Start date must be a valid datetime",
-      }
+    	"message": "Validation Error",
+    	"statusCode": 400,
+    	"errors": {
+    		"page": "Page must be greater than or equal to 0",
+    		"size": "Size must be greater than or equal to 0",
+    		"name": "Name must be a string",
+    		"type": "Type must be 'Online' or 'In Person'",
+    		"startDate": "Start date must be a valid datetime"
+    	}
     }
     ```
-
-
