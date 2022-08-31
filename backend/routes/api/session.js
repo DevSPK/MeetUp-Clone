@@ -2,7 +2,11 @@
 
 const express = require("express");
 
-const { setTokenCookie, restoreUser } = require("../../utils/auth");
+const {
+	setTokenCookie,
+	restoreUser,
+	requireAuth
+} = require("../../utils/auth");
 const { User } = require("../../db/models");
 
 const router = express.Router();
@@ -20,6 +24,16 @@ const validateLogin = [
 		.withMessage("Please provide a password."),
 	handleValidationErrors
 ];
+
+//Get current user
+
+router.get("/", requireAuth, async (req, res, next) => {
+	const userId = req.user.id;
+
+	const user = await User.findByPk(userId);
+
+	res.json(user);
+});
 
 // Log in
 router.post("/", validateLogin, async (req, res, next) => {
