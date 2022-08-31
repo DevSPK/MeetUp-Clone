@@ -14,26 +14,28 @@ const membership = require("../../db/models/membership");
 
 const router = express.Router();
 
-const validateGroup = [
-	check("name")
-		.not()
-		.isEmpty()
-		.isLength({ max: 60 })
-		.withMessage("Name must be 60 characters or less"),
-	check("about")
-		.not()
-		.isEmpty()
-		.isLength({ min: 50 })
-		.withMessage("About must be 50 characters or more"),
-	check("type")
-		.isIn(["Online", "In person"])
-		.withMessage("Type must be 'Online' or 'In person'"),
-	check("private").isBoolean().withMessage("Private must be a boolean"),
-	check("city").not().isEmpty().withMessage("City is required"),
-	check("state").not().isEmpty().withMessage("State is required"),
-	handleValidationErrors
-];
+// attempt at a custom validator
+// const validateGroup = [
+// 	check("name")
+// 		.not()
+// 		.isEmpty()
+// 		.isLength({ max: 60 })
+// 		.withMessage("Name must be 60 characters or less"),
+// 	check("about")
+// 		.not()
+// 		.isEmpty()
+// 		.isLength({ min: 50 })
+// 		.withMessage("About must be 50 characters or more"),
+// 	check("type")
+// 		.isIn(["Online", "In person"])
+// 		.withMessage("Type must be 'Online' or 'In person'"),
+// 	check("private").isBoolean().withMessage("Private must be a boolean"),
+// 	check("city").not().isEmpty().withMessage("City is required"),
+// 	check("state").not().isEmpty().withMessage("State is required"),
+// 	handleValidationErrors
+// ];
 
+// Add an Image to a Group based on the Group's id
 router.post("/:groupId/images", requireAuth, async (req, res, next) => {
 	const { groupId } = req.params;
 	console.log(groupId);
@@ -54,13 +56,13 @@ router.post("/:groupId/images", requireAuth, async (req, res, next) => {
 	}
 });
 
+// Get all Groups joined or organized by the Current User
 router.get("/current", requireAuth, async (req, res, next) => {
 	const Op = Sequelize.Op;
 	const userId = req.user.id;
 
 	const user = await User.findByPk(userId);
 
-	//console.log(user);
 	const groups = await user.getGroups({
 		attributes: {
 			include: [
@@ -110,6 +112,7 @@ router.post("/", requireAuth, async (req, res, next) => {
 	res.json(newGroup);
 });
 
+// Get all Groups
 router.get("/", async (req, res) => {
 	const groups = await Group.findAll({
 		attributes: {
