@@ -18,8 +18,8 @@ module.exports = (sequelize, DataTypes) => {
 			url: DataTypes.STRING,
 			preview: {
 				type: DataTypes.BOOLEAN,
-				allowNull: false,
-				default: false
+				defaultValue: true,
+				allowNull: false
 			}
 		},
 		{

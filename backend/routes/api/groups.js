@@ -37,6 +37,25 @@ const validateGroup = [
 	handleValidationErrors
 ];
 
+router.post("/:groupId/images", requireAuth, async (req, res, next) => {
+	const { groupId } = req.params;
+
+	const { url, preview } = req.body;
+
+	const groupCheck = await Group.findByPk(groupId);
+
+	if (!groupCheck) {
+		res.status(404);
+		res.json({ message: "Group couldn't be found", statusCode: 404 });
+	} else {
+		const addImage = await GroupImage.create({
+			groupId,
+			url
+		});
+		res.json(addImage);
+	}
+});
+
 router.post("/", requireAuth, validateGroup, async (req, res, next) => {
 	const userId = req.user.id;
 
