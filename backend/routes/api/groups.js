@@ -130,7 +130,7 @@ router.get("/", async (req, res) => {
 			}
 		],
 		raw: true,
-		group: ["Group.id", "GroupImages.url"]
+		group: ["Group.id", "GroupImages.url", "Memberships.id"]
 	});
 	res.json({ Groups: groups });
 });
