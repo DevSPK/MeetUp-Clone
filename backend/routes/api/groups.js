@@ -60,27 +60,28 @@ router.get("/current", requireAuth, async (req, res, next) => {
 
 	const user = await User.findByPk(userId);
 
-	console.log(user);
-	const groups = await user.getGroups();
+	//console.log(user);
+	const groups = await user.getGroups({
+		attributes: {
+			include: [
+				[sequelize.fn("COUNT", sequelize.col("Memberships.id")), "numMembers"],
+				[sequelize.col("GroupImages.url"), "previewImage"]
+			]
+		},
+		include: [
+			{
+				model: Membership,
+				where: { status: ["member", "co-host"] },
+				attributes: []
+			},
+			{
+				model: GroupImage,
+				attributes: []
+			}
+		],
 
-	// attributes: {
-	// 	include: [
-	// 		[sequelize.fn("COUNT", sequelize.col("Memberships.id")), "numMembers"],
-	// 		[sequelize.col("GroupImages.url"), "previewImage"]
-	// 	]
-	// },
-	// include: [
-	// 	{
-	// 		model: Group
-	// 	},
-	// 	{
-	// 		model: GroupImage,
-	// 		through: Group,
-	// 		attributes: []
-	// 	}
-	// ],
-	// raw: true,
-	// });
+		group: ["Group.id", "GroupImages.url"]
+	});
 
 	res.json({ Groups: groups });
 });
