@@ -23,32 +23,62 @@ module.exports = (sequelize, DataTypes) => {
 				type: DataTypes.STRING,
 				allowNull: false,
 				validate: {
-					len: [0, 60]
+					len: {
+						args: [0, 60],
+						msg: "Name must be 60 characters or less"
+					}
 				}
 			},
 			about: {
 				type: DataTypes.TEXT,
 				allowNull: false,
 				validate: {
-					len: [50, 1000]
+					len: {
+						args: [50, 1000],
+						msg: "About must be 50 characters or more"
+					}
 				}
 			},
 			type: {
 				type: DataTypes.ENUM("Online", "In person"),
-				allowNull: false
+				allowNull: false,
+				validate: {
+					isIn: {
+						args: [["Online", "In person"]],
+						msg: "Type must be 'Online' or 'In person'"
+					}
+				}
 			},
 			private: {
 				type: DataTypes.BOOLEAN,
 				allowNull: false,
-				default: true
+				default: true,
+				validate: {
+					notEmpty: {
+						args: true,
+						msg: "Private must be a boolean"
+					}
+				}
 			},
 			city: {
 				type: DataTypes.STRING,
-				allowNull: false
+				allowNull: false,
+				validate: {
+					notEmpty: {
+						args: true,
+						msg: "City is required"
+					}
+				}
 			},
 			state: {
 				type: DataTypes.STRING,
-				allowNull: false
+				allowNull: false,
+				validate: {
+					notEmpty: {
+						args: true,
+						msg: "State is required"
+					}
+				}
 			}
 		},
 		{
