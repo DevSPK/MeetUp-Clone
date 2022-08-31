@@ -11,11 +11,8 @@ const {
 const { check, validationResult } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
 const membership = require("../../db/models/membership");
-const router = express.Router();
 
-router.get("/current", requireAuth, async (req, res, next) => {
-	res.send("success");
-});
+const router = express.Router();
 
 const validateGroup = [
 	check("name")
@@ -39,11 +36,12 @@ const validateGroup = [
 
 router.post("/:groupId/images", requireAuth, async (req, res, next) => {
 	const { groupId } = req.params;
+	console.log(groupId);
 
 	const { url, preview } = req.body;
 
 	const groupCheck = await Group.findByPk(groupId);
-
+	console.log(groupCheck);
 	if (!groupCheck) {
 		res.status(404);
 		res.json({ message: "Group couldn't be found", statusCode: 404 });
@@ -56,12 +54,44 @@ router.post("/:groupId/images", requireAuth, async (req, res, next) => {
 	}
 });
 
-router.post("/", requireAuth, validateGroup, async (req, res, next) => {
+router.get("/current", requireAuth, async (req, res, next) => {
+	const Op = Sequelize.Op;
+	const userId = req.user.id;
+
+	const user = await User.findByPk(userId);
+
+	console.log(user);
+	const groups = await user.getGroups();
+
+	// attributes: {
+	// 	include: [
+	// 		[sequelize.fn("COUNT", sequelize.col("Memberships.id")), "numMembers"],
+	// 		[sequelize.col("GroupImages.url"), "previewImage"]
+	// 	]
+	// },
+	// include: [
+	// 	{
+	// 		model: Group
+	// 	},
+	// 	{
+	// 		model: GroupImage,
+	// 		through: Group,
+	// 		attributes: []
+	// 	}
+	// ],
+	// raw: true,
+	// });
+
+	res.json({ Groups: groups });
+});
+
+// create a group
+router.post("/", requireAuth, async (req, res, next) => {
 	const userId = req.user.id;
 
 	const { name, about, type, private, city, state } = req.body;
 
-	const group = await Group.create({
+	const newGroup = await Group.create({
 		organizerId: userId,
 		name,
 		about,
@@ -71,7 +101,12 @@ router.post("/", requireAuth, validateGroup, async (req, res, next) => {
 		state
 	});
 
-	res.json(group);
+	await newGroup.createMembership({
+		status: "co-host",
+		userId: userId
+	});
+
+	res.json(newGroup);
 });
 
 router.get("/", async (req, res) => {
@@ -85,7 +120,7 @@ router.get("/", async (req, res) => {
 		include: [
 			{
 				model: Membership,
-				where: { status: ["member", "co-host"] },
+				//where: { status: ["member", "co-host"] },
 				attributes: []
 			},
 			{
