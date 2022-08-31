@@ -6,6 +6,7 @@ const {
 	sequelize,
 	Membership,
 	GroupImage,
+	Venue,
 	Sequelize
 } = require("../../db/models");
 const { check, validationResult } = require("express-validator");
@@ -86,6 +87,62 @@ router.get("/current", requireAuth, async (req, res, next) => {
 	});
 
 	res.json({ Groups: groups });
+});
+
+// Get details of a Group from an id
+router.get("/:groupId", async (req, res, next) => {
+	const { groupId } = req.params;
+
+	const group = await Group.findByPk(groupId, {
+		include: {
+			model: GroupImage,
+			attributes: ["id", "url", "preview"]
+		},
+		include: {
+			model: User,
+			attributes: ["id", "firstName", "lastName"]
+		},
+		include: {
+			model: Venue,
+			attributes: ["id", "groupId", "address", "city", "state", "lat", "lng"]
+		}
+	});
+
+	if (!group) {
+		res.status(404),
+			res.json({
+				message: "Group couldn't be found",
+				statusCode: 404
+			});
+	} else {
+		const numMembers = await Membership.count({ where: { groupId: group.id } });
+		const Users = await User.findAll({ where: { id: group.organizerId } });
+		const GroupImages = await GroupImage.findAll({
+			where: { groupId: groupId }
+		});
+
+		const data = {};
+
+		data.group = {
+			id: group.id,
+			organizerId: group.organizerId,
+			name: group.name,
+			about: group.about,
+			type: group.type,
+			private: group.private,
+			city: group.city,
+			state: group.state,
+			createdAt: group.createdAt,
+			updatedAt: group.updatedAt,
+			numMembers: numMembers
+		};
+
+		data.GroupImages = GroupImages;
+		data.Organizer = Users;
+		data.Venues = group.Venue;
+
+		res.json(data);
+	}
 });
 
 // create a group
