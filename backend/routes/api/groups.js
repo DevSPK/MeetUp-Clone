@@ -80,7 +80,7 @@ router.get("/current", requireAuth, async (req, res, next) => {
 			}
 		],
 
-		group: ["Group.id", "GroupImages.url"]
+		group: ["Group.id", "GroupImages.url", "Memberships.id"]
 	});
 
 	res.json({ Groups: groups });
