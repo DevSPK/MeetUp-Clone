@@ -89,6 +89,34 @@ router.get("/current", requireAuth, async (req, res, next) => {
 	res.json({ Groups: groups });
 });
 
+router.put("/:groupId", requireAuth, async (req, res, next) => {
+	const { groupId } = req.params;
+	const { name, about, type, private, city, state } = req.body;
+
+	const group = await Group.findByPk(groupId);
+
+	if (!group) {
+		res.status(404);
+		res.json({
+			message: "Group couldn't be found",
+			statusCode: 404
+		});
+	} else {
+		group.set({
+			name,
+			about,
+			type,
+			private,
+			city,
+			state
+		});
+
+		await group.save();
+
+		res.json(group);
+	}
+});
+
 // Get details of a Group from an id
 router.get("/:groupId", async (req, res, next) => {
 	const { groupId } = req.params;
