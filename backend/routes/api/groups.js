@@ -11,6 +11,7 @@ const {
 	Membership,
 	GroupImage,
 	Venue,
+	Event,
 	Sequelize
 } = require("../../db/models");
 const { check, validationResult } = require("express-validator");
@@ -41,7 +42,6 @@ const router = express.Router();
 // ];
 
 // Create an Event for a Group specified by its id
-
 router.post("/:groupId/events", requireAuth, async (req, res, next) => {
 	const { userId } = req.user.id;
 	const { groupId } = req.params;
@@ -58,10 +58,6 @@ router.post("/:groupId/events", requireAuth, async (req, res, next) => {
 
 	const group = await Group.findByPk(groupId);
 
-	const membership = await Membership.findOne({ where: { groupId: groupId } });
-
-	console.log(membership);
-
 	if (!group) {
 		res.status(404);
 		return res.json({
@@ -69,18 +65,22 @@ router.post("/:groupId/events", requireAuth, async (req, res, next) => {
 			statusCode: 404
 		});
 	}
+	const membership = await Membership.findOne({ where: { groupId: groupId } });
 
 	if (userId === group.organizerId || membership.status === "co-host") {
-		const newVenue = Venue.build({
+		const newEvent = Event.build({
 			groupId: group.id,
-			address,
-			city,
-			state,
-			lat,
-			lng
+			venueId,
+			name,
+			type,
+			capacity,
+			price,
+			description,
+			startDate,
+			endDate
 		});
-		await newVenue.save();
-		res.json(newVenue);
+		await newEvent.save();
+		res.json(newEvent);
 	} else {
 		res.status(403);
 		return res.json({
@@ -99,8 +99,6 @@ router.post("/:groupId/venues", requireAuth, async (req, res, next) => {
 	const group = await Group.findByPk(groupId);
 
 	const membership = await Membership.findOne({ where: { groupId: groupId } });
-
-	console.log(membership);
 
 	if (!group) {
 		res.status(404);
