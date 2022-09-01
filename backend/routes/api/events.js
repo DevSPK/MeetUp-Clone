@@ -40,7 +40,7 @@ router.get("/:eventId", async (req, res) => {
 			model: Venue,
 			attributes: ["id", "groupId", "address", "city", "state", "lat", "lng"]
 		},
-		group: ["Event.id", "EventImage.id", "Group.id", "Venue.id"]
+		group: ["Event.id", "Venue.id"]
 	});
 
 	if (!event) {
