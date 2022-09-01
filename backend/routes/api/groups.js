@@ -1,5 +1,9 @@
 const express = require("express");
-const { setTokenCookie, requireAuth } = require("../../utils/auth");
+const {
+	setTokenCookie,
+	requireAuth,
+	restoreUser
+} = require("../../utils/auth");
 const {
 	User,
 	Group,
@@ -36,10 +40,48 @@ const router = express.Router();
 // 	handleValidationErrors
 // ];
 
+router.post("/:groupId/venues", requireAuth, async (req, res, next) => {
+	const { userId } = req.user.id;
+	const { groupId } = req.params;
+	const { address, city, state, lat, lng } = req.body;
+
+	const group = await Group.findByPk(groupId);
+
+	const membership = await Membership.findOne({ where: { groupId: groupId } });
+
+	console.log(membership);
+
+	if (!group) {
+		res.status(404);
+		return res.json({
+			message: "Group couldn't be found",
+			statusCode: 404
+		});
+	}
+
+	if (userId === group.organizerId || membership.status === "co-host") {
+		const newVenue = Venue.build({
+			groupId: group.id,
+			address,
+			city,
+			state,
+			lat,
+			lng
+		});
+		await newVenue.save();
+		res.json(newVenue);
+	} else {
+		res.status(403);
+		return res.json({
+			message: "Forbidden",
+			statusCode: 403
+		});
+	}
+});
+
 // Add an Image to a Group based on the Group's id
 router.post("/:groupId/images", requireAuth, async (req, res, next) => {
 	const { groupId } = req.params;
-	console.log(groupId);
 
 	const { url, preview } = req.body;
 
