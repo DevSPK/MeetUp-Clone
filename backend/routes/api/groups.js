@@ -90,16 +90,23 @@ router.get("/current", requireAuth, async (req, res, next) => {
 });
 
 router.put("/:groupId", requireAuth, async (req, res, next) => {
+	const userId = req.user.id;
 	const { groupId } = req.params;
 	const { name, about, type, private, city, state } = req.body;
 
 	const group = await Group.findByPk(groupId);
-
 	if (!group) {
 		res.status(404);
 		res.json({
 			message: "Group couldn't be found",
 			statusCode: 404
+		});
+	}
+	if (userId !== group.organizerId) {
+		res.status(403);
+		res.json({
+			message: "Forbidden",
+			statusCode: 403
 		});
 	} else {
 		group.set({
