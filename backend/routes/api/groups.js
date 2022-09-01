@@ -40,6 +40,7 @@ const router = express.Router();
 // 	handleValidationErrors
 // ];
 
+//Create a new Venue for a Group specified by its id
 router.post("/:groupId/venues", requireAuth, async (req, res, next) => {
 	const { userId } = req.user.id;
 	const { groupId } = req.params;
@@ -131,6 +132,7 @@ router.get("/current", requireAuth, async (req, res, next) => {
 	res.json({ Groups: groups });
 });
 
+// edit Group
 router.put("/:groupId", requireAuth, async (req, res, next) => {
 	const userId = req.user.id;
 	const { groupId } = req.params;

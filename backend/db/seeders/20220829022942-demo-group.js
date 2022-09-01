@@ -59,6 +59,18 @@ module.exports = {
 		 */
 
 		const Op = Sequelize.Op;
-		return queryInterface.bulkDelete("Groups", {}, {});
+		return queryInterface.bulkDelete(
+			"Groups",
+			{
+				name: {
+					[Op.in]: [
+						"Bedrock Bowlers",
+						"Dinosaur Lovers",
+						"Rock Carving Enthusiasts"
+					]
+				}
+			},
+			{}
+		);
 	}
 };
