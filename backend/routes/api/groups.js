@@ -13,6 +13,7 @@ const {
 	Venue,
 	Event,
 	Attendance,
+	EventImage,
 	Sequelize
 } = require("../../db/models");
 const { check, validationResult } = require("express-validator");
@@ -42,6 +43,54 @@ const router = express.Router();
 // 	check("state").not().isEmpty().withMessage("State is required"),
 // 	handleValidationErrors
 // ];
+
+//  Get all Events of aGroup specified by its id
+
+router.get("/:groupId/events", async (req, res) => {
+	const { groupId } = req.params;
+
+	const events = await Event.findAll({
+		where: { groupId: groupId }
+	});
+
+	const numAttending = await events.getAttendances.count({
+		where: { status: "member" }
+	});
+	const EventImages = await EventImage.findAll({
+		where: { eventId: events.id }
+	});
+	const data = {};
+	const groups = await Group.findOne({
+		where: { id: events.groupId }
+	});
+	const venues = await Venue.findOne({
+		where: { id: events.venueId }
+	});
+
+	data.Events = {
+		id: events.id,
+		groupId: events.groupId,
+		venueId: events.venueId,
+		name: events.name,
+		type: events.type,
+		startDate: events.startDate,
+		endDate: events.endDate,
+		numAttending: numAttending,
+		previewImage: EventImages.url,
+		Group: {
+			id: groups.id,
+			name: groups.name,
+			city: groups.city,
+			state: groups.state
+		},
+		Venue: {
+			id: venues.id,
+			city: venues.city,
+			state: venues.state
+		}
+	};
+	res.json(data.Events);
+});
 
 // Create an Event for a Group specified by its id
 router.post("/:groupId/events", requireAuth, async (req, res, next) => {
