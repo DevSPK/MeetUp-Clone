@@ -44,52 +44,59 @@ const router = express.Router();
 // 	handleValidationErrors
 // ];
 
-//  Get all Events of aGroup specified by its id
+//  Get all Events of a Group specified by its id
 
 router.get("/:groupId/events", async (req, res) => {
 	const { groupId } = req.params;
 
-	const events = await Event.findAll({
-		where: { groupId: groupId }
-	});
+	const groups = await Group.findByPk(groupId);
 
-	const numAttending = await events.getAttendances.count({
-		where: { status: "member" }
-	});
-	const EventImages = await EventImage.findAll({
-		where: { eventId: events.id }
-	});
-	const data = {};
-	const groups = await Group.findOne({
-		where: { id: events.groupId }
-	});
-	const venues = await Venue.findOne({
-		where: { id: events.venueId }
-	});
-
-	data.Events = {
-		id: events.id,
-		groupId: events.groupId,
-		venueId: events.venueId,
-		name: events.name,
-		type: events.type,
-		startDate: events.startDate,
-		endDate: events.endDate,
-		numAttending: numAttending,
-		previewImage: EventImages.url,
-		Group: {
-			id: groups.id,
-			name: groups.name,
-			city: groups.city,
-			state: groups.state
-		},
-		Venue: {
-			id: venues.id,
-			city: venues.city,
-			state: venues.state
+	const events = await groups.getEvents({
+		include: {
+			model: Group,
+			include: { model: Venue }
 		}
-	};
-	res.json(data.Events);
+	});
+
+	// const numAttending = await Attendance.count({
+	// 	where: { status: "member", eventId: events.id }
+	// });
+
+	// const EventImages = await EventImage.findAll({
+	// 	where: { eventId: events.id }
+	// });
+
+	// const Venues = await Venue.findAll({
+	// 	where: { id: events.venueId }
+	// });
+
+	// console.log(EventImages);
+
+	// const data = {};
+
+	// data.Events = {
+	// 	id: events.id,
+	// 	groupId: events.groupId,
+	// 	venueId: events.venueId,
+	// 	name: events.name,
+	// 	type: events.type,
+	// 	startDate: events.startDate,
+	// 	endDate: events.endDate,
+	// 	numAttending: numAttending,
+	// 	previewImage: EventImages.url,
+	// 	Group: {
+	// 		id: groups.id,
+	// 		name: groups.name,
+	// 		city: groups.city,
+	// 		state: groups.state
+	// 	},
+	// 	Venue: {
+	// 		id: venues.id,
+	// 		city: venues.city,
+	// 		state: venues.state
+	// 	}
+	// };
+	res.json({ Events: events });
 });
 
 // Create an Event for a Group specified by its id
