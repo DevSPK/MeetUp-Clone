@@ -62,7 +62,7 @@ router.get("/:groupId/events", async (req, res) => {
 			include: { model: Group },
 			include: { model: Venue },
 
-			group: ["Event.id"]
+			group: ["Event.id", "Venue.id"]
 		});
 
 		// const numAttending = await Attendance.count({
