@@ -12,11 +12,13 @@ const {
 	GroupImage,
 	Venue,
 	Event,
+	Attendance,
 	Sequelize
 } = require("../../db/models");
 const { check, validationResult } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
 const membership = require("../../db/models/membership");
+const user = require("../../db/models/user");
 
 const router = express.Router();
 
@@ -79,7 +81,14 @@ router.post("/:groupId/events", requireAuth, async (req, res, next) => {
 			startDate,
 			endDate
 		});
+
+		await newEvent.createAttendance({
+			status: "member",
+			userId: userId
+		});
+
 		await newEvent.save();
+
 		res.json(newEvent);
 	} else {
 		res.status(403);
@@ -318,7 +327,7 @@ router.get("/", async (req, res) => {
 			}
 		],
 		raw: true,
-		group: ["Group.id", "GroupImages.url", "Memberships.id"]
+		group: ["Group.id", "GroupImages.url"]
 	});
 	res.json({ Groups: groups });
 });
