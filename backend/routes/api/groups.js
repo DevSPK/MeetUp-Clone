@@ -318,7 +318,7 @@ router.get("/", async (req, res) => {
 			}
 		],
 		raw: true,
-		group: ["Group.id", "GroupImages.url", "Memberships.id"]
+		group: ["Group.id", "GroupImages.url"]
 	});
 	res.json({ Groups: groups });
 });

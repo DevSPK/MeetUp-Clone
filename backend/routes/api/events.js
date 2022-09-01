@@ -41,4 +41,10 @@ router.post("/:eventId/images", requireAuth, async (req, res, next) => {
 	}
 });
 
+router.get("/", async (req, res) => {
+	const events = await Event.findAll();
+
+	res.json(events);
+});
+
 module.exports = router;
