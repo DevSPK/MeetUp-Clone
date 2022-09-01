@@ -40,6 +40,56 @@ const router = express.Router();
 // 	handleValidationErrors
 // ];
 
+// Create an Event for a Group specified by its id
+
+router.post("/:groupId/events", requireAuth, async (req, res, next) => {
+	const { userId } = req.user.id;
+	const { groupId } = req.params;
+	const {
+		venueId,
+		name,
+		type,
+		capacity,
+		price,
+		description,
+		startDate,
+		endDate
+	} = req.body;
+
+	const group = await Group.findByPk(groupId);
+
+	const membership = await Membership.findOne({ where: { groupId: groupId } });
+
+	console.log(membership);
+
+	if (!group) {
+		res.status(404);
+		return res.json({
+			message: "Group couldn't be found",
+			statusCode: 404
+		});
+	}
+
+	if (userId === group.organizerId || membership.status === "co-host") {
+		const newVenue = Venue.build({
+			groupId: group.id,
+			address,
+			city,
+			state,
+			lat,
+			lng
+		});
+		await newVenue.save();
+		res.json(newVenue);
+	} else {
+		res.status(403);
+		return res.json({
+			message: "Forbidden",
+			statusCode: 403
+		});
+	}
+});
+
 //Create a new Venue for a Group specified by its id
 router.post("/:groupId/venues", requireAuth, async (req, res, next) => {
 	const { userId } = req.user.id;
