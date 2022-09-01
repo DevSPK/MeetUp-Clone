@@ -72,7 +72,7 @@ router.get("/", async (req, res) => {
 			{ model: Venue }
 		],
 
-		group: ["Event.id", "EventImages.url", "Group.id"]
+		group: ["Event.id", "EventImages.url", "Group.id", "Venue.id"]
 	});
 	res.json({ Events: events });
 });
