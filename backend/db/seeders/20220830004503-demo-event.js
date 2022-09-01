@@ -23,8 +23,8 @@ module.exports = {
 					type: "In person",
 					capacity: 10,
 					price: 10,
-					startDate: "2023-08-08",
-					endDate: "2023-08-09"
+					startDate: "2023-11-19 20:00:00",
+					endDate: "2023-11-19 22:00:00"
 				},
 				{
 					venueId: 2,
@@ -35,8 +35,8 @@ module.exports = {
 					type: "In person",
 					capacity: 10,
 					price: 10,
-					startDate: "2024-08-08",
-					endDate: "2024-08-09"
+					startDate: "2023-11-20 20:00:00",
+					endDate: "2023-11-20 22:00:00"
 				},
 				{
 					venueId: 3,
@@ -47,8 +47,8 @@ module.exports = {
 					type: "In person",
 					capacity: 10,
 					price: 10,
-					startDate: "2025-08-08",
-					endDate: "2025-08-09"
+					startDate: "22023-11-21 20:00:00",
+					endDate: "2023-11-21 22:00:00"
 				}
 			],
 			{}
@@ -62,6 +62,15 @@ module.exports = {
 		 * Example:
 		 * await queryInterface.bulkDelete('People', null, {});
 		 */
-		await queryInterface.bulkDelete("Events", null, {});
+		const Op = Sequelize.Op;
+		return queryInterface.bulkDelete(
+			"Events",
+			{
+				name: {
+					[Op.in]: ["Rock and Bowlathon", "Zoocation", "Rock Carvinal"]
+				}
+			},
+			{}
+		);
 	}
 };
