@@ -44,6 +44,55 @@ const router = express.Router();
 // 	handleValidationErrors
 // ];
 
+//Request a Membership for a Group based on the Group's id
+
+router.post("/:groupId/membership", requireAuth, async (req, res, next) => {
+	const { groupId } = req.params;
+
+	const { userId } = req.user.id;
+
+	const groups = await Group.findByPk(groupId);
+
+	if (!groups) {
+		res.status(404);
+		return res.json({
+			message: "Group couldn't be found",
+			statusCode: 404
+		});
+	}
+	const membership = await Membership.findOne({ where: { groupId: groupId } });
+
+	if (membership.status === "pending") {
+		res.status(400);
+		return res.json({
+			message: "Membership has already been requested",
+			statusCode: 400
+		});
+	}
+	if (membership.status === "member" || membership.status === "co-host") {
+		res.status(400);
+		return res.json({
+			message: "User is already a member of the group",
+			statusCode: 400
+		});
+	} else {
+		membership.set({
+			userId,
+			groupId,
+			status: "pending"
+		});
+
+		let data = {};
+
+		(data = {
+			groupId: membership.groupId,
+			memberId: membership.id,
+			status: membership.status
+		}),
+			res.json(data);
+	}
+});
+
 //  Get all Events of a Group specified by its id
 
 router.get("/:groupId/events", async (req, res, next) => {
