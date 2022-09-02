@@ -23,6 +23,47 @@ const attendance = require("../../db/models/attendance");
 
 const router = express.Router();
 
+// Change the status of an attendance for an event specified by id
+router.put("/:eventId/attendance", requireAuth, async (req, res, next) => {
+	const { eventId } = req.params;
+
+	const userId = req.user.id;
+
+	const event = await Event.findByPk(eventId);
+
+	if (!event) {
+		res.status(404);
+		return res.json({
+			message: "Event couldn't be found",
+			statusCode: 404
+		});
+	}
+
+	const attendance = await Attendance.findOne({
+		where: {
+			eventId: eventId,
+			status: "pending",
+			userId: userId
+		}
+	});
+
+	attendance.set({
+		status: "member"
+	});
+	await attendance.save();
+
+	let data = {};
+
+	data.attendance = {
+		id: attendance.id,
+		groupId: attendance.groupId,
+		userId: attendance.userId,
+		status: attendance.status
+	};
+
+	res.json(data.attendance);
+});
+
 //Request to Attend an Event based on the Event's id
 
 router.post("/:eventId/attendance", requireAuth, async (req, res, next) => {
