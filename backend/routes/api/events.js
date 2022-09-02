@@ -125,6 +125,25 @@ router.get("/:eventId/attendees", async (req, res, next) => {
 	res.json(data);
 });
 
+// Delete attendance to an event specified by id
+router.delete("/:eventId/attendance", requireAuth, async (req, res, next) => {
+	const { eventId } = req.params;
+
+	const event = await Event.findByPk(eventId);
+
+	if (!event) {
+		res.status(404);
+		return res.json({
+			message: "Event couldn't be found",
+			statusCode: 404
+		});
+	}
+
+	const attendance = await Attendance.findOne({ where: { eventId: eventId } });
+
+	console.log(attendance);
+});
+
 // edit an event specified by its id
 router.put("/:eventId", async (req, res, next) => {
 	const userId = req.user.id;
