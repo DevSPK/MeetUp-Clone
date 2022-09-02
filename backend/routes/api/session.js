@@ -32,7 +32,13 @@ router.get("/", requireAuth, async (req, res, next) => {
 
 	const user = await User.findByPk(userId);
 
-	res.json(user);
+	let data = {
+		id: user.id,
+		firstName: user.firstName,
+		lastName: user.lastName,
+		email: user.email
+	};
+	res.json(data);
 });
 
 // Log in
@@ -51,9 +57,17 @@ router.post("/", validateLogin, async (req, res, next) => {
 
 	await setTokenCookie(res, user);
 
-	return res.json({
-		user
-	});
+	let data = {};
+
+	data.user = {
+		id: user.id,
+		firstName: user.firstName,
+		lastName: user.lastName,
+		email: user.email,
+		token: ""
+	};
+
+	return res.json(data.user);
 });
 
 // Log out

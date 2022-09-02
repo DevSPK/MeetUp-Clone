@@ -20,6 +20,7 @@ const { check, validationResult } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
 const membership = require("../../db/models/membership");
 const user = require("../../db/models/user");
+const group = require("../../db/models/group");
 
 const router = express.Router();
 
@@ -44,12 +45,24 @@ const router = express.Router();
 // 	handleValidationErrors
 // ];
 
-//Request a Membership for a Group based on the Group's id
-
-router.post("/:groupId/membership", requireAuth, async (req, res, next) => {
+//Change the status of a membership for a group specified by id
+router.put("/:groupId/membership", requireAuth, async (req, res, next) => {
 	const { groupId } = req.params;
 
-	const { userId } = req.user.id;
+	// const userId = req.user.id;
+
+	const { memberId, status } = req.body;
+
+	if (status === "pending") {
+		res.status(400);
+		return res.json({
+			message: "Validations Error",
+			statusCode: 400,
+			errors: {
+				status: "Cannot change a membership status to pending"
+			}
+		});
+	}
 
 	const groups = await Group.findByPk(groupId);
 
@@ -60,37 +73,146 @@ router.post("/:groupId/membership", requireAuth, async (req, res, next) => {
 			statusCode: 404
 		});
 	}
-	const membership = await Membership.findOne({ where: { groupId: groupId } });
 
-	if (membership.status === "pending") {
+	const membershipUser = await User.findByPk(memberId);
+
+	if (!membershipUser) {
+		res.status(400);
+		return res.json({
+			message: "Validation Error",
+			statusCode: 400,
+			errors: {
+				memberId: "User couldn't be found"
+			}
+		});
+	}
+
+	const membershipStatus = await Membership.findOne({
+		where: { userId: memberId, status: "pending" }
+	});
+
+	console.log(membershipStatus);
+
+	if (!membershipStatus) {
+		res.status(404);
+		return res.json({
+			message: "Membership between the user and the group does not exits",
+			statusCode: 404
+		});
+	}
+
+	// const membershipAuth = await Membership.findAll({
+	// 	where: { groupId: groupId, userId: userId }
+	// });
+
+	// if (
+	// 	status === "member" &&
+	// 	(groups.organizerId !== userId || membershipAuth.status !== "co-host")
+	// ) {
+	// 	res.status(403);
+	// 	return res.json({
+	// 		message: "Forbidden",
+	// 		statusCode: 403
+	// 	});
+	// } else {
+	else {
+		membershipStatus.set({
+			status: "member"
+		});
+		await membershipStatus.save();
+
+		let data = {};
+
+		data.membership = {
+			id: membershipStatus.id,
+			groupId: membershipStatus.groupId,
+			memberId: memberId,
+			status: membershipStatus.status
+		};
+
+		res.json(data.membership);
+	}
+
+	// if (status === "co-host" && groups.organizerId !== userId) {
+	// 	res.status(403);
+	// 	return res.json({
+	// 		message: "Forbidden",
+	// 		statusCode: 403
+	// 	});
+	// } else {
+	// 	membershipStatus.set({
+	// 		status: "co-host"
+	// 	});
+
+	// 	let data = {};
+
+	// 	(data = {
+	// 		groupId: membershipStatus.groupId,
+	// 		memberId: membershipStatus.userId,
+	// 		status: membershipStatus.status
+	// 	}),
+	// 		res.json(data);
+	// }
+});
+
+//Request a Membership for a Group based on the Group's id
+router.post("/:groupId/membership", requireAuth, async (req, res, next) => {
+	const { groupId } = req.params;
+
+	const userId = req.user.id;
+
+	const { memberId } = req.body;
+
+	const groups = await Group.findByPk(groupId);
+	console.log(groups);
+
+	if (!groups) {
+		res.status(404);
+		return res.json({
+			message: "Group couldn't be found",
+			statusCode: 404
+		});
+	}
+
+	const checkMembership = await Membership.findOne({
+		where: { groupId: groupId, userId: memberId }
+	});
+
+	if (!checkMembership) {
+		{
+			let newMembership = await Membership.create({
+				userId: memberId,
+				groupId: groupId,
+				status: "pending"
+			});
+
+			let data = {};
+
+			data = {
+				groupId: newMembership.groupId,
+				memberId: newMembership.userId,
+				status: newMembership.status
+			};
+			return res.json(data);
+		}
+	}
+	if (checkMembership.status === "pending") {
 		res.status(400);
 		return res.json({
 			message: "Membership has already been requested",
 			statusCode: 400
 		});
 	}
-	if (membership.status === "member" || membership.status === "co-host") {
-		res.status(400);
-		return res.json({
-			message: "User is already a member of the group",
-			statusCode: 400
-		});
-	} else {
-		membership.set({
-			userId,
-			groupId,
-			status: "pending"
-		});
-
-		let data = {};
-
-		(data = {
-			groupId: membership.groupId,
-			memberId: membership.id,
-			status: membership.status
-		}),
-			res.json(data);
-	}
+	// if (
+	// 	checkMembership.status === "member" ||
+	// 	checkMembership.status === "co-host"
+	// ) {
+	// 	res.status(400);
+	// 	return res.json({
+	// 		message: "User is already a member of the group",
+	// 		statusCode: 400
+	// 	});
+	// }
 });
 
 //  Get all Events of a Group specified by its id
@@ -159,7 +281,7 @@ router.get("/:groupId/events", async (req, res, next) => {
 
 // Create an Event for a Group specified by its id
 router.post("/:groupId/events", requireAuth, async (req, res, next) => {
-	const { userId } = req.user.id;
+	const userId = req.user.id;
 	const { groupId } = req.params;
 	const {
 		venueId,
@@ -216,7 +338,7 @@ router.post("/:groupId/events", requireAuth, async (req, res, next) => {
 
 //Create a new Venue for a Group specified by its id
 router.post("/:groupId/venues", requireAuth, async (req, res, next) => {
-	const { userId } = req.user.id;
+	const userId = req.user.id;
 	const { groupId } = req.params;
 	const { address, city, state, lat, lng } = req.body;
 
