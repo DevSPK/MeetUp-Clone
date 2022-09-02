@@ -45,7 +45,41 @@ const router = express.Router();
 // 	handleValidationErrors
 // ];
 
-//Change the status of a membership for a group specified by id
+//  Get all Members of a Group specified by its id
+router.get("/:groupId/members", async (req, res, next) => {
+	const { groupId } = req.params;
+
+	const group = await Group.findByPk(groupId);
+
+	if (!group) {
+		res.status(404);
+		return res.json({
+			message: "Group couldn't be found",
+			statusCode: 404
+		});
+	}
+
+	const membership = await Membership.findOne({ where: { groupId: groupId } });
+
+	const user = await User.findByPk(membership.userId);
+
+	let data = {};
+
+	data.Members = [
+		{
+			id: user.id,
+			firstName: user.firstName,
+			lastName: user.lastName,
+			Membership: {
+				status: membership.status
+			}
+		}
+	];
+
+	res.json(data);
+});
+
+//  Change the status of a membership for a group specified by id
 router.put("/:groupId/membership", requireAuth, async (req, res, next) => {
 	const { groupId } = req.params;
 
