@@ -49,7 +49,7 @@ const router = express.Router();
 router.put("/:groupId/membership", requireAuth, async (req, res, next) => {
 	const { groupId } = req.params;
 
-	const userId = req.user.id;
+	// const userId = req.user.id;
 
 	const { memberId, status } = req.body;
 
@@ -74,7 +74,7 @@ router.put("/:groupId/membership", requireAuth, async (req, res, next) => {
 		});
 	}
 
-	const membershipUser = await User.findByPk(userId);
+	const membershipUser = await User.findByPk(memberId);
 
 	if (!membershipUser) {
 		res.status(400);
@@ -87,9 +87,11 @@ router.put("/:groupId/membership", requireAuth, async (req, res, next) => {
 		});
 	}
 
-	const membershipStatus = await Membership.findAll({
-		where: { userId: memberId, groupId: groupId }
+	const membershipStatus = await Membership.findOne({
+		where: { userId: memberId, status: "pending" }
 	});
+
+	console.log(membershipStatus);
 
 	if (!membershipStatus) {
 		res.status(404);
@@ -99,54 +101,58 @@ router.put("/:groupId/membership", requireAuth, async (req, res, next) => {
 		});
 	}
 
-	const membershipAuth = await Membership.findAll({
-		where: { groupId: groupId, userId: userId }
-	});
+	// const membershipAuth = await Membership.findAll({
+	// 	where: { groupId: groupId, userId: userId }
+	// });
 
-	if (
-		status === "member" &&
-		(groups.organizerId !== userId || membershipAuth.status !== "co-host")
-	) {
-		res.status(403);
-		return res.json({
-			message: "Forbidden",
-			statusCode: 403
-		});
-	} else {
+	// if (
+	// 	status === "member" &&
+	// 	(groups.organizerId !== userId || membershipAuth.status !== "co-host")
+	// ) {
+	// 	res.status(403);
+	// 	return res.json({
+	// 		message: "Forbidden",
+	// 		statusCode: 403
+	// 	});
+	// } else {
+	else {
 		membershipStatus.set({
 			status: "member"
 		});
+		await membershipStatus.save();
 
 		let data = {};
 
-		(data = {
+		data.membership = {
+			id: membershipStatus.id,
 			groupId: membershipStatus.groupId,
-			memberId: membershipStatus.userId,
+			memberId: memberId,
 			status: membershipStatus.status
-		}),
-			res.json(data);
+		};
+
+		res.json(data.membership);
 	}
 
-	if (status === "co-host" && groups.organizerId !== userId) {
-		res.status(403);
-		return res.json({
-			message: "Forbidden",
-			statusCode: 403
-		});
-	} else {
-		membershipStatus.set({
-			status: "co-host"
-		});
+	// if (status === "co-host" && groups.organizerId !== userId) {
+	// 	res.status(403);
+	// 	return res.json({
+	// 		message: "Forbidden",
+	// 		statusCode: 403
+	// 	});
+	// } else {
+	// 	membershipStatus.set({
+	// 		status: "co-host"
+	// 	});
 
-		let data = {};
+	// 	let data = {};
 
-		(data = {
-			groupId: membershipStatus.groupId,
-			memberId: membershipStatus.userId,
-			status: membershipStatus.status
-		}),
-			res.json(data);
-	}
+	// 	(data = {
+	// 		groupId: membershipStatus.groupId,
+	// 		memberId: membershipStatus.userId,
+	// 		status: membershipStatus.status
+	// 	}),
+	// 		res.json(data);
+	// }
 });
 
 //Request a Membership for a Group based on the Group's id
@@ -155,7 +161,7 @@ router.post("/:groupId/membership", requireAuth, async (req, res, next) => {
 
 	const userId = req.user.id;
 
-	// const { memberId } = req.body;
+	const { memberId } = req.body;
 
 	const groups = await Group.findByPk(groupId);
 	console.log(groups);
@@ -169,9 +175,27 @@ router.post("/:groupId/membership", requireAuth, async (req, res, next) => {
 	}
 
 	const checkMembership = await Membership.findOne({
-		where: { groupId: groupId, userId: userId }
+		where: { groupId: groupId, userId: memberId }
 	});
 
+	if (!checkMembership) {
+		{
+			let newMembership = await Membership.create({
+				userId: memberId,
+				groupId: groupId,
+				status: "pending"
+			});
+
+			let data = {};
+
+			data = {
+				groupId: newMembership.groupId,
+				memberId: newMembership.userId,
+				status: newMembership.status
+			};
+			return res.json(data);
+		}
+	}
 	if (checkMembership.status === "pending") {
 		res.status(400);
 		return res.json({
@@ -179,26 +203,6 @@ router.post("/:groupId/membership", requireAuth, async (req, res, next) => {
 			statusCode: 400
 		});
 	}
-
-	if (checkMembership.userId !== userId) {
-		{
-			let newMembership = await Membership.create({
-				userId: userId,
-				groupId,
-				status: "pending"
-			});
-
-			let data = {};
-
-			(data = {
-				groupId: newMembership.groupId,
-				memberId: newMembership.userId,
-				status: newMembership.status
-			}),
-				res.json(data);
-		}
-	}
-
 	// if (
 	// 	checkMembership.status === "member" ||
 	// 	checkMembership.status === "co-host"
