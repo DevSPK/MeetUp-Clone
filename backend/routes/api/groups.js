@@ -20,6 +20,7 @@ const { check, validationResult } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
 const membership = require("../../db/models/membership");
 const user = require("../../db/models/user");
+const group = require("../../db/models/group");
 
 const router = express.Router();
 
@@ -44,8 +45,85 @@ const router = express.Router();
 // 	handleValidationErrors
 // ];
 
-//Request a Membership for a Group based on the Group's id
+router.put("/:groupId/membership", requireAuth, async (req, res, next) => {
+	const { groupId } = req.params;
 
+	const { userId } = req.user.id;
+
+	const { memberId, status } = req.body;
+
+	if (status === "pending") {
+		res.status(400);
+		return res.json({
+			message: "Validations Error",
+			statusCode: 400,
+			errors: {
+				status: "Cannot change a membership status to pending"
+			}
+		});
+	}
+
+	const groups = await Group.findByPk(groupId);
+
+	if (!groups) {
+		res.status(404);
+		return res.json({
+			message: "Group couldn't be found",
+			statusCode: 404
+		});
+	}
+
+	const membershipChange = await Membership.findAll({
+		where: { userId: userId }
+	});
+
+	if (!membershipChange.userId) {
+		res.status(400);
+		return res.json({
+			message: "Validation Error",
+			statusCode: 400,
+			errors: {
+				memberId: "User couldn't be found"
+			}
+		});
+	}
+
+	if (!membershipChange.status) {
+		res.status(404);
+		return res.json({
+			message: "Membership between the user and the group does not exits",
+			statusCode: 404
+		});
+	}
+
+	if (status === "member") {
+		if (
+			groups.organizerId === userId ||
+			membershipChange.status === "co-host"
+		) {
+			membershipChange.set({
+				status: "member"
+			});
+
+			let data = {};
+
+			(data = {
+				groupId: membershipChange.groupId,
+				memberId: membershipChange.userId,
+				status: membershipChange.status
+			}),
+				res.json(data);
+		} else {
+			res.status(403);
+			return res.json({
+				message: "Forbidden",
+				statusCode: 403
+			});
+		}
+	}
+});
+
+//Request a Membership for a Group based on the Group's id
 router.post("/:groupId/membership", requireAuth, async (req, res, next) => {
 	const { groupId } = req.params;
 
@@ -76,7 +154,7 @@ router.post("/:groupId/membership", requireAuth, async (req, res, next) => {
 			statusCode: 400
 		});
 	} else {
-		membership.set({
+		membership.create({
 			userId,
 			groupId,
 			status: "pending"
@@ -86,7 +164,7 @@ router.post("/:groupId/membership", requireAuth, async (req, res, next) => {
 
 		(data = {
 			groupId: membership.groupId,
-			memberId: membership.id,
+			memberId: membership.userId,
 			status: membership.status
 		}),
 			res.json(data);
