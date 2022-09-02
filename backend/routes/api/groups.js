@@ -46,7 +46,7 @@ const router = express.Router();
 
 //  Get all Events of a Group specified by its id
 
-router.get("/:groupId/events", async (req, res) => {
+router.get("/:groupId/events", async (req, res, next) => {
 	const { groupId } = req.params;
 
 	const groups = await Group.findByPk(groupId);

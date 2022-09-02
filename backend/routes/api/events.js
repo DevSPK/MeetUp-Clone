@@ -23,8 +23,70 @@ const attendance = require("../../db/models/attendance");
 
 const router = express.Router();
 
+router.put("/:eventId", async (req, res, next) => {
+	const userId = req.user.id;
+	const { eventId } = req.params;
+	const {
+		venueId,
+		name,
+		type,
+		capacity,
+		price,
+		description,
+		startDate,
+		endDate
+	} = req.body;
+
+	const event = await Event.findByPk(eventId);
+
+	const membership = await Membership.findOne({
+		where: { groupId: event.groupId }
+	});
+
+	const group = await Group.findByPk(event.groupId);
+
+	if (!event) {
+		res.status(404);
+		return res.json({
+			message: "Event couldn't be found",
+			statusCode: 404
+		});
+	}
+
+	const venue = await Venue.findByPk(venueId);
+
+	if (!venue) {
+		res.status(404);
+		return res.json({
+			message: "Venue couldn't be found",
+			statusCode: 404
+		});
+	}
+
+	if (userId === group.organizerId || membership.status === "co-host") {
+		venue.set({
+			venueId,
+			name,
+			type,
+			capacity,
+			price,
+			description,
+			startDate,
+			endDate
+		});
+		await venue.save();
+		res.json(venue);
+	} else {
+		res.status(403);
+		return res.json({
+			message: "Forbidden",
+			statusCode: 403
+		});
+	}
+});
+
 // Get details of an Event specified by its id
-router.get("/:eventId", async (req, res) => {
+router.get("/:eventId", async (req, res, next) => {
 	const { eventId } = req.params;
 
 	const event = await Event.findByPk(eventId, {
@@ -73,7 +135,7 @@ router.post("/:eventId/images", requireAuth, async (req, res, next) => {
 });
 
 // Get all Events
-router.get("/", async (req, res) => {
+router.get("/", async (req, res, next) => {
 	const events = await Event.findAll({
 		attributes: {
 			include: [
