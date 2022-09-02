@@ -22,7 +22,7 @@ const membership = require("../../db/models/membership");
 const attendance = require("../../db/models/attendance");
 
 const router = express.Router();
-
+// edit an event specified by its id
 router.put("/:eventId", async (req, res, next) => {
 	const userId = req.user.id;
 	const { eventId } = req.params;
@@ -38,12 +38,6 @@ router.put("/:eventId", async (req, res, next) => {
 	} = req.body;
 
 	const event = await Event.findByPk(eventId);
-
-	const membership = await Membership.findOne({
-		where: { groupId: event.groupId }
-	});
-
-	const group = await Group.findByPk(event.groupId);
 
 	if (!event) {
 		res.status(404);
@@ -63,9 +57,16 @@ router.put("/:eventId", async (req, res, next) => {
 		});
 	}
 
+	const group = await Group.findByPk(event.groupId);
+
+	const membership = await Membership.findOne({
+		where: { groupId: event.groupId }
+	});
+
 	if (userId === group.organizerId || membership.status === "co-host") {
-		venue.set({
+		event.set({
 			venueId,
+			groupId: group.id,
 			name,
 			type,
 			capacity,
@@ -74,8 +75,8 @@ router.put("/:eventId", async (req, res, next) => {
 			startDate,
 			endDate
 		});
-		await venue.save();
-		res.json(venue);
+		await event.save();
+		res.json(event);
 	} else {
 		res.status(403);
 		return res.json({
