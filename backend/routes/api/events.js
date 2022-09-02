@@ -56,7 +56,7 @@ router.put("/:eventId/attendance", requireAuth, async (req, res, next) => {
 
 	data.attendance = {
 		id: attendance.id,
-		groupId: attendance.groupId,
+		eventId: attendance.eventId,
 		userId: attendance.userId,
 		status: attendance.status
 	};
