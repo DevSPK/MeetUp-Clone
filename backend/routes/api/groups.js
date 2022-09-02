@@ -74,7 +74,7 @@ router.put("/:groupId/membership", requireAuth, async (req, res, next) => {
 		});
 	}
 
-	const membershipUser = await User.findByPk(memberId);
+	const membershipUser = await User.findByPk(userId);
 
 	if (!membershipUser) {
 		res.status(400);
@@ -155,11 +155,10 @@ router.post("/:groupId/membership", requireAuth, async (req, res, next) => {
 
 	const userId = req.user.id;
 
-	console.log("userId", userId);
-
-	//const {memberId} = req.body
+	// const { memberId } = req.body;
 
 	const groups = await Group.findByPk(groupId);
+	console.log(groups);
 
 	if (!groups) {
 		res.status(404);
@@ -173,10 +172,6 @@ router.post("/:groupId/membership", requireAuth, async (req, res, next) => {
 		where: { groupId: groupId, userId: userId }
 	});
 
-	const membership = await Membership.findOne({ where: { groupId: groupId } });
-
-	console.log(membership);
-
 	if (checkMembership.status === "pending") {
 		res.status(400);
 		return res.json({
@@ -185,31 +180,35 @@ router.post("/:groupId/membership", requireAuth, async (req, res, next) => {
 		});
 	}
 
-	if (
-		// (membership.status === "member" || membership.status === "co-host") &&
-		membership.userId === userId
-	) {
-		res.status(400);
-		return res.json({
-			message: "User is already a member of the group",
-			statusCode: 400
-		});
-	} else {
-		membership.create({
-			userId,
-			groupId,
-			status: "pending"
-		});
+	if (checkMembership.userId !== userId) {
+		{
+			let newMembership = await Membership.create({
+				userId: userId,
+				groupId,
+				status: "pending"
+			});
 
-		let data = {};
+			let data = {};
 
-		(data = {
-			groupId: membership.groupId,
-			memberId: membership.userId,
-			status: membership.status
-		}),
-			res.json(data);
+			(data = {
+				groupId: newMembership.groupId,
+				memberId: newMembership.userId,
+				status: newMembership.status
+			}),
+				res.json(data);
+		}
 	}
+
+	// if (
+	// 	checkMembership.status === "member" ||
+	// 	checkMembership.status === "co-host"
+	// ) {
+	// 	res.status(400);
+	// 	return res.json({
+	// 		message: "User is already a member of the group",
+	// 		statusCode: 400
+	// 	});
+	// }
 });
 
 //  Get all Events of a Group specified by its id
