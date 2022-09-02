@@ -23,6 +23,32 @@ const attendance = require("../../db/models/attendance");
 
 const router = express.Router();
 
+//Request to Attend an Event based on the Event's id
+
+router.post("/:eventId/attendance", requireAuth, async (req, res, next) => {
+	const { eventId } = req.params;
+
+	const userId = req.user.id;
+
+	const event = await Event.findByPk(eventId);
+
+	if (!event) {
+		res.status(404);
+		return res.json({
+			message: "Event couldn't be found",
+			statusCode: 404
+		});
+	}
+
+	const attendance = await event.createAttendance({
+		status: "pending",
+		userId,
+		eventId
+	});
+
+	res.json(attendance);
+});
+
 // edit an event specified by its id
 router.put("/:eventId", async (req, res, next) => {
 	const userId = req.user.id;
