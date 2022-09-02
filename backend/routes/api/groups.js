@@ -46,7 +46,7 @@ const router = express.Router();
 
 //  Get all Events of a Group specified by its id
 
-router.get("/:groupId/events", async (req, res) => {
+router.get("/:groupId/events", async (req, res, next) => {
 	const { groupId } = req.params;
 
 	const groups = await Group.findByPk(groupId);
@@ -135,7 +135,7 @@ router.post("/:groupId/events", requireAuth, async (req, res, next) => {
 	const membership = await Membership.findOne({ where: { groupId: groupId } });
 
 	if (userId === group.organizerId || membership.status === "co-host") {
-		const newEvent = Event.build({
+		const newEvent = await Event.build({
 			groupId: group.id,
 			venueId,
 			name,
@@ -149,7 +149,8 @@ router.post("/:groupId/events", requireAuth, async (req, res, next) => {
 
 		await newEvent.createAttendance({
 			status: "member",
-			userId: userId
+			userId: userId,
+			eventId: newEvent.id
 		});
 
 		await newEvent.save();
