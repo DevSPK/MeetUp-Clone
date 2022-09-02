@@ -23,6 +23,35 @@ const attendance = require("../../db/models/attendance");
 
 const router = express.Router();
 
+// Get details of an Event specified by its id
+router.get("/:eventId", async (req, res) => {
+	const { eventId } = req.params;
+
+	const event = await Event.findByPk(eventId, {
+		include: {
+			model: EventImage,
+			attributes: ["id", "url", "preview"]
+		},
+		include: {
+			model: Group,
+			attributes: ["id", "name", "private", "city", "state"]
+		},
+		include: {
+			model: Venue,
+			attributes: ["id", "groupId", "address", "city", "state", "lat", "lng"]
+		},
+		group: ["Event.id", "Venue.id"]
+	});
+
+	if (!event) {
+		res.status(404);
+		res.json({ message: "Event couldn't be found", statusCode: 404 });
+	} else {
+		res.json(event);
+	}
+});
+
+// Add an Image to a Event based on the Event's id
 router.post("/:eventId/images", requireAuth, async (req, res, next) => {
 	const { eventId } = req.params;
 
@@ -43,6 +72,7 @@ router.post("/:eventId/images", requireAuth, async (req, res, next) => {
 	}
 });
 
+// Get all Events
 router.get("/", async (req, res) => {
 	const events = await Event.findAll({
 		attributes: {
