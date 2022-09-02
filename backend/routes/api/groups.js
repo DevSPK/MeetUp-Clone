@@ -45,10 +45,11 @@ const router = express.Router();
 // 	handleValidationErrors
 // ];
 
+//Change the status of a membership for a group specified by id
 router.put("/:groupId/membership", requireAuth, async (req, res, next) => {
 	const { groupId } = req.params;
 
-	const { userId } = req.user.id;
+	const userId = req.user.id;
 
 	const { memberId, status } = req.body;
 
@@ -73,11 +74,9 @@ router.put("/:groupId/membership", requireAuth, async (req, res, next) => {
 		});
 	}
 
-	const membershipChange = await Membership.findAll({
-		where: { userId: userId }
-	});
+	const membershipUser = await User.findByPk(memberId);
 
-	if (!membershipChange.userId) {
+	if (!membershipUser) {
 		res.status(400);
 		return res.json({
 			message: "Validation Error",
@@ -88,7 +87,11 @@ router.put("/:groupId/membership", requireAuth, async (req, res, next) => {
 		});
 	}
 
-	if (!membershipChange.status) {
+	const membershipStatus = await Membership.findAll({
+		where: { userId: memberId, groupId: groupId }
+	});
+
+	if (!membershipStatus) {
 		res.status(404);
 		return res.json({
 			message: "Membership between the user and the group does not exits",
@@ -96,30 +99,53 @@ router.put("/:groupId/membership", requireAuth, async (req, res, next) => {
 		});
 	}
 
-	if (status === "member") {
-		if (
-			groups.organizerId === userId ||
-			membershipChange.status === "co-host"
-		) {
-			membershipChange.set({
-				status: "member"
-			});
+	const membershipAuth = await Membership.findAll({
+		where: { groupId: groupId, userId: userId }
+	});
 
-			let data = {};
+	if (
+		status === "member" &&
+		(groups.organizerId !== userId || membershipAuth.status !== "co-host")
+	) {
+		res.status(403);
+		return res.json({
+			message: "Forbidden",
+			statusCode: 403
+		});
+	} else {
+		membershipStatus.set({
+			status: "member"
+		});
 
-			(data = {
-				groupId: membershipChange.groupId,
-				memberId: membershipChange.userId,
-				status: membershipChange.status
-			}),
-				res.json(data);
-		} else {
-			res.status(403);
-			return res.json({
-				message: "Forbidden",
-				statusCode: 403
-			});
-		}
+		let data = {};
+
+		(data = {
+			groupId: membershipStatus.groupId,
+			memberId: membershipStatus.userId,
+			status: membershipStatus.status
+		}),
+			res.json(data);
+	}
+
+	if (status === "co-host" && groups.organizerId !== userId) {
+		res.status(403);
+		return res.json({
+			message: "Forbidden",
+			statusCode: 403
+		});
+	} else {
+		membershipStatus.set({
+			status: "co-host"
+		});
+
+		let data = {};
+
+		(data = {
+			groupId: membershipStatus.groupId,
+			memberId: membershipStatus.userId,
+			status: membershipStatus.status
+		}),
+			res.json(data);
 	}
 });
 
@@ -127,7 +153,11 @@ router.put("/:groupId/membership", requireAuth, async (req, res, next) => {
 router.post("/:groupId/membership", requireAuth, async (req, res, next) => {
 	const { groupId } = req.params;
 
-	const { userId } = req.user.id;
+	const userId = req.user.id;
+
+	console.log("userId", userId);
+
+	//const {memberId} = req.body
 
 	const groups = await Group.findByPk(groupId);
 
@@ -138,16 +168,27 @@ router.post("/:groupId/membership", requireAuth, async (req, res, next) => {
 			statusCode: 404
 		});
 	}
+
+	const checkMembership = await Membership.findOne({
+		where: { groupId: groupId, userId: userId }
+	});
+
 	const membership = await Membership.findOne({ where: { groupId: groupId } });
 
-	if (membership.status === "pending") {
+	console.log(membership);
+
+	if (checkMembership.status === "pending") {
 		res.status(400);
 		return res.json({
 			message: "Membership has already been requested",
 			statusCode: 400
 		});
 	}
-	if (membership.status === "member" || membership.status === "co-host") {
+
+	if (
+		// (membership.status === "member" || membership.status === "co-host") &&
+		membership.userId === userId
+	) {
 		res.status(400);
 		return res.json({
 			message: "User is already a member of the group",
@@ -237,7 +278,7 @@ router.get("/:groupId/events", async (req, res, next) => {
 
 // Create an Event for a Group specified by its id
 router.post("/:groupId/events", requireAuth, async (req, res, next) => {
-	const { userId } = req.user.id;
+	const userId = req.user.id;
 	const { groupId } = req.params;
 	const {
 		venueId,
@@ -294,7 +335,7 @@ router.post("/:groupId/events", requireAuth, async (req, res, next) => {
 
 //Create a new Venue for a Group specified by its id
 router.post("/:groupId/venues", requireAuth, async (req, res, next) => {
-	const { userId } = req.user.id;
+	const userId = req.user.id;
 	const { groupId } = req.params;
 	const { address, city, state, lat, lng } = req.body;
 
