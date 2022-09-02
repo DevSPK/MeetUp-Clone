@@ -22,6 +22,7 @@ const membership = require("../../db/models/membership");
 const attendance = require("../../db/models/attendance");
 
 const router = express.Router();
+
 // edit an event specified by its id
 router.put("/:eventId", async (req, res, next) => {
 	const userId = req.user.id;
@@ -151,7 +152,7 @@ router.get("/", async (req, res, next) => {
 		include: [
 			{
 				model: Attendance,
-				where: { status: ["member"] },
+				//where: { status: ["member"] },
 				attributes: []
 			},
 			{
