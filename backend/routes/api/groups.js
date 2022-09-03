@@ -464,6 +464,25 @@ router.post("/:groupId/images", requireAuth, async (req, res, next) => {
 	}
 });
 
+// Delete a Group
+router.delete("/:groupId", requireAuth, async (req, res, next) => {
+	const { groupId } = req.params;
+
+	const group = await Event.findByPk(groupId);
+
+	if (!group) {
+		res.status(404);
+		return res.json({ message: "Group couldn't be found", statusCode: 404 });
+	} else {
+		await group.destroy();
+		res.status(200);
+		res.json({
+			message: "Successfully deleted",
+			statusCode: 200
+		});
+	}
+});
+
 // Get all Groups joined or organized by the Current User
 router.get("/current", requireAuth, async (req, res, next) => {
 	const Op = Sequelize.Op;
