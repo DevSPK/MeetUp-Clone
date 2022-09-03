@@ -299,51 +299,38 @@ router.get("/:groupId/events", async (req, res, next) => {
 		});
 	} else {
 		const events = await groups.getEvents({
-			include: { model: Group },
-			include: { model: Venue },
+			attributes: {
+				include: [
+					[
+						sequelize.fn("COUNT", sequelize.col("Attendances.id")),
+						"numAttending"
+					],
+					[sequelize.col("EventImages.url"), "previewImage"]
+				],
+				exclude: ["description", "capacity", "price", "createdAt", "updatedAt"]
+			},
+			include: [
+				{
+					model: Attendance,
+					//where: { status: ["member"] },
+					attributes: []
+				},
+				{
+					model: EventImage,
+					attributes: []
+				},
+				{
+					model: Group,
+					attributes: ["id", "name", "city", "state"]
+				},
+				{
+					model: Venue,
+					attributes: ["id", "city", "state"]
+				}
+			],
 
-			group: ["Event.id", "Venue.id"]
+			group: ["Event.id", "EventImages.url", "Group.id", "Venue.id"]
 		});
-
-		// const numAttending = await Attendance.count({
-		// 	where: { status: "member", eventId: events.id }
-		// });
-
-		// const EventImages = await EventImage.findAll({
-		// 	where: { eventId: events.id }
-		// });
-
-		// const Venues = await Venue.findAll({
-		// 	where: { id: events.venueId }
-		// });
-
-		// console.log(EventImages);
-
-		// const data = {};
-
-		// data.Events = {
-		// 	id: events.id,
-		// 	groupId: events.groupId,
-		// 	venueId: events.venueId,
-		// 	name: events.name,
-		// 	type: events.type,
-		// 	startDate: events.startDate,
-		// 	endDate: events.endDate,
-		// 	numAttending: numAttending,
-		// 	previewImage: EventImages.url,
-		// 	Group: {
-		// 		id: groups.id,
-		// 		name: groups.name,
-		// 		city: groups.city,
-		// 		state: groups.state
-		// 	},
-		// 	Venue: {
-		// 		id: venues.id,
-		// 		city: venues.city,
-		// 		state: venues.state
-		// 	}
-		// };
-
 		res.json({ Events: events });
 	}
 });
@@ -722,7 +709,7 @@ router.get("/", async (req, res) => {
 		groupsList.push(group);
 	});
 
-	console.log(groupsList);
+	//console.log(groupsList);
 
 	res.json({ Groups: groupsList });
 });

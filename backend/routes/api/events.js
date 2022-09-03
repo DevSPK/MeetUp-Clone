@@ -244,27 +244,62 @@ router.delete("/:eventId", requireAuth, async (req, res, next) => {
 router.get("/:eventId", async (req, res, next) => {
 	const { eventId } = req.params;
 
-	const event = await Event.findByPk(eventId, {
-		include: {
-			model: EventImage,
-			attributes: ["id", "url", "preview"]
-		},
-		include: {
-			model: Group,
-			attributes: ["id", "name", "private", "city", "state"]
-		},
-		include: {
-			model: Venue,
-			attributes: ["id", "groupId", "address", "city", "state", "lat", "lng"]
-		},
-		group: ["Event.id", "Venue.id"]
-	});
+	// const event = await Event.findByPk(eventId, {
+	// 	include: {
+	// 		model: EventImage,
+	// 		attributes: ["id", "url", "preview"]
+	// 	},
+	// 	include: {
+	// 		model: Group,
+	// 		attributes: ["id", "name", "private", "city", "state"]
+	// 	},
+	// 	include: {
+	// 		model: Venue,
+	// 		attributes: ["id", "groupId", "address", "city", "state", "lat", "lng"]
+	// 	},
+	// 	group: ["Event.id", "Venue.id"]
+	// });
 
-	if (!event) {
+	const eventCheck = await Event.findByPk(eventId);
+
+	if (!eventCheck) {
 		res.status(404);
-		res.json({ message: "Event couldn't be found", statusCode: 404 });
+		return res.json({ message: "Event couldn't be found", statusCode: 404 });
 	} else {
-		res.json(event);
+		const events = await Event.findByPk(eventId, {
+			attributes: {
+				include: [
+					[
+						sequelize.fn("COUNT", sequelize.col("Attendances.id")),
+						"numAttending"
+					]
+				],
+				exclude: ["createdAt", "updatedAt"]
+			},
+			include: [
+				{
+					model: Attendance,
+					//where: { status: ["member"] },
+					attributes: []
+				},
+				{
+					model: Group,
+					attributes: ["id", "name", "private", "city", "state"]
+				},
+				{
+					model: Venue,
+					attributes: ["id", "address", "city", "state", "lat", "lng"]
+				},
+				{
+					model: EventImage,
+					attributes: ["id", "url", "preview"]
+				}
+			],
+
+			group: ["Event.id", "EventImages.url", "Group.id", "Venue.id"]
+		});
+
+		res.json(events);
 	}
 });
 
