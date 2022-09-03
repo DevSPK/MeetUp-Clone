@@ -55,7 +55,7 @@ router.post("/", validateLogin, async (req, res, next) => {
 		return next(err);
 	}
 
-	await setTokenCookie(res, user);
+	let token = await setTokenCookie(res, user);
 
 	let data = {};
 
@@ -64,7 +64,7 @@ router.post("/", validateLogin, async (req, res, next) => {
 		firstName: user.firstName,
 		lastName: user.lastName,
 		email: user.email,
-		token: ""
+		token: token
 	};
 
 	return res.json(data.user);
