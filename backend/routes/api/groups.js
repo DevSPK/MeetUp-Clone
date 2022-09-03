@@ -249,8 +249,43 @@ router.post("/:groupId/membership", requireAuth, async (req, res, next) => {
 	// }
 });
 
-//  Get all Events of a Group specified by its id
+//  Delete membership to a group specified by id
+router.delete("/:groupId/membership", requireAuth, async (req, res, next) => {
+	const { groupId } = req.params;
 
+	const { memberId } = req.body;
+
+	const group = await Group.findByPk(groupId);
+
+	if (!group) {
+		res.status(404);
+		return res.json({
+			message: "Group couldn't be found",
+			statusCode: 404
+		});
+	}
+
+	const membership = await Membership.findOne({
+		where: { groupId: groupId }
+	});
+
+	if (!membership) {
+		res.status(404);
+		return res.json({
+			message: "Membership does not exist for this User",
+			statusCode: 404
+		});
+	} else {
+		await membership.destroy();
+
+		res.status(200);
+		return res.json({
+			message: "Successfully deleted membership from group"
+		});
+	}
+});
+
+//  Get all Events of a Group specified by its id
 router.get("/:groupId/events", async (req, res, next) => {
 	const { groupId } = req.params;
 
