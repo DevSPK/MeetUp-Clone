@@ -221,6 +221,25 @@ router.put("/:eventId", async (req, res, next) => {
 	}
 });
 
+//  Delete an Event specified by its id
+
+router.delete("/:eventId", requireAuth, async (req, res, next) => {
+	const { eventId } = req.params;
+
+	const event = await Event.findByPk(eventId);
+
+	if (!event) {
+		res.status(404);
+		res.json({ message: "Event couldn't be found", statusCode: 404 });
+	} else {
+		await event.destroy();
+		res.status(200);
+		res.json({
+			message: "Successfully deleted"
+		});
+	}
+});
+
 // Get details of an Event specified by its id
 router.get("/:eventId", async (req, res, next) => {
 	const { eventId } = req.params;
