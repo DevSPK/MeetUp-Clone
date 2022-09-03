@@ -141,7 +141,20 @@ router.delete("/:eventId/attendance", requireAuth, async (req, res, next) => {
 
 	const attendance = await Attendance.findOne({ where: { eventId: eventId } });
 
-	console.log(attendance);
+	if (!attendance) {
+		res.status(404);
+		return res.json({
+			message: "Attendance does not exist for this User",
+			statusCode: 404
+		});
+	} else {
+		await attendance.destroy();
+
+		res.status(200);
+		return res.json({
+			message: "Successfully deleted attendance from event"
+		});
+	}
 });
 
 // edit an event specified by its id
