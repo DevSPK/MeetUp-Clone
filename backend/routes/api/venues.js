@@ -50,7 +50,19 @@ router.put("/:venueId", requireAuth, async (req, res, next) => {
 			lng
 		});
 		await venue.save();
-		res.json(venue);
+
+		let data = {};
+
+		data.venue = {
+			id: venue.id,
+			groupId: venue.groupId,
+			address: venue.address,
+			city: venue.city,
+			state: venue.state,
+			lat: venue.lat,
+			lng: venue.lng
+		};
+		res.json(data.venue);
 	} else {
 		res.status(403);
 		return res.json({
