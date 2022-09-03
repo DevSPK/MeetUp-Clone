@@ -658,7 +658,22 @@ router.get("/", async (req, res) => {
 		raw: true,
 		group: ["Group.id", "GroupImages.url"]
 	});
-	res.json({ Groups: groups });
+	//console.log(groups);
+
+	let groupsList = [];
+	groups.forEach((group) => {
+		if (group.private === 1) {
+			group.private = true;
+		}
+		if (group.private === 0) {
+			group.private = false;
+		}
+		groupsList.push(group);
+	});
+
+	console.log(groupsList);
+
+	res.json({ Groups: groupsList });
 });
 
 module.exports = router;
