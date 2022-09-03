@@ -12,18 +12,35 @@ module.exports = (sequelize, DataTypes) => {
 			Group.belongsToMany(models.User, {
 				through: "Membership",
 				otherKey: "userId",
-				foreignKey: "groupId"
+				foreignKey: "groupId",
+				onDelete: "NO ACTION"
 			});
 			Group.belongsToMany(models.Venue, {
 				through: "Event",
 				otherKey: "venueId",
-				foreignKey: "groupId"
+				foreignKey: "groupId",
+				onDelete: "NO ACTION"
 			});
-			Group.belongsTo(models.User, { foreignKey: "organizerId" });
-			Group.hasMany(models.Venue, { foreignKey: "groupId" });
-			Group.hasMany(models.Membership, { foreignKey: "groupId" });
-			Group.hasMany(models.GroupImage, { foreignKey: "groupId" });
-			Group.hasMany(models.Event, { foreignKey: "groupId" });
+			Group.belongsTo(models.User, {
+				foreignKey: "organizerId",
+				onDelete: "NO ACTION"
+			});
+			Group.hasMany(models.Venue, {
+				foreignKey: "groupId",
+				onDelete: "NO ACTION"
+			});
+			Group.hasMany(models.Membership, {
+				foreignKey: "groupId",
+				onDelete: "NO ACTION"
+			});
+			Group.hasMany(models.GroupImage, {
+				foreignKey: "groupId",
+				onDelete: "NO ACTION"
+			});
+			Group.hasMany(models.Event, {
+				foreignKey: "groupId",
+				onDelete: "NO ACTION"
+			});
 		}
 	}
 	Group.init(
