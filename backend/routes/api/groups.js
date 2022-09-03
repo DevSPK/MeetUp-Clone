@@ -597,14 +597,22 @@ router.get("/:groupId", async (req, res, next) => {
 			});
 	} else {
 		const numMembers = await Membership.count({ where: { groupId: group.id } });
-		const Users = await User.findAll({ where: { id: group.organizerId } });
-		const GroupImages = await GroupImage.findAll({
-			where: { groupId: groupId }
+		const users = await User.findAll({
+			where: { id: group.organizerId },
+			attributes: ["id", "firstName", "lastName"]
+		});
+		const groupImages = await GroupImage.findAll({
+			where: { groupId: groupId },
+			attributes: ["id", "url", "preview"]
+		});
+		const venues = await Venue.findAll({
+			where: { groupId: groupId },
+			attributes: ["id", "groupId", "address", "city", "state", "lat", "lng"]
 		});
 
 		const data = {};
 
-		data.group = {
+		data.Group = {
 			id: group.id,
 			organizerId: group.organizerId,
 			name: group.name,
@@ -618,9 +626,9 @@ router.get("/:groupId", async (req, res, next) => {
 			numMembers: numMembers
 		};
 
-		data.GroupImages = GroupImages;
-		data.Organizer = Users;
-		data.Venues = group.Venue;
+		data.GroupImages = groupImages;
+		data.Organizer = users;
+		data.Venues = venues;
 
 		res.json(data);
 	}
