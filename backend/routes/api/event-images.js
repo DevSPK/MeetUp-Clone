@@ -24,4 +24,8 @@ const group = require("../../db/models/group");
 
 const router = express.Router();
 
+router.delete("/:imageId", requireAuth, async (req, res, next) => {
+	res.send("success");
+});
+
 module.exports = router;
