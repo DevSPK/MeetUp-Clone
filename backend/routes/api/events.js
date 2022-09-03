@@ -320,7 +320,10 @@ router.get("/", async (req, res, next) => {
 				model: Group,
 				attributes: ["id", "name", "city", "state"]
 			},
-			{ model: Venue }
+			{
+				model: Venue,
+				attributes: ["id", "city", "state"]
+			}
 		],
 
 		group: ["Event.id", "EventImages.url", "Group.id", "Venue.id"]
