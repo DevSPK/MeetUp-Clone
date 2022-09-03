@@ -25,7 +25,22 @@ const group = require("../../db/models/group");
 const router = express.Router();
 
 router.delete("/:imageId", requireAuth, async (req, res, next) => {
-	res.send("success");
+	const { imageId } = req.params;
+
+	const image = await EventImage.findByPk(imageId);
+
+	if (!image) {
+		res.status(404);
+		return res.json({
+			message: "Event Image couldn't be found",
+			statusCode: 404
+		});
+	} else {
+		await image.destroy();
+
+		res.status(200);
+		return res.json({ message: "Successfully deleted", statusCode: 200 });
+	}
 });
 
 module.exports = router;
