@@ -460,7 +460,16 @@ router.post("/:groupId/images", requireAuth, async (req, res, next) => {
 			url,
 			preview
 		});
-		res.json(addImage);
+
+		let data = {};
+
+		data.addImage = {
+			id: addImage.id,
+			url: addImage.url,
+			preview: addImage.preview
+		};
+
+		res.json(data.addImage);
 	}
 });
 
@@ -660,6 +669,7 @@ router.get("/", async (req, res) => {
 	});
 	//console.log(groups);
 
+	//fixes boolean for get all groups where it was an integer due to sqlite3
 	let groupsList = [];
 	groups.forEach((group) => {
 		if (group.private === 1) {
