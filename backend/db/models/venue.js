@@ -14,11 +14,11 @@ module.exports = (sequelize, DataTypes) => {
 				foreignKey: "venueId",
 				onDelete: "CASCADE"
 			});
-			Venue.belongsToMany(models.Group, {
-				through: "Event",
-				otherKey: "groupId",
-				foreignKey: "venueId"
-			});
+			// Venue.belongsToMany(models.Group, {
+			// 	through: "Event",
+			// 	otherKey: "groupId",
+			// 	foreignKey: "venueId"
+			// });
 		}
 	}
 	Venue.init(

@@ -470,7 +470,7 @@ router.delete("/:groupId", requireAuth, async (req, res, next) => {
 
 	const group = await Group.findByPk(groupId);
 
-	if (!group || group.length === 0) {
+	if (!group) {
 		res.status(404);
 		return res.json({ message: "Group couldn't be found", statusCode: 404 });
 	} else {
@@ -491,12 +491,6 @@ router.get("/current", requireAuth, async (req, res, next) => {
 	const user = await User.findByPk(userId);
 
 	const groups = await user.getGroups({
-		attributes: {
-			include: [
-				[sequelize.fn("COUNT", sequelize.col("Memberships.id")), "numMembers"],
-				[sequelize.col("GroupImages.url"), "previewImage"]
-			]
-		},
 		include: [
 			{
 				model: Membership,
@@ -509,7 +503,7 @@ router.get("/current", requireAuth, async (req, res, next) => {
 			}
 		],
 
-		group: ["Group.id", "GroupImages.url", "Memberships.id", "Membership.id"]
+		group: ["Group.id", "GroupImages.url"]
 	});
 
 	res.json({ Groups: groups });
