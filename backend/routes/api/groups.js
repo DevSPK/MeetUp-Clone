@@ -464,6 +464,35 @@ router.post("/:groupId/images", requireAuth, async (req, res, next) => {
 	}
 });
 
+// Delete a Group
+router.delete("/:groupId", requireAuth, async (req, res, next) => {
+	const { groupId } = req.params;
+
+	const group = await Group.findByPk(groupId);
+
+	const venues = await Venue.findOne({ where: { groupId: groupId } });
+
+	// console.log(group);
+	// console.log(events);
+	// //console.log(users);
+	// console.log(memberships);
+	// console.log(GroupImages);
+	console.log(venues);
+
+	if (!group) {
+		res.status(404);
+		return res.json({ message: "Group couldn't be found", statusCode: 404 });
+	} else {
+		await venues.destroy();
+		await group.destroy();
+		res.status(200);
+		res.json({
+			message: "Successfully deleted",
+			statusCode: 200
+		});
+	}
+});
+
 // Get all Groups joined or organized by the Current User
 router.get("/current", requireAuth, async (req, res, next) => {
 	const Op = Sequelize.Op;
@@ -472,12 +501,6 @@ router.get("/current", requireAuth, async (req, res, next) => {
 	const user = await User.findByPk(userId);
 
 	const groups = await user.getGroups({
-		attributes: {
-			include: [
-				[sequelize.fn("COUNT", sequelize.col("Memberships.id")), "numMembers"],
-				[sequelize.col("GroupImages.url"), "previewImage"]
-			]
-		},
 		include: [
 			{
 				model: Membership,
@@ -490,7 +513,7 @@ router.get("/current", requireAuth, async (req, res, next) => {
 			}
 		],
 
-		group: ["Group.id", "GroupImages.url", "Memberships.id", "Membership.id"]
+		group: ["Group.id", "GroupImages.url"]
 	});
 
 	res.json({ Groups: groups });
