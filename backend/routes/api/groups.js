@@ -468,7 +468,7 @@ router.post("/:groupId/images", requireAuth, async (req, res, next) => {
 router.delete("/:groupId", requireAuth, async (req, res, next) => {
 	const { groupId } = req.params;
 
-	const group = await Event.findByPk(groupId);
+	const group = await Group.findByPk(groupId);
 
 	if (!group) {
 		res.status(404);
