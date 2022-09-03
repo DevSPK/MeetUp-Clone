@@ -211,7 +211,22 @@ router.put("/:eventId", async (req, res, next) => {
 			endDate
 		});
 		await event.save();
-		res.json(event);
+
+		const newEvent = await Event.findByPk(eventId, {
+			attributes: [
+				"id",
+				"groupId",
+				"venueId",
+				"name",
+				"type",
+				"capacity",
+				"price",
+				"description",
+				"startDate",
+				"endDate"
+			]
+		});
+		res.json(newEvent);
 	} else {
 		res.status(403);
 		return res.json({
