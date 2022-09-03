@@ -433,7 +433,19 @@ router.post("/:groupId/venues", requireAuth, async (req, res, next) => {
 			lng
 		});
 		await newVenue.save();
-		res.json(newVenue);
+
+		let data = {};
+
+		data.newVenue = {
+			id: newVenue.id,
+			groupId: newVenue.groupId,
+			address: newVenue.address,
+			city: newVenue.city,
+			state: newVenue.state,
+			lat: newVenue.lat,
+			lng: newVenue.lng
+		};
+		res.json(data.newVenue);
 	} else {
 		res.status(403);
 		return res.json({
