@@ -387,15 +387,30 @@ router.post("/:groupId/events", requireAuth, async (req, res, next) => {
 			endDate
 		});
 
-		await newEvent.createAttendance({
-			status: "member",
-			userId: userId,
-			eventId: newEvent.id
-		});
+		// await newEvent.createAttendance({
+		// 	status: "member",
+		// 	userId: userId,
+		// 	eventId: newEvent.id
+		// });
 
 		await newEvent.save();
 
-		res.json(newEvent);
+		const event = await Event.findByPk(newEvent.id, {
+			attributes: [
+				"id",
+				"groupId",
+				"venueId",
+				"name",
+				"type",
+				"capacity",
+				"price",
+				"description",
+				"startDate",
+				"endDate"
+			]
+		});
+
+		res.json(event);
 	} else {
 		res.status(403);
 		return res.json({

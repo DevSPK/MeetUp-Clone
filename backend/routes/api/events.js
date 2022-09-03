@@ -285,7 +285,11 @@ router.post("/:eventId/images", requireAuth, async (req, res, next) => {
 			url,
 			preview
 		});
-		res.json(addImage);
+
+		const image = await EventImage.findByPk(addImage.id, {
+			attributes: ["id", "url", "preview"]
+		});
+		res.json(image);
 	}
 });
 
