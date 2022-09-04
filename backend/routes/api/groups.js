@@ -702,10 +702,7 @@ router.get("/", async (req, res) => {
 			"state",
 			"createdAt",
 			"updatedAt",
-			[
-				sequelize.fn("COUNT", sequelize.col("Memberships.groupId")),
-				"numMembers"
-			],
+			[sequelize.fn("COUNT", sequelize.col("Membership.id")), "numMembers"],
 			[sequelize.col("GroupImages.url"), "previewImage"]
 		]
 	});
