@@ -694,24 +694,22 @@ router.get("/", async (req, res) => {
 			{
 				model: Membership,
 				where: { id: Sequelize.col("memberships.groupId") },
-				attributes: []
-
-				// {
-				// 	include: [
-				// 		[
-				// 			sequelize.fn("COUNT", sequelize.col("Memberships.id")),
-				// 			"numMembers"
-				// 		]
-				// 	],
-				// 	exclude: [
-				// 		"id",
-				// 		"userId",
-				// 		"groupId",
-				// 		"status",
-				// 		"createdAt",
-				// 		"updatedAt"
-				// 	]
-				// }
+				attributes: {
+					include: [
+						[
+							sequelize.fn("COUNT", sequelize.col("Memberships.id")),
+							"numMembers"
+						]
+					],
+					exclude: [
+						"id",
+						"userId",
+						"groupId",
+						"status",
+						"createdAt",
+						"updatedAt"
+					]
+				}
 			},
 
 			{
