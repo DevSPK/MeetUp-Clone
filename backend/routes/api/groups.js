@@ -679,17 +679,24 @@ router.get("/", async (req, res) => {
 	const groups = await Group.findAll({
 		include: [
 			{
-				model: Membership,
-				attributes: []
+				model: Membership
 			},
 			{
-				model: GroupImage,
-				attributes: []
+				model: GroupImage
 			}
 		],
 
-		group: ["Group.id"]
+		group: ["Group.id", "Memberships.id"]
 	});
+
+	// const numMembers = await Membership.count({
+	//   include: [
+	//     {
+	//       model: Group.
+	//       where:
+	//     }
+	//   ]}
+	// )
 
 	res.json({ Groups: groups });
 });
