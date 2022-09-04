@@ -687,7 +687,7 @@ router.get("/", async (req, res) => {
 		include: [
 			{
 				model: Membership,
-				//where: { status: ["member", "co-host"] },
+				where: { status: ["member", "co-host"] },
 				attributes: []
 			},
 			{
