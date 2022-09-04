@@ -198,7 +198,7 @@ router.post("/:groupId/membership", requireAuth, async (req, res, next) => {
 	const { memberId } = req.body;
 
 	const groups = await Group.findByPk(groupId);
-	console.log(groups);
+	//console.log(groups);
 
 	if (!groups) {
 		res.status(404);
