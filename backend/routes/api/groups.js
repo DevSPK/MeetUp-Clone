@@ -627,9 +627,9 @@ router.get("/:groupId", async (req, res, next) => {
 			attributes: ["id", "groupId", "address", "city", "state", "lat", "lng"]
 		});
 
-		const data = {};
+		let data = {};
 
-		data.Group = {
+		data = {
 			id: group.id,
 			organizerId: group.organizerId,
 			name: group.name,
