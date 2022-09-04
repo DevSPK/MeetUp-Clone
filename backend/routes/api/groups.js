@@ -677,6 +677,7 @@ router.post("/", requireAuth, async (req, res, next) => {
 
 router.get("/", async (req, res) => {
 	const groups = await Group.findAll({
+		//where: {"$Memberships.groupId$": {id}},
 		attributes: ["Group.*", "Membership.*"],
 		attributes: [
 			"id",
@@ -690,18 +691,26 @@ router.get("/", async (req, res) => {
 			"createdAt",
 			"updatedAt"
 		],
+
 		include: [
 			{
 				model: Membership,
-				where: { id: sequelize.col("memberships.groupId") }
+				attributes: []
 			},
 			{
 				model: GroupImage,
 				attributes: []
 			}
 		],
+		attributes: {
+			include: [
+				[Sequelize.fn("COUNT", Sequelize.col("Memberships.id")), "numMembers"],
+				[Sequelize.col("GroupImages.url"), "previewImage"]
+			],
+			where: { "$Memberships.groupId$": Sequelize.col("group.id") }
+		},
 
-		group: ["Group.id", "Memberships.id"]
+		group: ["Group.id"]
 	});
 
 	// const numMembers = await Membership.count({
