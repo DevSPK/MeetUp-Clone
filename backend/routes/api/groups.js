@@ -687,7 +687,7 @@ router.get("/", async (req, res) => {
 		include: [
 			{
 				model: Membership,
-				where: { status: ["member", "co-host"] },
+				//where: { status: ["member", "co-host"] },
 				attributes: []
 			},
 			{
@@ -695,7 +695,7 @@ router.get("/", async (req, res) => {
 				attributes: []
 			}
 		],
-		raw: true,
+
 		group: ["Group.id", "GroupImages.url", "Memberships.id"]
 	});
 	//console.log(groups);

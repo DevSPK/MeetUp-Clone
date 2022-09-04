@@ -329,7 +329,13 @@ router.get("/:eventId", async (req, res, next) => {
 				}
 			],
 
-			group: ["Event.id", "EventImages.url", "Group.id", "Venue.id"]
+			group: [
+				"Event.id",
+				"EventImages.id",
+				"EventImages.url",
+				"Group.id",
+				"Venue.id"
+			]
 		});
 
 		res.json(events);
