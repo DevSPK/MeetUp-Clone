@@ -675,117 +675,143 @@ router.post("/", requireAuth, async (req, res, next) => {
 	res.json(newGroup);
 });
 
-// Get all Groups
 router.get("/", async (req, res) => {
 	const groups = await Group.findAll({
-		// attributes: [
-		// 	"id",
-		// 	"organizerId",
-		// 	"name",
-		// 	"about",
-		// 	"type",
-		// 	"private",
-		// 	"city",
-		// 	"state",
-		// 	"createdAt",
-		// 	"updatedAt"
-		// ],
-		include: [
-			{
-				model: Membership,
-				// where: { groupId: sequelize.col("group.id") },
-				attributes: []
-				// where: { id: Sequelize.col("memberships.groupId") },
-				// attributes: {
-				// 	include: [
-				// 		[
-				// 			sequelize.fn("COUNT", sequelize.col("Memberships.id")),
-				// 			"numMembers"
-				// 		]
-				// 	],
-				// 	exclude: [
-				// 		"id",
-				// 		"userId",
-				// 		"groupId",
-				// 		"status",
-				// 		"createdAt",
-				// 		"updatedAt"
-				// 	]
-				// }
-			},
-
-			{
-				model: GroupImage,
-				attributes: []
-			}
-		],
 		attributes: {
 			include: [
 				[sequelize.fn("COUNT", sequelize.col("Memberships.id")), "numMembers"],
 				[sequelize.col("GroupImages.url"), "previewImage"]
 			]
-			// where: { id: sequelize.literal("membership.groupId") }
 		},
+		include: [
+			{
+				model: Membership,
+				where: { groupId: sequelize.col("group.id") },
+				attributes: []
+			},
+			{
+				model: GroupImage,
+				attributes: []
+			}
+		],
 
-		group: ["group.id", "Memberships.groupId", "GroupImages.url"]
+		group: ["Group.id", "GroupImages.url"]
 	});
 
-	res.json(groups);
-
-	//console.log("************************members", members);
-
-	//console.log(groups);
-
-	// let groupList = [];
-	// groups.forEach((group) => {
-	// 	groupList.push(group.toJSON());
-	// });
-	// console.log(groupList);
-
-	// groupList.forEach((group) => {
-	// 	game.GroupImages.forEach((image) => {
-	// 		if (image.preview === true) {
-	// 		}
-	// 	});
-	//res.send("test");
+	res.json({ Groups: groups });
 });
-// res.json({ Groups: groups });
-// const groups = await Group.findAll({
-// 	attributes: {
+
+// // Get all Groups
+// router.get("/", async (req, res) => {
+// 	const groups = await Group.findAll({
+// 		// attributes: [
+// 		// 	"id",
+// 		// 	"organizerId",
+// 		// 	"name",
+// 		// 	"about",
+// 		// 	"type",
+// 		// 	"private",
+// 		// 	"city",
+// 		// 	"state",
+// 		// 	"createdAt",
+// 		// 	"updatedAt"
+// 		// ],
 // 		include: [
-// 			[
-// 				sequelize.fn("COUNT", sequelize.col("Memberships.status")),
-// 				"numMembers"
-// 			],
-// 			[sequelize.col("GroupImages.url"), "previewImage"]
-// 		]
-// 	},
-// 	include: [
-// 		{
-// 			model: Membership,
-// 			where: { status: ["member", "co-host"] },
-// 			attributes: []
+// 			{
+// 				model: Membership,
+// 				// where: { groupId: sequelize.col("group.id") },
+// 				attributes: []
+// 				// where: { id: Sequelize.col("memberships.groupId") },
+// 				// attributes: {
+// 				// 	include: [
+// 				// 		[
+// 				// 			sequelize.fn("COUNT", sequelize.col("Memberships.id")),
+// 				// 			"numMembers"
+// 				// 		]
+// 				// 	],
+// 				// 	exclude: [
+// 				// 		"id",
+// 				// 		"userId",
+// 				// 		"groupId",
+// 				// 		"status",
+// 				// 		"createdAt",
+// 				// 		"updatedAt"
+// 				// 	]
+// 				// }
+// 			},
+
+// 			{
+// 				model: GroupImage,
+// 				attributes: []
+// 			}
+// 		],
+// 		attributes: {
+// 			include: [
+// 				[sequelize.fn("COUNT", sequelize.col("Memberships.id")), "numMembers"],
+// 				[sequelize.col("GroupImages.url"), "previewImage"]
+// 			]
+// 			// where: { id: sequelize.literal("membership.groupId") }
 // 		},
-// 		{
-// 			model: GroupImage,
-// 			attributes: []
-// 		}
-// 	],
-// 	group: ["Group.id", "GroupImages.url", "Memberships.id"]
+
+// 		group: ["group.id", "Memberships.groupId", "GroupImages.url"]
+// 	});
+
+// 	res.json(groups);
+
+// 	//console.log("************************members", members);
+
+// 	//console.log(groups);
+
+// 	// let groupList = [];
+// 	// groups.forEach((group) => {
+// 	// 	groupList.push(group.toJSON());
+// 	// });
+// 	// console.log(groupList);
+
+// 	// groupList.forEach((group) => {
+// 	// 	game.GroupImages.forEach((image) => {
+// 	// 		if (image.preview === true) {
+// 	// 		}
+// 	// 	});
+// 	//res.send("test");
 // });
-// res.json({ Groups: groups });
-//console.log(groups);
-//fixes boolean for get all groups where it was an integer due to sqlite3
-// let groupsList = [];
-// groups.forEach((group) => {
-// 	if (group.private === 1) {
-// 		group.private = true;
-// 	}
-// 	if (group.private === 0) {
-// 		group.private = false;
-// 	}
-// 	groupsList.push(group);
-// });
-//console.log(groupsList);
+// // res.json({ Groups: groups });
+// // const groups = await Group.findAll({
+// // 	attributes: {
+// // 		include: [
+// // 			[
+// // 				sequelize.fn("COUNT", sequelize.col("Memberships.status")),
+// // 				"numMembers"
+// // 			],
+// // 			[sequelize.col("GroupImages.url"), "previewImage"]
+// // 		]
+// // 	},
+// // 	include: [
+// // 		{
+// // 			model: Membership,
+// // 			where: { status: ["member", "co-host"] },
+// // 			attributes: []
+// // 		},
+// // 		{
+// // 			model: GroupImage,
+// // 			attributes: []
+// // 		}
+// // 	],
+// // 	group: ["Group.id", "GroupImages.url", "Memberships.id"]
+// // });
+// // res.json({ Groups: groups });
+// //console.log(groups);
+// //fixes boolean for get all groups where it was an integer due to sqlite3
+// // let groupsList = [];
+// // groups.forEach((group) => {
+// // 	if (group.private === 1) {
+// // 		group.private = true;
+// // 	}
+// // 	if (group.private === 0) {
+// // 		group.private = false;
+// // 	}
+// // 	groupsList.push(group);
+// // });
+// //console.log(groupsList);
 
 module.exports = router;
