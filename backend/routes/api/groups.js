@@ -678,38 +678,46 @@ router.post("/", requireAuth, async (req, res, next) => {
 // Get all Groups
 router.get("/", async (req, res) => {
 	const groups = await Group.findAll({
-		attributes: [
-			"id",
-			"organizerId",
-			"name",
-			"about",
-			"type",
-			"private",
-			"city",
-			"state",
-			"createdAt",
-			"updatedAt"
-		],
+		attributes: {
+			include: [
+				[sequelize.fn("COUNT", sequelize.col("Memberships.id")), "numMembers"],
+				[sequelize.col("GroupImages.url"), "previewImage"]
+			]
+		},
+		// attributes: [
+		// 	"id",
+		// 	"organizerId",
+		// 	"name",
+		// 	"about",
+		// 	"type",
+		// 	"private",
+		// 	"city",
+		// 	"state",
+		// 	"createdAt",
+		// 	"updatedAt"
+		// ],
 		include: [
 			{
 				model: Membership,
-				where: { id: Sequelize.col("memberships.groupId") },
-				attributes: {
-					include: [
-						[
-							sequelize.fn("COUNT", sequelize.col("Memberships.id")),
-							"numMembers"
-						]
-					],
-					exclude: [
-						"id",
-						"userId",
-						"groupId",
-						"status",
-						"createdAt",
-						"updatedAt"
-					]
-				}
+				where: { groupId: sequelize.col("group.id") },
+				attributes: []
+				// where: { id: Sequelize.col("memberships.groupId") },
+				// attributes: {
+				// 	include: [
+				// 		[
+				// 			sequelize.fn("COUNT", sequelize.col("Memberships.id")),
+				// 			"numMembers"
+				// 		]
+				// 	],
+				// 	exclude: [
+				// 		"id",
+				// 		"userId",
+				// 		"groupId",
+				// 		"status",
+				// 		"createdAt",
+				// 		"updatedAt"
+				// 	]
+				// }
 			},
 
 			{
@@ -718,14 +726,7 @@ router.get("/", async (req, res) => {
 			}
 		],
 
-		attributes: {
-			include: [
-				[sequelize.col("GroupImages.url"), "previewImage"],
-				[sequelize.fn("COUNT", sequelize.col("Memberships.id")), "numMembers"]
-			]
-		},
-
-		group: ["group.id"]
+		group: ["group.id", "Memberships.groupId", "GroupImages.url"]
 	});
 
 	res.json(groups);
