@@ -679,7 +679,6 @@ router.post("/", requireAuth, async (req, res, next) => {
 router.get("/", async (req, res) => {
 	const groups = await Group.findAll({
 		group: ["Group.id", "GroupImages.url", "Memberships.id"],
-		order: [["createdAt", "DESC"]],
 		include: [
 			{
 				model: Membership,
@@ -702,9 +701,10 @@ router.get("/", async (req, res) => {
 			"state",
 			"createdAt",
 			"updatedAt",
-			[sequelize.fn("COUNT", "Membership.id"), "numMembers"],
+			[sequelize.fn("COUNT", "Membership.status"), "numMembers"],
 			[sequelize.col("GroupImages.url"), "previewImage"]
-		]
+		],
+		where: [{ "Membership.status": ["members", "co-host"] }]
 	});
 
 	res.json({ Groups: groups });
