@@ -714,7 +714,7 @@ router.get("/", async (req, res) => {
 
 	//console.log(groupsList);
 
-	res.json({ Groups: groupsList });
+	res.json({ Groups: groups });
 });
 
 module.exports = router;
