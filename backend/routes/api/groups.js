@@ -723,8 +723,8 @@ router.get("/", async (req, res) => {
 			include: [
 				[sequelize.fn("COUNT", sequelize.col("Memberships.id")), "numMembers"],
 				[sequelize.col("GroupImages.url"), "previewImage"]
-			],
-			where: { id: sequelize.col("memberships.groupId") }
+			]
+			// where: { id: sequelize.literal("membership.groupId") }
 		},
 
 		group: ["group.id", "Memberships.groupId", "GroupImages.url"]
