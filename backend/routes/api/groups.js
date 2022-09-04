@@ -701,16 +701,16 @@ router.get("/", async (req, res) => {
 	//console.log(groups);
 
 	//fixes boolean for get all groups where it was an integer due to sqlite3
-	let groupsList = [];
-	groups.forEach((group) => {
-		if (group.private === 1) {
-			group.private = true;
-		}
-		if (group.private === 0) {
-			group.private = false;
-		}
-		groupsList.push(group);
-	});
+	// let groupsList = [];
+	// groups.forEach((group) => {
+	// 	if (group.private === 1) {
+	// 		group.private = true;
+	// 	}
+	// 	if (group.private === 0) {
+	// 		group.private = false;
+	// 	}
+	// 	groupsList.push(group);
+	// });
 
 	//console.log(groupsList);
 
