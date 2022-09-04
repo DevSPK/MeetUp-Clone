@@ -678,7 +678,7 @@ router.post("/", requireAuth, async (req, res, next) => {
 // Get all Groups
 router.get("/", async (req, res) => {
 	const groups = await Group.findAll({
-		group: ["Group.id", "GroupImages.url", "Memberships.id"],
+		group: ["Group.id"],
 		include: [
 			{
 				model: Membership,
@@ -700,15 +700,12 @@ router.get("/", async (req, res) => {
 			"city",
 			"state",
 			"createdAt",
-			"updatedAt",
-			[sequelize.fn("COUNT", "Membership.status"), "numMembers"],
-			[sequelize.col("GroupImages.url"), "previewImage"],
-			{ where: { "Membership.status": ["members", "co-host"] } }
+			"updatedAt"
 		]
 	});
 
-	res.json({ Groups: groups });
-
+	console.log(groups);
+	// res.json({ Groups: groups });
 	// const groups = await Group.findAll({
 	// 	attributes: {
 	// 		include: [
@@ -730,13 +727,10 @@ router.get("/", async (req, res) => {
 	// 			attributes: []
 	// 		}
 	// 	],
-
 	// 	group: ["Group.id", "GroupImages.url", "Memberships.id"]
 	// });
-
 	// res.json({ Groups: groups });
 	//console.log(groups);
-
 	//fixes boolean for get all groups where it was an integer due to sqlite3
 	// let groupsList = [];
 	// groups.forEach((group) => {
@@ -748,8 +742,8 @@ router.get("/", async (req, res) => {
 	// 	}
 	// 	groupsList.push(group);
 	// });
-
 	//console.log(groupsList);
+	res.send("test");
 });
 
 module.exports = router;
