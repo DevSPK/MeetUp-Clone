@@ -710,7 +710,7 @@ router.get("/", async (req, res) => {
 			where: { "$Memberships.groupId$": Sequelize.col("group.id") }
 		},
 
-		group: ["Group.id"]
+		group: ["Group.id", "GroupImages.url"]
 	});
 
 	// const numMembers = await Membership.count({
