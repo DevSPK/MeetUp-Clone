@@ -682,7 +682,8 @@ router.get("/", async (req, res) => {
 			include: [
 				[sequelize.fn("COUNT", sequelize.col("Memberships.id")), "numMembers"],
 				[sequelize.col("GroupImages.url"), "previewImage"]
-			]
+			],
+			where: { id: sequelize.col("memberships.groupId") }
 		},
 		// attributes: [
 		// 	"id",
@@ -699,7 +700,7 @@ router.get("/", async (req, res) => {
 		include: [
 			{
 				model: Membership,
-				where: { groupId: sequelize.col("group.id") },
+				// where: { groupId: sequelize.col("group.id") },
 				attributes: []
 				// where: { id: Sequelize.col("memberships.groupId") },
 				// attributes: {
