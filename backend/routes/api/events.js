@@ -256,7 +256,7 @@ router.delete("/:eventId", requireAuth, async (req, res, next) => {
 	if (!eventImages) {
 		await event.destroy();
 		res.status(200);
-		res.json({
+		return res.json({
 			message: "Successfully deleted",
 			statusCode: 200
 		});
@@ -266,7 +266,7 @@ router.delete("/:eventId", requireAuth, async (req, res, next) => {
 		await eventImages.destroy();
 		await event.destroy();
 		res.status(200);
-		res.json({
+		return res.json({
 			message: "Successfully deleted",
 			statusCode: 200
 		});
