@@ -681,13 +681,10 @@ router.get("/", async (req, res) => {
 		group: ["Group.id"],
 		include: [
 			{
-				model: Membership,
-				attributes: []
-				// where: { status: "member" }
+				model: Membership
 			},
 			{
-				model: GroupImage,
-				attributes: []
+				model: GroupImage
 			}
 		],
 		attributes: [
@@ -704,7 +701,20 @@ router.get("/", async (req, res) => {
 		]
 	});
 
-	console.log(groups);
+	//console.log(groups);
+
+	let groupList = [];
+	groups.forEach((group) => {
+		groupList.push(group.toJSON());
+	});
+	console.log(groupList);
+
+	groupList.forEach((group) => {
+		game.GroupImages.forEach((image) => {
+			if (image.preview === true) {
+			}
+		});
+	});
 	// res.json({ Groups: groups });
 	// const groups = await Group.findAll({
 	// 	attributes: {
