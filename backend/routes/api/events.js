@@ -87,7 +87,11 @@ router.post("/:eventId/attendance", requireAuth, async (req, res, next) => {
 		eventId
 	});
 
-	res.json(attendance);
+	const newAttendance = await Attendance.findByPk(attendance.id, {
+		attributes: ["eventId", "userId", "status"]
+	});
+
+	res.json(newAttendance);
 });
 
 //Get all Attendees of an Event specified by its id
@@ -211,7 +215,22 @@ router.put("/:eventId", async (req, res, next) => {
 			endDate
 		});
 		await event.save();
-		res.json(event);
+
+		const newEvent = await Event.findByPk(eventId, {
+			attributes: [
+				"id",
+				"groupId",
+				"venueId",
+				"name",
+				"type",
+				"capacity",
+				"price",
+				"description",
+				"startDate",
+				"endDate"
+			]
+		});
+		res.json(newEvent);
 	} else {
 		res.status(403);
 		return res.json({
@@ -230,12 +249,26 @@ router.delete("/:eventId", requireAuth, async (req, res, next) => {
 
 	if (!event) {
 		res.status(404);
-		res.json({ message: "Event couldn't be found", statusCode: 404 });
-	} else {
+		return res.json({ message: "Event couldn't be found", statusCode: 404 });
+	}
+	const eventImages = await EventImage.findOne({ where: { eventId: eventId } });
+
+	if (!eventImages) {
 		await event.destroy();
 		res.status(200);
-		res.json({
-			message: "Successfully deleted"
+		return res.json({
+			message: "Successfully deleted",
+			statusCode: 200
+		});
+	}
+
+	if (eventImages) {
+		await eventImages.destroy();
+		await event.destroy();
+		res.status(200);
+		return res.json({
+			message: "Successfully deleted",
+			statusCode: 200
 		});
 	}
 });
@@ -244,27 +277,62 @@ router.delete("/:eventId", requireAuth, async (req, res, next) => {
 router.get("/:eventId", async (req, res, next) => {
 	const { eventId } = req.params;
 
-	const event = await Event.findByPk(eventId, {
-		include: {
-			model: EventImage,
-			attributes: ["id", "url", "preview"]
-		},
-		include: {
-			model: Group,
-			attributes: ["id", "name", "private", "city", "state"]
-		},
-		include: {
-			model: Venue,
-			attributes: ["id", "groupId", "address", "city", "state", "lat", "lng"]
-		},
-		group: ["Event.id", "Venue.id"]
-	});
+	// const event = await Event.findByPk(eventId, {
+	// 	include: {
+	// 		model: EventImage,
+	// 		attributes: ["id", "url", "preview"]
+	// 	},
+	// 	include: {
+	// 		model: Group,
+	// 		attributes: ["id", "name", "private", "city", "state"]
+	// 	},
+	// 	include: {
+	// 		model: Venue,
+	// 		attributes: ["id", "groupId", "address", "city", "state", "lat", "lng"]
+	// 	},
+	// 	group: ["Event.id", "Venue.id"]
+	// });
 
-	if (!event) {
+	const eventCheck = await Event.findByPk(eventId);
+
+	if (!eventCheck) {
 		res.status(404);
-		res.json({ message: "Event couldn't be found", statusCode: 404 });
+		return res.json({ message: "Event couldn't be found", statusCode: 404 });
 	} else {
-		res.json(event);
+		const events = await Event.findByPk(eventId, {
+			attributes: {
+				include: [
+					[
+						sequelize.fn("COUNT", sequelize.col("Attendances.id")),
+						"numAttending"
+					]
+				],
+				exclude: ["createdAt", "updatedAt"]
+			},
+			include: [
+				{
+					model: Attendance,
+					//where: { status: ["member"] },
+					attributes: []
+				},
+				{
+					model: Group,
+					attributes: ["id", "name", "private", "city", "state"]
+				},
+				{
+					model: Venue,
+					attributes: ["id", "address", "city", "state", "lat", "lng"]
+				},
+				{
+					model: EventImage,
+					attributes: ["id", "url", "preview"]
+				}
+			],
+
+			group: ["Event.id", "EventImages.url", "Group.id", "Venue.id"]
+		});
+
+		res.json(events);
 	}
 });
 
@@ -285,7 +353,11 @@ router.post("/:eventId/images", requireAuth, async (req, res, next) => {
 			url,
 			preview
 		});
-		res.json(addImage);
+
+		const image = await EventImage.findByPk(addImage.id, {
+			attributes: ["id", "url", "preview"]
+		});
+		res.json(image);
 	}
 });
 
@@ -316,7 +388,10 @@ router.get("/", async (req, res, next) => {
 				model: Group,
 				attributes: ["id", "name", "city", "state"]
 			},
-			{ model: Venue }
+			{
+				model: Venue,
+				attributes: ["id", "city", "state"]
+			}
 		],
 
 		group: ["Event.id", "EventImages.url", "Group.id", "Venue.id"]

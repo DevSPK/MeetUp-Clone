@@ -198,7 +198,7 @@ router.post("/:groupId/membership", requireAuth, async (req, res, next) => {
 	const { memberId } = req.body;
 
 	const groups = await Group.findByPk(groupId);
-	console.log(groups);
+	//console.log(groups);
 
 	if (!groups) {
 		res.status(404);
@@ -299,51 +299,38 @@ router.get("/:groupId/events", async (req, res, next) => {
 		});
 	} else {
 		const events = await groups.getEvents({
-			include: { model: Group },
-			include: { model: Venue },
+			attributes: {
+				include: [
+					[
+						sequelize.fn("COUNT", sequelize.col("Attendances.id")),
+						"numAttending"
+					],
+					[sequelize.col("EventImages.url"), "previewImage"]
+				],
+				exclude: ["description", "capacity", "price", "createdAt", "updatedAt"]
+			},
+			include: [
+				{
+					model: Attendance,
+					//where: { status: ["member"] },
+					attributes: []
+				},
+				{
+					model: EventImage,
+					attributes: []
+				},
+				{
+					model: Group,
+					attributes: ["id", "name", "city", "state"]
+				},
+				{
+					model: Venue,
+					attributes: ["id", "city", "state"]
+				}
+			],
 
-			group: ["Event.id", "Venue.id"]
+			group: ["Event.id", "EventImages.url", "Group.id", "Venue.id"]
 		});
-
-		// const numAttending = await Attendance.count({
-		// 	where: { status: "member", eventId: events.id }
-		// });
-
-		// const EventImages = await EventImage.findAll({
-		// 	where: { eventId: events.id }
-		// });
-
-		// const Venues = await Venue.findAll({
-		// 	where: { id: events.venueId }
-		// });
-
-		// console.log(EventImages);
-
-		// const data = {};
-
-		// data.Events = {
-		// 	id: events.id,
-		// 	groupId: events.groupId,
-		// 	venueId: events.venueId,
-		// 	name: events.name,
-		// 	type: events.type,
-		// 	startDate: events.startDate,
-		// 	endDate: events.endDate,
-		// 	numAttending: numAttending,
-		// 	previewImage: EventImages.url,
-		// 	Group: {
-		// 		id: groups.id,
-		// 		name: groups.name,
-		// 		city: groups.city,
-		// 		state: groups.state
-		// 	},
-		// 	Venue: {
-		// 		id: venues.id,
-		// 		city: venues.city,
-		// 		state: venues.state
-		// 	}
-		// };
-
 		res.json({ Events: events });
 	}
 });
@@ -387,15 +374,30 @@ router.post("/:groupId/events", requireAuth, async (req, res, next) => {
 			endDate
 		});
 
-		await newEvent.createAttendance({
-			status: "member",
-			userId: userId,
-			eventId: newEvent.id
-		});
+		// await newEvent.createAttendance({
+		// 	status: "member",
+		// 	userId: userId,
+		// 	eventId: newEvent.id
+		// });
 
 		await newEvent.save();
 
-		res.json(newEvent);
+		const event = await Event.findByPk(newEvent.id, {
+			attributes: [
+				"id",
+				"groupId",
+				"venueId",
+				"name",
+				"type",
+				"capacity",
+				"price",
+				"description",
+				"startDate",
+				"endDate"
+			]
+		});
+
+		res.json(event);
 	} else {
 		res.status(403);
 		return res.json({
@@ -433,7 +435,19 @@ router.post("/:groupId/venues", requireAuth, async (req, res, next) => {
 			lng
 		});
 		await newVenue.save();
-		res.json(newVenue);
+
+		let data = {};
+
+		data.newVenue = {
+			id: newVenue.id,
+			groupId: newVenue.groupId,
+			address: newVenue.address,
+			city: newVenue.city,
+			state: newVenue.state,
+			lat: newVenue.lat,
+			lng: newVenue.lng
+		};
+		res.json(data.newVenue);
 	} else {
 		res.status(403);
 		return res.json({
@@ -460,7 +474,16 @@ router.post("/:groupId/images", requireAuth, async (req, res, next) => {
 			url,
 			preview
 		});
-		res.json(addImage);
+
+		let data = {};
+
+		data.addImage = {
+			id: addImage.id,
+			url: addImage.url,
+			preview: addImage.preview
+		};
+
+		res.json(data.addImage);
 	}
 });
 
@@ -470,19 +493,22 @@ router.delete("/:groupId", requireAuth, async (req, res, next) => {
 
 	const group = await Group.findByPk(groupId);
 
-	const venues = await Venue.findOne({ where: { groupId: groupId } });
-
-	// console.log(group);
-	// console.log(events);
-	// //console.log(users);
-	// console.log(memberships);
-	// console.log(GroupImages);
-	console.log(venues);
-
 	if (!group) {
 		res.status(404);
 		return res.json({ message: "Group couldn't be found", statusCode: 404 });
-	} else {
+	}
+	const venues = await Venue.findOne({ where: { groupId: groupId } });
+
+	if (!venues) {
+		await group.destroy();
+		res.status(200);
+		res.json({
+			message: "Successfully deleted",
+			statusCode: 200
+		});
+	}
+
+	if (venues) {
 		await venues.destroy();
 		await group.destroy();
 		res.status(200);
@@ -501,10 +527,16 @@ router.get("/current", requireAuth, async (req, res, next) => {
 	const user = await User.findByPk(userId);
 
 	const groups = await user.getGroups({
+		attributes: {
+			include: [
+				[sequelize.fn("COUNT", sequelize.col("Memberships.id")), "numMembers"],
+				[sequelize.col("GroupImages.url"), "previewImage"]
+			]
+		},
+
 		include: [
 			{
 				model: Membership,
-				where: { status: ["member", "co-host"] },
 				attributes: []
 			},
 			{
@@ -513,7 +545,7 @@ router.get("/current", requireAuth, async (req, res, next) => {
 			}
 		],
 
-		group: ["Group.id", "GroupImages.url"]
+		group: ["Group.id", "GroupImages.url", "Memberships.id"]
 	});
 
 	res.json({ Groups: groups });
@@ -582,14 +614,22 @@ router.get("/:groupId", async (req, res, next) => {
 			});
 	} else {
 		const numMembers = await Membership.count({ where: { groupId: group.id } });
-		const Users = await User.findAll({ where: { id: group.organizerId } });
-		const GroupImages = await GroupImage.findAll({
-			where: { groupId: groupId }
+		const users = await User.findAll({
+			where: { id: group.organizerId },
+			attributes: ["id", "firstName", "lastName"]
+		});
+		const groupImages = await GroupImage.findAll({
+			where: { groupId: groupId },
+			attributes: ["id", "url", "preview"]
+		});
+		const venues = await Venue.findAll({
+			where: { groupId: groupId },
+			attributes: ["id", "groupId", "address", "city", "state", "lat", "lng"]
 		});
 
-		const data = {};
+		let data = {};
 
-		data.group = {
+		data = {
 			id: group.id,
 			organizerId: group.organizerId,
 			name: group.name,
@@ -603,9 +643,9 @@ router.get("/:groupId", async (req, res, next) => {
 			numMembers: numMembers
 		};
 
-		data.GroupImages = GroupImages;
-		data.Organizer = Users;
-		data.Venues = group.Venue;
+		data.GroupImages = groupImages;
+		data.Organizer = users;
+		data.Venues = venues;
 
 		res.json(data);
 	}
@@ -656,9 +696,25 @@ router.get("/", async (req, res) => {
 			}
 		],
 		raw: true,
-		group: ["Group.id", "GroupImages.url"]
+		group: ["Group.id", "GroupImages.url", "Memberships.id"]
 	});
-	res.json({ Groups: groups });
+	//console.log(groups);
+
+	//fixes boolean for get all groups where it was an integer due to sqlite3
+	let groupsList = [];
+	groups.forEach((group) => {
+		if (group.private === 1) {
+			group.private = true;
+		}
+		if (group.private === 0) {
+			group.private = false;
+		}
+		groupsList.push(group);
+	});
+
+	//console.log(groupsList);
+
+	res.json({ Groups: groupsList });
 });
 
 module.exports = router;
