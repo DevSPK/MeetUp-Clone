@@ -675,22 +675,25 @@ router.post("/", requireAuth, async (req, res, next) => {
 	res.json(newGroup);
 });
 
-// Get all Groups
 router.get("/", async (req, res) => {
 	const groups = await Group.findAll({
-		attributes: {
-			include: [
-				[
-					sequelize.fn("COUNT", sequelize.col("Memberships.status")),
-					"numMembers"
-				],
-				[sequelize.col("GroupImages.url"), "previewImage"]
-			]
-		},
+		attributes: ["Group.*", "Membership.*"],
+		attributes: [
+			"id",
+			"organizerId",
+			"name",
+			"about",
+			"type",
+			"private",
+			"city",
+			"state",
+			"createdAt",
+			"updatedAt"
+		],
+
 		include: [
 			{
 				model: Membership,
-				where: { status: ["member", "co-host"] },
 				attributes: []
 			},
 			{
@@ -698,26 +701,18 @@ router.get("/", async (req, res) => {
 				attributes: []
 			}
 		],
+		attributes: {
+			include: [
+				[Sequelize.fn("COUNT", Sequelize.col("Memberships.id")), "numMembers"],
+				[Sequelize.col("GroupImages.url"), "previewImage"]
+			],
+			where: { "$Memberships.groupId$": Sequelize.col("group.id") }
+		},
 
-		group: ["Group.id", "GroupImages.url", "Memberships.id"]
+		group: ["Group.id", "GroupImages.url"]
 	});
 
 	res.json({ Groups: groups });
-	//console.log(groups);
-
-	//fixes boolean for get all groups where it was an integer due to sqlite3
-	// let groupsList = [];
-	// groups.forEach((group) => {
-	// 	if (group.private === 1) {
-	// 		group.private = true;
-	// 	}
-	// 	if (group.private === 0) {
-	// 		group.private = false;
-	// 	}
-	// 	groupsList.push(group);
-	// });
-
-	//console.log(groupsList);
 });
 
 module.exports = router;
