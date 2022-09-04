@@ -87,7 +87,11 @@ router.post("/:eventId/attendance", requireAuth, async (req, res, next) => {
 		eventId
 	});
 
-	res.json(attendance);
+	const newAttendance = await Attendance.findByPk(attendance.id, {
+		attributes: ["eventId", "userId", "status"]
+	});
+
+	res.json(newAttendance);
 });
 
 //Get all Attendees of an Event specified by its id
@@ -245,12 +249,26 @@ router.delete("/:eventId", requireAuth, async (req, res, next) => {
 
 	if (!event) {
 		res.status(404);
-		res.json({ message: "Event couldn't be found", statusCode: 404 });
-	} else {
+		return res.json({ message: "Event couldn't be found", statusCode: 404 });
+	}
+	const eventImages = await EventImage.findOne({ where: { eventId: eventId } });
+
+	if (!eventImages) {
+		await eventImages.destroy();
+		res.status(200);
+		res.json({
+			message: "Successfully deleted",
+			statusCode: 200
+		});
+	}
+
+	if (eventImages) {
+		await eventImages.destroy();
 		await event.destroy();
 		res.status(200);
 		res.json({
-			message: "Successfully deleted"
+			message: "Successfully deleted",
+			statusCode: 200
 		});
 	}
 });

@@ -493,19 +493,22 @@ router.delete("/:groupId", requireAuth, async (req, res, next) => {
 
 	const group = await Group.findByPk(groupId);
 
-	const venues = await Venue.findOne({ where: { groupId: groupId } });
-
-	// console.log(group);
-	// console.log(events);
-	// //console.log(users);
-	// console.log(memberships);
-	// console.log(GroupImages);
-	console.log(venues);
-
 	if (!group) {
 		res.status(404);
 		return res.json({ message: "Group couldn't be found", statusCode: 404 });
-	} else {
+	}
+	const venues = await Venue.findOne({ where: { groupId: groupId } });
+
+	if (!venues) {
+		await group.destroy();
+		res.status(200);
+		res.json({
+			message: "Successfully deleted",
+			statusCode: 200
+		});
+	}
+
+	if (venues) {
 		await venues.destroy();
 		await group.destroy();
 		res.status(200);
