@@ -678,31 +678,53 @@ router.post("/", requireAuth, async (req, res, next) => {
 // Get all Groups
 router.get("/", async (req, res) => {
 	const groups = await Group.findAll({
-		attributes: {
-			include: [
-				[
-					sequelize.fn("COUNT", sequelize.col("Memberships.status")),
-					"numMembers"
-				],
-				[sequelize.col("GroupImages.url"), "previewImage"]
-			]
-		},
+		group: ["Group.id", "GroupImages.url", "Memberships.id"],
+		order: [["createdAt", "DESC"]],
 		include: [
 			{
 				model: Membership,
-				where: { status: ["member", "co-host"] },
-				attributes: []
+				attributes: [],
+				where: { status: "member" }
 			},
 			{
 				model: GroupImage,
 				attributes: []
 			}
 		],
-
-		group: ["Group.id", "GroupImages.url", "Memberships.id"]
+		attributes: [
+			[sequelize.fn("COUNT", sequelize.col("Memberships.id")), "numMembers"],
+			[sequelize.col("GroupImages.url"), "previewImage"]
+		]
 	});
 
 	res.json({ Groups: groups });
+
+	// const groups = await Group.findAll({
+	// 	attributes: {
+	// 		include: [
+	// 			[
+	// 				sequelize.fn("COUNT", sequelize.col("Memberships.status")),
+	// 				"numMembers"
+	// 			],
+	// 			[sequelize.col("GroupImages.url"), "previewImage"]
+	// 		]
+	// 	},
+	// 	include: [
+	// 		{
+	// 			model: Membership,
+	// 			where: { status: ["member", "co-host"] },
+	// 			attributes: []
+	// 		},
+	// 		{
+	// 			model: GroupImage,
+	// 			attributes: []
+	// 		}
+	// 	],
+
+	// 	group: ["Group.id", "GroupImages.url", "Memberships.id"]
+	// });
+
+	// res.json({ Groups: groups });
 	//console.log(groups);
 
 	//fixes boolean for get all groups where it was an integer due to sqlite3
