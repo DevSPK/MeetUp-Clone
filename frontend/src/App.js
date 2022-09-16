@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { Route, Switch } from "react-router-dom";
 import LoginFormPage from "./components/LoginFormPage";
 import * as sessionActions from "./store/session";
+import { SplashPage } from "./components/SplashPage";
 
 function App() {
 	const dispatch = useDispatch();
@@ -19,6 +20,11 @@ function App() {
 			<Switch>
 				<Route path='/login'>
 					<LoginFormPage />
+				</Route>
+				<Route
+					exact
+					path='/'>
+					<SplashPage />
 				</Route>
 			</Switch>
 		)

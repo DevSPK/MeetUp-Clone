@@ -42,7 +42,7 @@ export const restoreUser = () => async (dispatch) => {
 	return response;
 };
 
-const initialState = {};
+const initialState = { user: null };
 
 const sessionReducer = (state = initialState, action) => {
 	let newState;
