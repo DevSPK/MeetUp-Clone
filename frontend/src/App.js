@@ -18,13 +18,13 @@ function App() {
 	return (
 		isLoaded && (
 			<Switch>
-				<Route path='/login'>
-					<LoginFormPage />
-				</Route>
-				<Route
+				{/* <Route
 					exact
 					path='/'>
 					<SplashPage />
+				</Route> */}
+				<Route path='/login'>
+					<LoginFormPage />
 				</Route>
 			</Switch>
 		)
