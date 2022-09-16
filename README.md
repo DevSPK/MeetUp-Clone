@@ -1,5 +1,10 @@
 # Meetup Clone
 
+Scorecard Address link:
+https://docs.google.com/spreadsheets/d/1YJze5wPnR3ozaCKqfhJVA9-g-5wFyxAnIwfyGwhPnK4/edit?usp=sharing
+
+Github Repo link:
+
 ## Database Schema Design
 
 ![meetup-dbdiagram]

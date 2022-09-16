@@ -14,7 +14,8 @@ const setTokenCookie = (res, user) => {
 		{ expiresIn: parseInt(expiresIn) } // 604,800 seconds = 1 week
 	);
 
-	const isProduction = process.env.NODE_ENV === "production";
+	const isProduction =
+		process.env.NODE_ENV === "production";
 
 	// Set the token cookie
 	res.cookie("token", token, {
@@ -29,26 +30,34 @@ const setTokenCookie = (res, user) => {
 
 const restoreUser = (req, res, next) => {
 	// token parsed from cookies
+	// console.log("restore user running");
 	const { token } = req.cookies;
 	req.user = null;
 
-	return jwt.verify(token, secret, null, async (err, jwtPayload) => {
-		if (err) {
+	return jwt.verify(
+		token,
+		secret,
+		null,
+		async (err, jwtPayload) => {
+			if (err) {
+				return next();
+			}
+
+			try {
+				const { id } = jwtPayload.data;
+				req.user = await User.scope("currentUser").findByPk(
+					id
+				);
+			} catch (e) {
+				res.clearCookie("token");
+				return next();
+			}
+
+			if (!req.user) res.clearCookie("token");
+
 			return next();
 		}
-
-		try {
-			const { id } = jwtPayload.data;
-			req.user = await User.scope("currentUser").findByPk(id);
-		} catch (e) {
-			res.clearCookie("token");
-			return next();
-		}
-
-		if (!req.user) res.clearCookie("token");
-
-		return next();
-	});
+	);
 };
 
 // If there is no current user, return an error
@@ -62,4 +71,8 @@ const requireAuth = function (req, _res, next) {
 	return next(err);
 };
 
-module.exports = { setTokenCookie, restoreUser, requireAuth };
+module.exports = {
+	setTokenCookie,
+	restoreUser,
+	requireAuth
+};
