@@ -17,10 +17,12 @@ export const actionCreateGroup = (group) => ({
 	group
 });
 
-export const actionReadGroup = (list) => ({
-	type: READ_GROUP,
-	list
-});
+export const actionReadGroup = (list) => {
+	return {
+		type: READ_GROUP,
+		list
+	};
+};
 
 // export const actionListAllGroups = (list) => ({
 // 	type: LIST_ALL_GROUPS,
@@ -63,7 +65,7 @@ export const thunkListAllGroups =
 // todo: create reducer
 
 const initialState = {
-	Groups: {}
+	Groups: []
 };
 
 export default function groupsReducer(
@@ -87,8 +89,8 @@ export default function groupsReducer(
 				allGroups
 			);
 			return {
-				allGroups,
-				...state.Groups
+				...state.Groups,
+				allGroups
 			};
 		default:
 			return state;

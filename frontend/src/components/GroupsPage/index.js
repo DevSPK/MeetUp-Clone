@@ -18,15 +18,13 @@ const GroupsPage = () => {
 		dispatch(thunkListAllGroups());
 	}, [dispatch]);
 
-	console.log("this is groupsList before null", groupsList);
-
 	if (!groupsList) {
 		return null;
 	}
 
 	//console.log(groupsList.map(group => ));
 
-	console.log("this is groupsList after null", groupsList);
+	console.log("this is groupsList", groupsList);
 
 	return (
 		<div>
