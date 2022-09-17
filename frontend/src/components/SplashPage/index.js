@@ -1,5 +1,7 @@
 import React from "react";
 
-export const SplashPage = () => {
+const SplashPage = () => {
 	return <div>SplashPage</div>;
 };
+
+export default SplashPage;

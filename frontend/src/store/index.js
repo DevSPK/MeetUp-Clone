@@ -9,9 +9,12 @@ import {
 import thunk from "redux-thunk";
 import sessionReducer from "./session";
 
+import groupsReducer from "./groups";
+
 const rootReducer = combineReducers({
 	// add reducer functions here
-	session: sessionReducer
+	session: sessionReducer,
+	groupSlice: groupsReducer
 });
 
 let enhancer;
