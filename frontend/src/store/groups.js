@@ -102,6 +102,10 @@ export default function groupsReducer(
 				...state.Groups,
 				allGroups
 			};
+		case CREATE_GROUP:
+			const newState = { ...state };
+			newState["Groups"] = [...state.Groups, action.group];
+			return newState;
 		default:
 			return state;
 	}

@@ -9,6 +9,7 @@ import {
 	Link
 } from "react-router-dom";
 import { SingleGroup } from "../SingleGroup";
+import GroupInput from "../GroupInput";
 
 const GroupsPage = () => {
 	const groupsList = useSelector(
@@ -56,12 +57,22 @@ const GroupsPage = () => {
 						)
 					)}
 				</li>
+				<li
+					Link
+					to={"/groups"}>
+					Create a Group
+				</li>
 			</ul>
 			<Switch>
 				<Route
 					exact
 					path='/groups/:id'>
 					<SingleGroup groupsList={groupsList} />
+				</Route>
+				<Route
+					exact
+					path='/groups/'>
+					<GroupInput groupsList={groupsList} />
 				</Route>
 			</Switch>
 		</div>
