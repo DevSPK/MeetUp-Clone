@@ -72,7 +72,7 @@ const GroupsPage = () => {
 				<Route
 					exact
 					path='/groups/'>
-					<GroupInput groupsList={groupsList} />
+					<GroupInput />
 				</Route>
 			</Switch>
 		</div>

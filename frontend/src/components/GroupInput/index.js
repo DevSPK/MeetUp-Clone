@@ -2,12 +2,12 @@ import { useState } from "react";
 
 import "./GroupInput.css";
 import { useDispatch } from "react-redux";
-import { actionCreateGroup } from "../../store/groups";
+import { addGroup } from "../../store/groups";
 
 const GroupInput = () => {
 	const [name, setName] = useState("");
 	const [about, setAbout] = useState("");
-	const [type, setType] = useState("In Person");
+	const [type, setType] = useState("In person");
 	const [privateVal, setPrivateVal] = useState(true);
 	const [city, setCity] = useState("");
 	const [state, setState] = useState("");
@@ -20,16 +20,18 @@ const GroupInput = () => {
 			name,
 			about,
 			type,
-			private: privateVal,
+			privateVal,
 			city,
 			state
 		};
+
+		console.log({ newGroup });
 
 		// useEffect(() => {
 		// 	dispatch(addArticle(newArticle));
 		// }, [dispatch]);
 
-		dispatch(actionCreateGroup(newGroup));
+		dispatch(addGroup(newGroup));
 
 		reset();
 	};
@@ -73,18 +75,32 @@ const GroupInput = () => {
 					<option value='In person'>In Person</option>
 					<option value='Online'>Online</option>
 				</select>
-				<label htmlFor='privateVal'>Private?</label>
+				<select
+					name='type'
+					onChange={(e) => {
+						setPrivateVal(e.target.value);
+					}}>
+					<option
+						value=''
+						disabled>
+						Private Group?
+					</option>
+					<option value={true}>Yes</option>
+					<option value={false}>No</option>
+				</select>
+				{/* <label htmlFor='privateVal'>Private?</label>
 				<div>
 					<div className='PrivateVal'>
 						<label>
 							<input
-								checked={privateVal === true}
-								id='privateVal'
-								type='radio'
 								onChange={(e) =>
 									setPrivateVal(e.target.value)
 								}
+								checked={privateVal === true}
+								id='privateVal'
+								type='radio'
 								value={true}
+								name='privateVal'
 							/>
 							Yes
 						</label>
@@ -92,18 +108,19 @@ const GroupInput = () => {
 					<div className='PrivateVal'>
 						<label>
 							<input
-								checked={privateVal === false}
-								id='privateVal'
-								type='radio'
 								onChange={(e) =>
 									setPrivateVal(e.target.value)
 								}
+								checked={privateVal === false}
+								id='privateVal'
+								type='radio'
 								value={false}
+								name='privateVal'
 							/>
 							No
 						</label>
 					</div>
-				</div>
+				</div> */}
 				<input
 					type='text'
 					onChange={(e) => setCity(e.target.value)}

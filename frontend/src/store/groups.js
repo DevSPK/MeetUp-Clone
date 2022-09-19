@@ -64,13 +64,33 @@ export const thunkListAllGroups =
 
 export const thunkGetOneGroup =
 	(id) => async (dispatch) => {
-		const response = await fetch(`/api/groups/${id}`);
+		const response = await csrfFetch(`/api/groups/${id}`);
 
 		if (response.ok) {
 			const group = await response.json();
 			dispatch(actionReadGroup(group));
 		}
 	};
+
+export const addGroup = (group) => async (dispatch) => {
+	const { name, about, type, privateVal, city, state } =
+		group;
+	const response = await csrfFetch("api/groups", {
+		method: "POST",
+
+		body: JSON.stringify({
+			name,
+			about,
+			type,
+			private: privateVal,
+			city,
+			state
+		})
+	});
+	const data = await response.json();
+	dispatch(actionCreateGroup(data));
+	return response;
+};
 
 // todo: create reducer
 
