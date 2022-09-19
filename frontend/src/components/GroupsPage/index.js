@@ -2,6 +2,13 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { thunkListAllGroups } from "../../store/groups";
 import { useEffect } from "react";
+import {
+	Route,
+	Switch,
+	NavLink,
+	Link
+} from "react-router-dom";
+import { SingleGroup } from "../SingleGroup";
 
 const GroupsPage = () => {
 	const groupsList = useSelector(
@@ -29,11 +36,34 @@ const GroupsPage = () => {
 	return (
 		<div>
 			<h1 className='groups-page'>Groups Page</h1>
-			<ul>
-				{groupsList.map(({ id, name }) => (
-					<li key={id}>{name}</li>
-				))}
+			<ul className='groups-list-item'>
+				<li>
+					{groupsList.map(
+						({
+							id,
+							name,
+							city,
+							state,
+							numMembers,
+							previewImage,
+							about
+						}) => (
+							<Link
+								key={id}
+								to={`/groups/${id}`}>
+								{`${name}`}
+							</Link>
+						)
+					)}
+				</li>
 			</ul>
+			<Switch>
+				<Route
+					exact
+					path='/groups/:id'>
+					<SingleGroup groupsList={groupsList} />
+				</Route>
+			</Switch>
 		</div>
 	);
 };

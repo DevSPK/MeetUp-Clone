@@ -62,6 +62,16 @@ export const thunkListAllGroups =
 		}
 	};
 
+export const thunkGetOneGroup =
+	(id) => async (dispatch) => {
+		const response = await fetch(`/api/groups/${id}`);
+
+		if (response.ok) {
+			const group = await response.json();
+			dispatch(actionReadGroup(group));
+		}
+	};
+
 // todo: create reducer
 
 const initialState = {
