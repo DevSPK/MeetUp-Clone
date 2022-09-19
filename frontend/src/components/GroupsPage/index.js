@@ -57,10 +57,8 @@ const GroupsPage = () => {
 						)
 					)}
 				</li>
-				<li
-					Link
-					to={"/groups"}>
-					Create a Group
+				<li>
+					<Link to={"/groups"}>Create a Group</Link>
 				</li>
 			</ul>
 			<Switch>

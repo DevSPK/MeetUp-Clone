@@ -1,6 +1,7 @@
 //todo: import needed modules
 
 import { csrfFetch } from "./csrf";
+import thunk from "redux-thunk";
 
 // todo: create types
 
@@ -92,6 +93,22 @@ export const addGroup = (group) => async (dispatch) => {
 	return response;
 };
 
+export const removeGroup =
+	(groupId) => async (dispatch) => {
+		const response = await csrfFetch(
+			`/api/groups/${groupId}`,
+			{
+				method: "DELETE"
+			}
+		);
+		console.log(
+			"this is response from remove Group",
+			response
+		);
+
+		if (response.ok) dispatch(actionDeleteGroup(groupId));
+	};
+
 // todo: create reducer
 
 const initialState = {
@@ -122,9 +139,13 @@ export default function groupsReducer(
 				...state.Groups,
 				allGroups
 			};
-		case CREATE_GROUP:
-			const newState = { ...state };
-			newState["Groups"] = [...state.Groups, action.group];
+		// case CREATE_GROUP:
+		// 	const newState = { ...state };
+		// 	newState["Groups"] = [...state, action.group];
+		// 	return newState;
+		case DELETE_GROUP:
+			let newState = { ...state };
+			delete newState[action.groupId];
 			return newState;
 		default:
 			return state;
