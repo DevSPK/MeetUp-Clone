@@ -63,14 +63,6 @@ module.exports = {
 		 * await queryInterface.bulkDelete('People', null, {});
 		 */
 		const Op = Sequelize.Op;
-		return queryInterface.bulkDelete(
-			"Events",
-			{
-				name: {
-					[Op.in]: ["Rock and Bowlathon", "Zoocation", "Rock Carvinal"]
-				}
-			},
-			{}
-		);
+		return queryInterface.bulkDelete("Events", null, {});
 	}
 };
