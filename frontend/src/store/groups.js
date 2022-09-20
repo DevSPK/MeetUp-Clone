@@ -141,14 +141,14 @@ export default function groupsReducer(
 		}
 
 		case CREATE_GROUP: {
-			const newState = { ...state };
+			let newState = { ...state };
 			console.log("this is state in create_group", state);
 			console.log("this is action in create_group", action);
 			console.log(
 				"this is action.group in create_group",
 				action.group
 			);
-			newState["Groups"] = [state, action.group];
+			newState[action.group.id] = action.group;
 			return newState;
 		}
 
