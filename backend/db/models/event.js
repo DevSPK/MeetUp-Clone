@@ -14,10 +14,11 @@ module.exports = (sequelize, DataTypes) => {
 			// 	otherKey: "userId",
 			// 	foreignKey: "eventId"
 			// });
-			Event.belongsTo(models.Group, { foreignKey: "groupId" });
+			Event.belongsTo(models.Group, {
+				foreignKey: "groupId"
+			});
 			Event.belongsTo(models.Venue, {
-				foreignKey: "venueId",
-				onDelete: "CASCADE"
+				foreignKey: "venueId"
 			});
 			Event.hasMany(models.EventImage, {
 				foreignKey: "eventId",
@@ -57,7 +58,10 @@ module.exports = (sequelize, DataTypes) => {
 				type: DataTypes.DATE,
 				validate: { isDate: true }
 			},
-			endDate: { type: DataTypes.DATE, validate: { isDate: true } }
+			endDate: {
+				type: DataTypes.DATE,
+				validate: { isDate: true }
+			}
 		},
 		{
 			sequelize,

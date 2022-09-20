@@ -564,11 +564,11 @@ router.delete(
 				statusCode: 404
 			});
 		}
-		const venues = await Venue.findOne({
-			where: { groupId: groupId }
-		});
+		// const venues = await Venue.findOne({
+		// 	where: { groupId: groupId }
+		// });
 
-		if (!venues) {
+		if (group) {
 			await group.destroy();
 			res.status(200);
 			res.json({
@@ -577,15 +577,15 @@ router.delete(
 			});
 		}
 
-		if (venues) {
-			await venues.destroy();
-			await group.destroy();
-			res.status(200);
-			res.json({
-				message: "Successfully deleted",
-				statusCode: 200
-			});
-		}
+		// if (venues) {
+		// 	await venues.destroy();
+		// 	await group.destroy();
+		// 	res.status(200);
+		// 	res.json({
+		// 		message: "Successfully deleted",
+		// 		statusCode: 200
+		// 	});
+		// }
 	}
 );
 

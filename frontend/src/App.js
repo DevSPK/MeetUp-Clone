@@ -1,11 +1,18 @@
 // frontend/src/App.js
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { Route, Switch } from "react-router-dom";
+import {
+	BrowserRouter as Router,
+	Route,
+	Switch
+} from "react-router-dom";
 import LoginFormPage from "./components/LoginFormPage";
 import SignupFormPage from "./components/SignupFormPage";
 import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
+import GroupsPage from "./components/GroupsPage";
+import EventsPage from "./components/EventsPage";
+import SplashPage from "./components/SplashPage";
 
 function App() {
 	const dispatch = useDispatch();
@@ -17,7 +24,7 @@ function App() {
 	}, [dispatch]);
 
 	return (
-		<>
+		<div className=''>
 			<Navigation isLoaded={isLoaded} />
 			{isLoaded && (
 				<Switch>
@@ -27,9 +34,20 @@ function App() {
 					<Route path='/signup'>
 						<SignupFormPage />
 					</Route>
+					<Route path='/groups'>
+						<GroupsPage />
+					</Route>
+					<Route path='/events'>
+						<EventsPage />
+					</Route>
+					<Route
+						exact
+						path='/'>
+						<SplashPage />
+					</Route>
 				</Switch>
 			)}
-		</>
+		</div>
 	);
 }
 

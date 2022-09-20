@@ -10,11 +10,13 @@ module.exports = {
 			},
 			userId: {
 				type: Sequelize.INTEGER,
-				references: { model: "Users" }
+				references: { model: "Users" },
+				onDelete: "CASCADE"
 			},
 			groupId: {
 				type: Sequelize.INTEGER,
-				references: { model: "Groups" }
+				references: { model: "Groups" },
+				onDelete: "CASCADE"
 			},
 			status: {
 				type: Sequelize.ENUM("pending", "member", "co-host")
