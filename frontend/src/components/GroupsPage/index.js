@@ -63,7 +63,7 @@ const GroupsPage = () => {
 				<Route
 					exact
 					path='/groups/:id'>
-					<SingleGroup groupsList={groupsList} />
+					<SingleGroup />
 				</Route>
 				<Route
 					exact

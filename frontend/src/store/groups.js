@@ -63,8 +63,10 @@ export const thunkReadAllGroups =
 	};
 
 export const thunkGetOneGroup =
-	(id) => async (dispatch) => {
-		const response = await csrfFetch(`/api/groups/${id}`);
+	(groupId) => async (dispatch) => {
+		const response = await csrfFetch(
+			`/api/groups/${groupId}`
+		);
 
 		if (response.ok) {
 			const group = await response.json();
@@ -92,7 +94,7 @@ export const addGroup = (group) => async (dispatch) => {
 	return response;
 };
 
-export const removeGroup =
+export const thunkRemoveGroup =
 	(groupId) => async (dispatch) => {
 		const response = await csrfFetch(
 			`/api/groups/${groupId}`,
@@ -117,10 +119,7 @@ export default function groupsReducer(
 	action
 ) {
 	switch (action.type) {
-		case READ_ALL_GROUPS: // const newGroups = [...action.group]; // console.log("this is action.groups", action.groups);
-		// console.log("this is new Groups", newGroups);
-		// let allGroups = [];
-		// newGroups.forEach((group) => {
+		case READ_ALL_GROUPS: // newGroups.forEach((group) => { // let allGroups = []; // console.log("this is new Groups", newGroups); // const newGroups = [...action.group]; // console.log("this is action.groups", action.groups);
 		// 	allGroups[group.id] = group;
 		// });
 		// console.log(
@@ -139,6 +138,16 @@ export default function groupsReducer(
 			});
 			return newState;
 		}
+		case READ_GROUP: {
+			let newState = { ...state };
+			console.log(
+				"this is action.group in read_group",
+				action.group
+			);
+			newState[action.group.id] = action.group;
+			return newState;
+		}
+
 		case CREATE_GROUP: {
 			const newState = { ...state };
 			newState["Groups"] = [...state, action.group];
@@ -147,6 +156,7 @@ export default function groupsReducer(
 
 		case DELETE_GROUP: {
 			let newState = { ...state };
+			console.log("this is action in deletegroup", action);
 			delete newState[action.groupId];
 			return newState;
 		}
