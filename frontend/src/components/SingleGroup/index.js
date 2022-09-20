@@ -7,17 +7,20 @@ import { Link } from "react-router-dom";
 import {
 	thunkGetOneGroup,
 	thunkRemoveGroup,
-	thunkupdateGroup
+	thunkUpdateGroup
 } from "../../store/groups";
 
 import React from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import GroupUpdate from "../GroupUpdate";
 
 export const SingleGroup = () => {
 	let history = useHistory();
 	const dispatch = useDispatch();
 	const { id } = useParams();
+	const [showEditGroupForm, setShowEditGroupForm] =
+		useState(false);
 
 	// console.log("this is id", id);
 
@@ -29,17 +32,29 @@ export const SingleGroup = () => {
 
 	useEffect(() => {
 		dispatch(thunkGetOneGroup(id));
-	}, [dispatch]);
+	}, [dispatch, id]);
 
 	//const groupChoice = groupList.find(({id}) => id === groupId)
 
 	// console.log("this is group from singlegroup", group);
 
-	async function handleClick(groupId) {
+	async function handleDelete(groupId) {
 		await dispatch(thunkRemoveGroup(groupId));
-		history.push("/groups");
+		history.push("/");
 	}
 
+	console.log("this is group from singleGroup", group);
+
+	let content = null;
+
+	if (showEditGroupForm) {
+		content = (
+			<GroupUpdate
+				group={group}
+				hideForm={() => setShowEditGroupForm(false)}
+			/>
+		);
+	}
 	return (
 		<div>
 			<h1>Group Name: {group.name}</h1>
@@ -48,9 +63,15 @@ export const SingleGroup = () => {
 			<h3>Is Group Private: {`${group.private}`}</h3>
 			<h3>City: {group.city}</h3>
 			<h3>State: {group.state}</h3>
-			<button onClick={() => handleClick(group.id)}>
-				Delete Group
-			</button>
+			<div className='buttons'>
+				<button onClick={() => handleDelete(group.id)}>
+					Delete Group
+				</button>
+				<button onClick={() => setShowEditGroupForm(true)}>
+					Edit Group
+				</button>
+			</div>
+			{content}
 		</div>
 	);
 };

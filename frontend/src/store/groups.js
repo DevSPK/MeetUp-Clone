@@ -94,6 +94,40 @@ export const thunkAddGroup =
 		return response;
 	};
 
+export const thunkUpdateGroup =
+	(group) => async (dispatch) => {
+		const { name, about, type, privateVal, city, state } =
+			group;
+
+		console.log(
+			"this is group in thunk update group",
+			group
+		);
+		const response = await csrfFetch(
+			`/api/groups/${group.id}`,
+			{
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify({
+					name,
+					about,
+					type,
+					private: privateVal,
+					city,
+					state
+				})
+			}
+		);
+
+		if (response.ok) {
+			const data = await response.json();
+			dispatch(actionCreateGroup(data));
+			return data;
+		}
+	};
+
 export const thunkRemoveGroup =
 	(groupId) => async (dispatch) => {
 		const response = await csrfFetch(
@@ -183,6 +217,11 @@ export default function groupsReducer(
 			// }
 
 			delete newState[action.groupId];
+			return newState;
+		}
+		case UPDATE_GROUP: {
+			let newState = { ...state };
+			newState[action.group.id] = action.group;
 			return newState;
 		}
 		default:
