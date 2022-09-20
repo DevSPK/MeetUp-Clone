@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { thunkListAllGroups } from "../../store/groups";
+import { thunkReadAllGroups } from "../../store/groups";
 import { useEffect } from "react";
 import {
 	Route,
@@ -12,10 +12,8 @@ import { SingleGroup } from "../SingleGroup";
 import GroupInput from "../GroupInput";
 
 const GroupsPage = () => {
-	const groupsList = useSelector(
-		(state) =>
-			// Object.values(state.groupState)
-			state.groupSlice.allGroups
+	const groupsList = useSelector((state) =>
+		Object.values(state.groups)
 	);
 	const dispatch = useDispatch();
 
@@ -23,7 +21,7 @@ const GroupsPage = () => {
 	}
 
 	useEffect(() => {
-		dispatch(thunkListAllGroups());
+		dispatch(thunkReadAllGroups());
 	}, [dispatch]);
 
 	if (!groupsList) {

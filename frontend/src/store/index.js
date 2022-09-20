@@ -14,7 +14,7 @@ import groupsReducer from "./groups";
 const rootReducer = combineReducers({
 	// add reducer functions here
 	session: sessionReducer,
-	groupSlice: groupsReducer
+	groups: groupsReducer
 });
 
 let enhancer;
