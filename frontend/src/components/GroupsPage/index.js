@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import {
 	Route,
 	Switch,
-	NavLink,
+	// NavLink,
 	Link
 } from "react-router-dom";
 import { SingleGroup } from "../SingleGroup";

@@ -1,13 +1,8 @@
-import {
-	useParams,
-	Redirect,
-	useHistory
-} from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import {
 	thunkGetOneGroup,
-	thunkRemoveGroup,
-	thunkUpdateGroup
+	thunkRemoveGroup
 } from "../../store/groups";
 
 import React from "react";
