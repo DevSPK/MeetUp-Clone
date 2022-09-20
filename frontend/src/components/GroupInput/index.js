@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import "./GroupInput.css";
 import { useDispatch } from "react-redux";
-import { addGroup } from "../../store/groups";
+import { thunkAddGroup } from "../../store/groups";
 
 const GroupInput = () => {
 	const [name, setName] = useState("");
@@ -13,7 +13,7 @@ const GroupInput = () => {
 	const [state, setState] = useState("");
 
 	const dispatch = useDispatch();
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
 
 		let newGroup = {
@@ -28,10 +28,10 @@ const GroupInput = () => {
 		console.log({ newGroup });
 
 		// useEffect(() => {
-		// 	dispatch(addArticle(newArticle));
+		// 	dispatch(addGroup(newGroup));
 		// }, [dispatch]);
 
-		dispatch(addGroup(newGroup));
+		await dispatch(thunkAddGroup(newGroup));
 
 		reset();
 	};

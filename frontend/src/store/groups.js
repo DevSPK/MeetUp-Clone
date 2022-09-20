@@ -1,7 +1,6 @@
 //todo: import needed modules
 
 import { csrfFetch } from "./csrf";
-import thunk from "redux-thunk";
 
 // todo: create types
 
@@ -74,25 +73,26 @@ export const thunkGetOneGroup =
 		}
 	};
 
-export const addGroup = (group) => async (dispatch) => {
-	const { name, about, type, privateVal, city, state } =
-		group;
-	const response = await csrfFetch("api/groups", {
-		method: "POST",
+export const thunkAddGroup =
+	(group) => async (dispatch) => {
+		const { name, about, type, privateVal, city, state } =
+			group;
+		const response = await csrfFetch("api/groups", {
+			method: "POST",
 
-		body: JSON.stringify({
-			name,
-			about,
-			type,
-			private: privateVal,
-			city,
-			state
-		})
-	});
-	const data = await response.json();
-	dispatch(actionCreateGroup(data));
-	return response;
-};
+			body: JSON.stringify({
+				name,
+				about,
+				type,
+				private: privateVal,
+				city,
+				state
+			})
+		});
+		const data = await response.json();
+		dispatch(actionCreateGroup(data));
+		return response;
+	};
 
 export const thunkRemoveGroup =
 	(groupId) => async (dispatch) => {
@@ -119,20 +119,12 @@ export default function groupsReducer(
 	action
 ) {
 	switch (action.type) {
-		case READ_ALL_GROUPS: // newGroups.forEach((group) => { // let allGroups = []; // console.log("this is new Groups", newGroups); // const newGroups = [...action.group]; // console.log("this is action.groups", action.groups);
-		// 	allGroups[group.id] = group;
-		// });
-		// console.log(
-		// 	"this is all groups from groupsReducer",
-		// 	allGroups
-		// );
-		// return {
-		// 	...state.Groups,
-		// 	allGroups
-		// };
-		{
+		case READ_ALL_GROUPS: {
 			const newState = { ...state };
-			console.log("this is action.groups", action.groups);
+			console.log(
+				"this is action.groups in read all groups",
+				action.groups
+			);
 			action.groups.forEach((group) => {
 				newState[group.id] = group;
 			});
@@ -150,15 +142,33 @@ export default function groupsReducer(
 
 		case CREATE_GROUP: {
 			const newState = { ...state };
-			newState["Groups"] = [...state, action.group];
+			console.log("this is state in create_group", state);
+			console.log("this is action in create_group", action);
+			console.log(
+				"this is action.group in create_group",
+				action.group
+			);
+			newState["Groups"] = [state, action.group];
 			return newState;
 		}
 
 		case DELETE_GROUP: {
 			let newState = { ...state };
-			console.log("this is action in deletegroup", action);
-			delete newState[action.groupId];
-			return newState;
+			console.log("this is action in delete_group", action);
+			console.log("this is state in delete_group", state);
+
+			console.log(
+				"this is action.groupId in create_group",
+				action.groupId
+			);
+
+			const result = newState.filter(
+				(group) => group.id !== action.groupId
+			);
+
+			console.log(result);
+
+			return result;
 		}
 		default:
 			return state;

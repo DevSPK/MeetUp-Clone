@@ -9,7 +9,10 @@ module.exports = (sequelize, DataTypes) => {
 		}
 
 		validatePassword(password) {
-			return bcrypt.compareSync(password, this.hashedPassword.toString());
+			return bcrypt.compareSync(
+				password,
+				this.hashedPassword.toString()
+			);
 		}
 
 		static getCurrentUserById(id) {
@@ -27,11 +30,19 @@ module.exports = (sequelize, DataTypes) => {
 				}
 			});
 			if (user && user.validatePassword(password)) {
-				return await User.scope("currentUser").findByPk(user.id);
+				return await User.scope("currentUser").findByPk(
+					user.id
+				);
 			}
 		}
 
-		static async signup({ username, email, password, firstName, lastName }) {
+		static async signup({
+			username,
+			email,
+			password,
+			firstName,
+			lastName
+		}) {
 			const hashedPassword = bcrypt.hashSync(password);
 			const user = await User.create({
 				username,
@@ -40,7 +51,9 @@ module.exports = (sequelize, DataTypes) => {
 				firstName,
 				lastName
 			});
-			return await User.scope("currentUser").findByPk(user.id);
+			return await User.scope("currentUser").findByPk(
+				user.id
+			);
 		}
 
 		/**
@@ -61,8 +74,8 @@ module.exports = (sequelize, DataTypes) => {
 			// 	foreignKey: "userId"
 			// });
 			User.hasMany(models.Group, {
-				foreignKey: "organizerId",
-				onDelete: "CASCADE"
+				foreignKey: "organizerId"
+				//onDelete: "CASCADE"
 			});
 			User.hasMany(models.Membership, {
 				foreignKey: "userId",
@@ -123,7 +136,11 @@ module.exports = (sequelize, DataTypes) => {
 			modelName: "User",
 			defaultScope: {
 				attributes: {
-					exclude: ["hashedPassword", "createdAt", "updatedAt"]
+					exclude: [
+						"hashedPassword",
+						"createdAt",
+						"updatedAt"
+					]
 				}
 			},
 			scopes: {
