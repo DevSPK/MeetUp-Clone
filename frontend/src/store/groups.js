@@ -132,22 +132,22 @@ export default function groupsReducer(
 		}
 		case READ_GROUP: {
 			let newState = { ...state };
-			console.log(
-				"this is action.group in read_group",
-				action.group
-			);
+			// console.log(
+			// 	"this is action.group in read_group",
+			// 	action.group
+			// );
 			newState[action.group.id] = action.group;
 			return newState;
 		}
 
 		case CREATE_GROUP: {
 			let newState = { ...state };
-			console.log("this is state in create_group", state);
-			console.log("this is action in create_group", action);
-			console.log(
-				"this is action.group in create_group",
-				action.group
-			);
+			// console.log("this is state in create_group", state);
+			// console.log("this is action in create_group", action);
+			// console.log(
+			// 	"this is action.group in create_group",
+			// 	action.group
+			// );
 			newState[action.group.id] = action.group;
 			return newState;
 		}
@@ -167,13 +167,23 @@ export default function groupsReducer(
 				newState
 			);
 
-			const result = newState.filter(
-				(group) => group !== action.groupId
-			);
+			// ********** not an array so can't use filter
+			// const result = newState.filter(
+			// 	(group) => group !== action.groupId
+			// );
 
-			console.log(result);
+			// console.log(result);
 
-			return result;
+			// return result;
+
+			// for (let group in newState) {
+			// 	if (group.id === action.groupId) {
+			// 		delete group.id;
+			// 	}
+			// }
+
+			delete newState[action.groupId];
+			return newState;
 		}
 		default:
 			return state;
