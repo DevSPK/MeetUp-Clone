@@ -158,12 +158,17 @@ export default function groupsReducer(
 			console.log("this is state in delete_group", state);
 
 			console.log(
-				"this is action.groupId in create_group",
+				"this is action.groupId in delete_group",
 				action.groupId
 			);
 
+			console.log(
+				"this is newState in delete_group",
+				newState
+			);
+
 			const result = newState.filter(
-				(group) => group.id !== action.groupId
+				(group) => group !== action.groupId
 			);
 
 			console.log(result);
