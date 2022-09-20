@@ -55,6 +55,10 @@ export const SingleGroup = () => {
 			/>
 		);
 	}
+
+	if (!group) {
+		return null;
+	}
 	return (
 		<div>
 			<h1>Group Name: {group.name}</h1>

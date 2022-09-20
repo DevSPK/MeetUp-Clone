@@ -3,8 +3,10 @@ import { useState } from "react";
 import "./GroupInput.css";
 import { useDispatch } from "react-redux";
 import { thunkAddGroup } from "../../store/groups";
+import { useHistory } from "react-router-dom";
 
-const GroupInput = () => {
+const GroupInput = ({ hideForm }) => {
+	const history = useHistory();
 	const [name, setName] = useState("");
 	const [about, setAbout] = useState("");
 	const [type, setType] = useState("In person");
@@ -13,6 +15,7 @@ const GroupInput = () => {
 	const [state, setState] = useState("");
 
 	const dispatch = useDispatch();
+
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
@@ -31,9 +34,15 @@ const GroupInput = () => {
 		// 	dispatch(addGroup(newGroup));
 		// }, [dispatch]);
 
-		await dispatch(thunkAddGroup(newGroup));
+		const createdGroup = await dispatch(
+			thunkAddGroup(newGroup)
+		);
 
-		reset();
+		if (createdGroup) {
+			reset();
+			history.push(`/groups/${createdGroup.id}`);
+			hideForm();
+		}
 	};
 
 	const reset = () => {
@@ -88,39 +97,7 @@ const GroupInput = () => {
 					<option value={true}>Yes</option>
 					<option value={false}>No</option>
 				</select>
-				{/* <label htmlFor='privateVal'>Private?</label>
-				<div>
-					<div className='PrivateVal'>
-						<label>
-							<input
-								onChange={(e) =>
-									setPrivateVal(e.target.value)
-								}
-								checked={privateVal === true}
-								id='privateVal'
-								type='radio'
-								value={true}
-								name='privateVal'
-							/>
-							Yes
-						</label>
-					</div>
-					<div className='PrivateVal'>
-						<label>
-							<input
-								onChange={(e) =>
-									setPrivateVal(e.target.value)
-								}
-								checked={privateVal === false}
-								id='privateVal'
-								type='radio'
-								value={false}
-								name='privateVal'
-							/>
-							No
-						</label>
-					</div>
-				</div> */}
+
 				<input
 					type='text'
 					onChange={(e) => setCity(e.target.value)}
