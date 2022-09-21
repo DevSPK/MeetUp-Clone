@@ -53,7 +53,7 @@ export const thunkReadAllGroups =
 
 			// console.log(
 			// 	"this is groups from thunkReadAllGroups",
-			// 	Read
+			// 	groups
 			// );
 			dispatch(actionReadAllGroups(groups.Groups));
 		} else {

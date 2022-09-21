@@ -54,6 +54,11 @@ const GroupInput = ({ hideForm }) => {
 		setState("");
 	};
 
+	const handleCancelClick = (e) => {
+		e.preventDefault();
+		hideForm();
+	};
+
 	return (
 		<div className='inputBox'>
 			<h1>Create Group</h1>
@@ -113,6 +118,11 @@ const GroupInput = ({ hideForm }) => {
 					name='state'
 				/>
 				<button type='submit'>Submit</button>
+				<button
+					type='button'
+					onClick={handleCancelClick}>
+					Cancel
+				</button>
 			</form>
 		</div>
 	);
