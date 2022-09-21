@@ -14,8 +14,8 @@ export const SingleEvent = () => {
 	let history = useHistory();
 	const dispatch = useDispatch();
 	const { id } = useParams();
-	const [showEditEventForm, setShowEditEventForm] =
-		useState(false);
+	// const [showEditEventForm, setShowEditEventForm] =
+	// 	useState(false);
 
 	// console.log("this is id", id);
 
@@ -23,7 +23,7 @@ export const SingleEvent = () => {
 
 	let event = useSelector((state) => state.events[id]);
 
-	// console.log(Event);
+	console.log({ event });
 
 	useEffect(() => {
 		dispatch(thunkGetOneEvent(id));
@@ -33,8 +33,8 @@ export const SingleEvent = () => {
 
 	// console.log("this is Event from singleEvent", Event);
 
-	async function handleDelete(eventId) {
-		await dispatch(thunkRemoveEvent(eventId));
+	async function handleDelete(eventId, groupId) {
+		await dispatch(thunkRemoveEvent(eventId, groupId));
 		history.push("/");
 	}
 
@@ -65,12 +65,15 @@ export const SingleEvent = () => {
 			<h3>Start Date and Time: {event.startDate}</h3>
 			<h3>End Date and Time: {event.endDate}</h3>
 			<div className='buttons'>
-				<button onClick={() => handleDelete(event.id)}>
+				<button
+					onClick={() =>
+						handleDelete(event.id, event.groupId)
+					}>
 					Delete Event
 				</button>
-				<button onClick={() => setShowEditEventForm(true)}>
+				{/* <button onClick={() => setShowEditEventForm(true)}>
 					Edit Event
-				</button>
+				</button> */}
 			</div>
 			{content}
 		</div>

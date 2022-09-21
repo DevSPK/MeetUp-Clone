@@ -42,6 +42,7 @@ const GroupsPage = () => {
 			</Route>
 		);
 	}
+
 	return (
 		<div className='groups-page'>
 			<h1>Groups Page</h1>
@@ -72,6 +73,7 @@ const GroupsPage = () => {
 			<button onClick={() => setShowCreateGroupForm(true)}>
 				Create New Group
 			</button>
+
 			<Switch>
 				<Route
 					exact

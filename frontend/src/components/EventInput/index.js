@@ -4,12 +4,15 @@ import { useDispatch } from "react-redux";
 import { thunkAddEvent } from "../../store/events";
 import { useHistory } from "react-router-dom";
 
-const currencyFormat = new Intl.NumberFormat("en-US", {
-	style: "currency",
-	currency: "USD"
-});
+// const currencyFormat = new Intl.NumberFormat("en-US", {
+// 	style: "currency",
+// 	currency: "USD"
+// });
 
-const EventInput = ({ hideForm }) => {
+const EventInput = ({ hideForm, group }) => {
+	const { id } = group;
+
+	console.log("this is group in EventInput", group);
 	const history = useHistory();
 
 	const [venueId, setVenueId] = useState(1);
@@ -28,6 +31,7 @@ const EventInput = ({ hideForm }) => {
 
 		let newEvent = {
 			venueId,
+			groupId: id,
 			name,
 			capacity,
 			type,
@@ -70,30 +74,35 @@ const EventInput = ({ hideForm }) => {
 		setCapacity(result);
 	};
 
-	const handlePrice = (event) => {
-		const { key } = event;
+	// const handlePrice = (event) => {
+	// 	const { key } = event;
 
-		setPrice((prevPrice) =>
-			key !== "Backspace"
-				? !Number.isNaN(parseInt(key)) ||
-				  key === "," ||
-				  key === "."
-					? prevPrice + key
-					: prevPrice
-				: prevPrice.substring(0, prevPrice.length - 1)
-		);
-	};
+	// 	setPrice((prevPrice) =>
+	// 		key !== "Backspace"
+	// 			? !Number.isNaN(parseInt(key)) ||
+	// 			  key === "," ||
+	// 			  key === "."
+	// 				? prevPrice + key
+	// 				: prevPrice
+	// 			: prevPrice.substring(0, prevPrice.length - 1)
+	// 	);
+	// };
 
 	const handleStartDate = (event) => {
 		if (!event.target["validity"].valid) return;
-		const start = event.target.value + ":00Z";
+		const start = event.target.value;
 		setStartDate(start);
 	};
 
 	const handleEndDate = (event) => {
 		if (!event.target["validity"].valid) return;
-		const end = event.target.value + ":00Z";
+		const end = event.target.value;
 		setEndDate(end);
+	};
+
+	const handleCancelClick = (e) => {
+		e.preventDefault();
+		hideForm();
 	};
 
 	return (
@@ -147,16 +156,19 @@ const EventInput = ({ hideForm }) => {
 				<input
 					type='text'
 					onChange={handleCapacity}
-					value={capacity}
+					value={Number(capacity)}
 					placeholder='Maximum number of attendees'
 					name='Capacity'
 				/>
 				<input
 					type='text'
-					onKeyDown={handlePrice}
-					placeholder={currencyFormat.format("")}
+					onChange={(e) => {
+						setPrice(e.target.value);
+					}}
+					placeholder='$'
 					value={
-						price !== "" ? currencyFormat.format(price) : ""
+						Number(price)
+						// !== "" ? currencyFormat.format(price) : ""
 					}
 					name='price'
 				/>
@@ -179,6 +191,11 @@ const EventInput = ({ hideForm }) => {
 					name='endDate'
 				/>
 				<button type='submit'>Submit</button>
+				<button
+					type='button'
+					onClick={handleCancelClick}>
+					Cancel
+				</button>
 			</form>
 		</div>
 	);

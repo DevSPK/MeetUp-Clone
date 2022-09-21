@@ -1,4 +1,8 @@
-import { useParams, useHistory } from "react-router-dom";
+import {
+	useParams,
+	useHistory,
+	Route
+} from "react-router-dom";
 // import { Link } from "react-router-dom";
 import {
 	thunkGetOneGroup,
@@ -9,12 +13,15 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import GroupUpdate from "../GroupUpdate";
+import EventInput from "../EventInput";
 
 export const SingleGroup = () => {
 	let history = useHistory();
 	const dispatch = useDispatch();
 	const { id } = useParams();
 	const [showEditGroupForm, setShowEditGroupForm] =
+		useState(false);
+	const [showCreateEventForm, setShowCreateEventForm] =
 		useState(false);
 
 	// console.log("this is id", id);
@@ -51,6 +58,15 @@ export const SingleGroup = () => {
 		);
 	}
 
+	if (showCreateEventForm) {
+		content = (
+			<EventInput
+				group={group}
+				hideForm={() => setShowCreateEventForm(false)}
+			/>
+		);
+	}
+
 	if (!group) {
 		return null;
 	}
@@ -68,6 +84,10 @@ export const SingleGroup = () => {
 				</button>
 				<button onClick={() => setShowEditGroupForm(true)}>
 					Edit Group
+				</button>
+				<button
+					onClick={() => setShowCreateEventForm(true)}>
+					Create New Event
 				</button>
 			</div>
 			{content}

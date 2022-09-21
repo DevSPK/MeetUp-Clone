@@ -35,7 +35,7 @@ export const actionDeleteEvent = (eventId) => ({
 
 export const thunkReadAllEvents =
 	() => async (dispatch) => {
-		const response = await csrfFetch("api/events");
+		const response = await csrfFetch("/api/events");
 		console.log(
 			"This is response from thunkReadAllEvents",
 			response
@@ -67,8 +67,10 @@ export const thunkGetOneEvent =
 
 export const thunkAddEvent =
 	(event) => async (dispatch) => {
+		console.log("this is event from thunkAddEvent", event);
 		const {
 			venueId,
+			groupId,
 			name,
 			capacity,
 			type,
@@ -77,27 +79,30 @@ export const thunkAddEvent =
 			startDate,
 			endDate
 		} = event;
-		const response = await csrfFetch("api/events", {
-			method: "POST",
+		const response = await csrfFetch(
+			`/api/groups/${groupId}/events`,
+			{
+				method: "POST",
 
-			body: JSON.stringify({
-				venueId,
-				name,
-				capacity,
-				type,
-				price,
-				description,
-				startDate,
-				endDate
-			})
-		});
+				body: JSON.stringify({
+					venueId,
+					name,
+					capacity,
+					type,
+					price,
+					description,
+					startDate,
+					endDate
+				})
+			}
+		);
 		const data = await response.json();
 		dispatch(actionCreateEvent(data));
 		return response;
 	};
 
 export const thunkRemoveEvent =
-	(eventId) => async (dispatch) => {
+	(eventId, groupId) => async (dispatch) => {
 		const response = await csrfFetch(
 			`/api/events/${eventId}`,
 			{

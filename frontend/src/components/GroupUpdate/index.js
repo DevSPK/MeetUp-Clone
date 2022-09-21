@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { useHistory } from "react-router-dom";
 
 import "./GroupUpdate.css";
 import { useDispatch } from "react-redux";
 import { thunkUpdateGroup } from "../../store/groups";
 
 const GroupUpdate = ({ group, hideForm }) => {
+	const history = useHistory();
 	const [name, setName] = useState(group.name);
 	const [about, setAbout] = useState(group.about);
 	const [type, setType] = useState(group.type);
@@ -43,6 +45,7 @@ const GroupUpdate = ({ group, hideForm }) => {
 		);
 
 		if (updatedGroup) {
+			history.push(`/groups/${updatedGroup.id}`);
 			hideForm();
 		}
 		//reset();

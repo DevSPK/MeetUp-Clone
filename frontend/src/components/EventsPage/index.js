@@ -45,40 +45,41 @@ const EventsPage = () => {
 
 	return (
 		<div className='events-page'>
-			<h1>events Page</h1>
-			<ul className='events-list-item'>
-				<li>
-					{eventsList.map(
-						({
-							id,
-							name,
-							city,
-							state,
-							numMembers,
-							previewImage,
-							about
-						}) => (
+			<h1>Events Page</h1>
+			<ul className='events-list'>
+				{eventsList.map(
+					({
+						id,
+						name,
+						city,
+						state,
+						numMembers,
+						previewImage,
+						about
+					}) => (
+						<li className='events-list-item'>
 							<Link
 								key={id}
 								to={`/events/${id}`}>
 								{`${name}`}
 							</Link>
-						)
-					)}
-				</li>
+						</li>
+					)
+				)}
+
 				{/* <li>
 					<Link to={"/events"}>Create an Event</Link>
 				</li> */}
 			</ul>
-			<button onClick={() => setShowCreateEventForm(true)}>
+			{/* <button onClick={() => setShowCreateEventForm(true)}>
 				Create New Event
-			</button>
+			</button> */}
 			<Route
 				exact
 				path='/events/:id'>
 				<SingleEvent />
 			</Route>
-			;<div>{content}</div>
+			<div>{content}</div>
 		</div>
 	);
 };
