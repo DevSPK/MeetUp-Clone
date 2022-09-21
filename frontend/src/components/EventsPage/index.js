@@ -8,6 +8,8 @@ import {
 	// NavLink,
 	Link
 } from "react-router-dom";
+import { SingleEvent } from "../SingleEvent";
+import EventInput from "../EventInput";
 
 const EventsPage = () => {
 	const [showCreateEventForm, setShowCreateEventForm] =
@@ -31,15 +33,15 @@ const EventsPage = () => {
 
 	let content = null;
 
-	// if (showCreateEventForm) {
-	// 	content = (
-	// 		<Route path='/events/'>
-	// 			<EventInput
-	// 				hideForm={() => setShowCreateEventForm(false)}
-	// 			/>
-	// 		</Route>
-	// 	);
-	// }
+	if (showCreateEventForm) {
+		content = (
+			<Route path='/events/'>
+				<EventInput
+					hideForm={() => setShowCreateEventForm(false)}
+				/>
+			</Route>
+		);
+	}
 
 	return (
 		<div className='events-page'>
@@ -65,20 +67,18 @@ const EventsPage = () => {
 					)}
 				</li>
 				{/* <li>
-					<Link to={"/events"}>Create a Group</Link>
+					<Link to={"/events"}>Create an Event</Link>
 				</li> */}
 			</ul>
-			{/* <button onClick={() => setShowCreateGroupForm(true)}>
-				Create New Group
+			<button onClick={() => setShowCreateEventForm(true)}>
+				Create New Event
 			</button>
-			<Switch>
-				<Route
-					exact
-					path='/groups/:id'>
-					<SingleGroup />
-				</Route>
-			</Switch> */}
-			<div>{content}</div>
+			<Route
+				exact
+				path='/events/:id'>
+				<SingleEvent />
+			</Route>
+			;<div>{content}</div>
 		</div>
 	);
 };

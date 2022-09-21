@@ -53,6 +53,65 @@ export const thunkReadAllEvents =
 		}
 	};
 
+export const thunkGetOneEvent =
+	(eventId) => async (dispatch) => {
+		const response = await csrfFetch(
+			`/api/events/${eventId}`
+		);
+
+		if (response.ok) {
+			const event = await response.json();
+			dispatch(actionReadEvent(event));
+		}
+	};
+
+export const thunkAddEvent =
+	(event) => async (dispatch) => {
+		const {
+			venueId,
+			name,
+			capacity,
+			type,
+			price,
+			description,
+			startDate,
+			endDate
+		} = event;
+		const response = await csrfFetch("api/events", {
+			method: "POST",
+
+			body: JSON.stringify({
+				venueId,
+				name,
+				capacity,
+				type,
+				price,
+				description,
+				startDate,
+				endDate
+			})
+		});
+		const data = await response.json();
+		dispatch(actionCreateEvent(data));
+		return response;
+	};
+
+export const thunkRemoveEvent =
+	(eventId) => async (dispatch) => {
+		const response = await csrfFetch(
+			`/api/events/${eventId}`,
+			{
+				method: "DELETE"
+			}
+		);
+		console.log(
+			"this is response from remove event",
+			response
+		);
+
+		if (response.ok) dispatch(actionDeleteEvent(eventId));
+	};
+
 const initialState = {};
 
 export default function eventsReducer(
@@ -69,6 +128,21 @@ export default function eventsReducer(
 			action.events.forEach((event) => {
 				newState[event.id] = event;
 			});
+			return newState;
+		}
+		case READ_EVENT: {
+			const newState = { ...state };
+			newState[action.event.id] = action.event;
+			return newState;
+		}
+		case CREATE_EVENT: {
+			const newState = { ...state };
+			newState[action.event.id] = action.event;
+			return newState;
+		}
+		case DELETE_EVENT: {
+			const newState = { ...state };
+			delete newState[action.eventId];
 			return newState;
 		}
 		default:
