@@ -74,13 +74,7 @@ const GroupsPage = () => {
 				Create New Group
 			</button>
 
-			<Switch>
-				<Route
-					exact
-					path='/groups/:id'>
-					<SingleGroup />
-				</Route>
-			</Switch>
+			<Switch></Switch>
 			<div>{content}</div>
 		</div>
 	);

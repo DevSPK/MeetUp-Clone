@@ -37,6 +37,16 @@ form {
 	cursor: pointer;
 }
 
+button {
+	background-color: white;
+	border: 0px solid;
+	font-size: 0.875em;
+	font-weight: 700;
+}
+
+button:hover {
+	color: rgb(17, 135, 158);
+}
 .nav-item {
 	color: aqua;
 }

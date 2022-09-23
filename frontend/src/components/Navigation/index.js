@@ -67,13 +67,13 @@ function Navigation({ isLoaded }) {
 						Demo User
 					</NavLink>
 				</li>
-				<li>
+				{/* <li>
 					<NavLink
 						to='/login'
 						className='nav-item'>
 						Log In
 					</NavLink>
-				</li>
+				</li> */}
 				<li>
 					<NavLink
 						to='/signup'
