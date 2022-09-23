@@ -6,6 +6,7 @@ import ProfileButton from "./ProfileButton";
 import "./Navigation.css";
 import logo from "../../assets/treffenklon_padded_logo.narrow.png";
 import * as sessionActions from "../../store/session";
+import LoginFormModal from "../LoginFormModal";
 
 function Navigation({ isLoaded }) {
 	const dispatch = useDispatch();
@@ -49,6 +50,9 @@ function Navigation({ isLoaded }) {
 	} else {
 		sessionLinks = (
 			<div className='login-items'>
+				<li>
+					<LoginFormModal className='nav-item' />
+				</li>
 				<li>
 					<NavLink
 						onClick={demoUser}
