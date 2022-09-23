@@ -7,13 +7,10 @@
 .nav-list {
 	display: flex;
 	justify-content: space-between;
-	/* flex-direction: row; */
-	/* height: auto;
-	padding: 0.5rem calc((100vw - 1000px) / 2);
-	z-index: 10; */
+	height: 64px;
 	align-items: center;
 	gap: 2rem;
-	padding: 0 1rem;
+	padding: 0px 16px;
 }
 
 .nav-list ul {
@@ -25,7 +22,6 @@
 	display: flex;
 	align-items: center;
 	text-decoration: none;
-	padding: 0 1rem;
 	height: auto;
 	cursor: pointer;
 }
@@ -43,4 +39,9 @@
 
 .logo {
 	height: 34px;
+}
+
+li {
+	display: flex;
+	align-items: center;
 }

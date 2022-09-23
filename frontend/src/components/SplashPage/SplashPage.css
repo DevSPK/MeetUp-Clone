@@ -1,0 +1,104 @@
+.flexContainer {
+	display: flex;
+	flex-direction: column;
+	line-height: 1em;
+	overflow: hidden;
+	/* position: relative; */
+
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+	padding-top: 10em;
+}
+
+/* @media (min-width: 1201px) {
+	.flexContainer {
+		padding-left: 0;
+		padding-right: 0;
+	}
+} */
+
+/* @media (min-width: 769px) {
+	.flexContainer {
+		max-width: 1120px;
+	}
+} */
+/* @media (min-width: 577px) {
+	.flexContainer {
+		padding-left: 1rem;
+		padding-right: 1rem;
+	}
+} */
+
+.welcomeDiv {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	line-height: 1em;
+	width: 100%;
+	height: 100%;
+	justify-content: center;
+}
+
+/* @media (min-width: 1201px) {
+	.welcomeDiv {
+		padding-left: 0;
+		padding-right: 0;
+	}
+} */
+
+/* @media (min-width: 769px) {
+	.welcomeDiv {
+		max-width: 1120px;
+	}
+} */
+/* @media (min-width: 577px) {
+	.welcomeDiv {
+		padding-left: 1rem;
+		padding-right: 1rem;
+	}
+} */
+.textDiv {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	width: 50vw;
+	height: 100%;
+	margin-left: 20em;
+}
+
+#headline {
+	font-weight: bold;
+	font-size: 2em;
+	line-height: 1em;
+	padding-bottom: 0.5em;
+}
+
+/* @media (min-width: 577px) {
+	#headline {
+		font-size: 3em;
+		line-height: 1em;
+	}
+} */
+/*
+@media (min-width: 577px) {
+	.welcomeDiv {
+		flex-direction: row;
+	}
+} */
+
+#imgDiv {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 60%;
+	height: 60%;
+
+	margin-right: 20em;
+}
+
+#videoMeetingImg {
+	width: 60%;
+	height: 60%;
+}

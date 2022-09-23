@@ -1,5 +1,14 @@
 /* TODO Add site wide styles */
-ul {
+
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@500;400&display=swap");
+
+body,
+html {
+	font-family: "Roboto", sans-serif;
+	-moz-osx-font-smoothing: grayscale;
+	-webkit-font-smoothing: antialiased;
+}
+CSS ul {
 	list-style-type: none;
 }
 

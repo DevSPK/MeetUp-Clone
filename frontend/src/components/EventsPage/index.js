@@ -57,12 +57,10 @@ const EventsPage = () => {
 						previewImage,
 						about
 					}) => (
-						<li className='events-list-item'>
-							<Link
-								key={id}
-								to={`/events/${id}`}>
-								{`${name}`}
-							</Link>
+						<li
+							key={id}
+							className='events-list-item'>
+							<Link to={`/events/${id}`}>{`${name}`}</Link>
 						</li>
 					)
 				)}

@@ -34,22 +34,24 @@ function ProfileButton({ user }) {
 	let initial;
 	let initialIcon;
 
-	// if (!user) return null;
-
-	// if (user) {
-	// 	initial = user.firstName[0];
-	// 	initialIcon = (
-	// 		<div id='initialIcon'>
-	// 			<div id='initial'>{initial}</div>
-	// 		</div>
-	// 	);
-	// } else {
-	// }
-	initialIcon = <i className='fas fa-user-circle' />;
+	if (user.firstName !== undefined) {
+		initial = user.firstName[0];
+		initialIcon = (
+			<div id='initialIcon'>
+				<div id='initial'>{initial}</div>
+			</div>
+		);
+	} else {
+		initialIcon = <i className='fas fa-user-circle' />;
+	}
 
 	return (
 		<>
-			<button onClick={openMenu}>{initialIcon}</button>
+			<button
+				className='userButton'
+				onClick={openMenu}>
+				{initialIcon}
+			</button>
 			{showMenu && (
 				<ul className='profile-dropdown'>
 					<li>
