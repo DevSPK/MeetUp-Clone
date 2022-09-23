@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import "./GroupInput.css";
 import { useDispatch } from "react-redux";
 import { thunkAddGroup } from "../../store/groups";
-import { useHistory } from "react-router-dom";
+import { useHistory, Redirect } from "react-router-dom";
 
 const GroupInput = ({ hideForm }) => {
 	const history = useHistory();
@@ -14,8 +14,16 @@ const GroupInput = ({ hideForm }) => {
 	const [city, setCity] = useState("");
 	const [state, setState] = useState("");
 	const [imageUrl, setImageUrl] = useState("");
+	const [errors, setErrors] = useState([]);
 
 	const dispatch = useDispatch();
+
+	// useEffect(() => {
+	// 	const errors = [];
+
+	// 	if (name.length > 60)
+	// 		errors.push("Name must be 60 characters or less");
+	// });
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -30,23 +38,32 @@ const GroupInput = ({ hideForm }) => {
 			imageUrl
 		};
 
-		console.log({ newGroup });
+		setErrors([]);
 
-		// useEffect(() => {
-		// 	dispatch(addGroup(newGroup));
-		// }, [dispatch]);
-
-		const createdGroup = await dispatch(
-			thunkAddGroup(newGroup)
+		return dispatch(thunkAddGroup(newGroup)).catch(
+			async (res) => {
+				const data = await res.jon();
+				if (data && data.errors) setErrors(data.errors);
+			}
 		);
 
-		if (!createdGroup) return null;
+		// console.log({ newGroup });
 
-		if (createdGroup) {
-			reset();
-			hideForm();
-			history.push(`/groups/`);
-		}
+		// // useEffect(() => {
+		// // 	dispatch(addGroup(newGroup));
+		// // }, [dispatch]);
+
+		// // const createdGroup = dispatch(
+		// // 	thunkAddGroup(newGroup)
+		// // );
+
+		// if (!createdGroup) return null;
+
+		// if (createdGroup && errors.length === 0) {
+		// 	reset();
+		// 	hideForm();
+		// 	return <Redirect to='/groups/' />;
+		// }
 	};
 
 	const reset = () => {
@@ -69,6 +86,11 @@ const GroupInput = ({ hideForm }) => {
 		<div className='inputBox'>
 			<h1>Create Group</h1>
 			<form onSubmit={handleSubmit}>
+				<ul className='login-errors-ul'>
+					{errors.map((error, idx) => (
+						<li key={idx}>{error}</li>
+					))}
+				</ul>
 				<input
 					type='text'
 					onChange={(e) => setName(e.target.value)}
