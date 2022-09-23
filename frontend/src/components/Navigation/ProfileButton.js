@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import * as sessionActions from "../../store/session";
+import "./ProfileButton.css";
 
 function ProfileButton({ user }) {
 	const dispatch = useDispatch();
@@ -30,10 +31,26 @@ function ProfileButton({ user }) {
 		dispatch(sessionActions.logout());
 	};
 
+	let initial;
+	let initialIcon;
+
+	if (user.firstName !== undefined) {
+		initial = user.firstName[0];
+		initialIcon = (
+			<div id='initialIcon'>
+				<div id='initial'>{initial}</div>
+			</div>
+		);
+	} else {
+		initialIcon = <i className='fas fa-user-circle' />;
+	}
+
 	return (
 		<>
-			<button onClick={openMenu}>
-				<i className='fas fa-user-circle' />
+			<button
+				className='userButton'
+				onClick={openMenu}>
+				{initialIcon}
 			</button>
 			{showMenu && (
 				<ul className='profile-dropdown'>

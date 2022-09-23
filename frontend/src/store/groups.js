@@ -75,9 +75,16 @@ export const thunkGetOneGroup =
 
 export const thunkAddGroup =
 	(group) => async (dispatch) => {
-		const { name, about, type, privateVal, city, state } =
-			group;
-		const response = await csrfFetch("api/groups", {
+		const {
+			name,
+			about,
+			type,
+			privateVal,
+			city,
+			state,
+			imageUrl
+		} = group;
+		const groupResponse = await csrfFetch("api/groups", {
 			method: "POST",
 
 			body: JSON.stringify({
@@ -89,9 +96,31 @@ export const thunkAddGroup =
 				state
 			})
 		});
-		const data = await response.json();
-		dispatch(actionCreateGroup(data));
-		return response;
+		if (groupResponse.ok) {
+			const data = await groupResponse.json();
+
+			const { id } = data;
+
+			console.log("this is data from groupResponse", data);
+			console.log("this is id from groupresponse.body", id);
+
+			const imageResponse = await csrfFetch(
+				`api/groups/${id}/images`,
+				{
+					method: "POST",
+
+					body: JSON.stringify({
+						url: imageUrl,
+						preview: true
+					})
+				}
+			);
+			if (imageResponse.ok) {
+				// const imgageData = await imageResponse.json()
+				dispatch(actionCreateGroup(data));
+				return groupResponse;
+			}
+		}
 	};
 
 export const thunkUpdateGroup =

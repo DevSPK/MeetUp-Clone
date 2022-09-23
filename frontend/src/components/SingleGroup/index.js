@@ -38,7 +38,7 @@ export const SingleGroup = () => {
 
 	//const groupChoice = groupList.find(({id}) => id === groupId)
 
-	// console.log("this is group from singlegroup", group);
+	console.log("this is group from singlegroup", group);
 
 	async function handleDelete(groupId) {
 		await dispatch(thunkRemoveGroup(groupId));
@@ -70,6 +70,30 @@ export const SingleGroup = () => {
 	if (!group) {
 		return null;
 	}
+
+	let previewImgUrl;
+
+	if (group.GroupImages) {
+		const { GroupImages } = group;
+
+		const previewImg = GroupImages.find(
+			({ preview }) => preview === true
+		);
+
+		console.log(
+			"this is previewImg.url for the group image",
+			previewImg.url
+		);
+
+		previewImgUrl = previewImg.url;
+	} else {
+		console.log(
+			"this is group.previewImage data for the group image",
+			group.previewImage
+		);
+		previewImgUrl = group.previewImage;
+	}
+
 	return (
 		<div>
 			<h1>Group Name: {group.name}</h1>
@@ -78,6 +102,12 @@ export const SingleGroup = () => {
 			<h3>Is Group Private: {`${group.private}`}</h3>
 			<h3>City: {group.city}</h3>
 			<h3>State: {group.state}</h3>
+			<img
+				id='groupPreviewImg'
+				src={previewImgUrl}
+				alt='a depiction of this group'
+				loading=' eager'
+			/>
 			<div className='buttons'>
 				<button onClick={() => handleDelete(group.id)}>
 					Delete Group

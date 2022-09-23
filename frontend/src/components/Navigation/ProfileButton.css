@@ -1,0 +1,35 @@
+.fas.fa-user-circle {
+	width: 48;
+	height: 48;
+	border-radius: 48/2;
+}
+
+.profile-dropdown {
+	display: flex;
+	flex-direction: column;
+}
+
+/* #initialIcon {
+	width: 48px;
+	height: 48px;
+	border-radius: 48px;
+	background-color: rgb(179 196 172);
+	border: 20px black;
+} */
+
+#initial {
+	width: 100%;
+	text-align: center;
+	color: #000;
+	font-size: 1.5em;
+	line-height: 100%;
+}
+
+.userButton {
+	/* background-color: #ffffff;
+	border: 0px; */
+	width: 48px;
+	height: 48px;
+	border-radius: 48px;
+	background-color: rgb(179, 196, 172);
+}

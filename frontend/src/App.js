@@ -13,6 +13,7 @@ import Navigation from "./components/Navigation";
 import GroupsPage from "./components/GroupsPage";
 import EventsPage from "./components/EventsPage";
 import SplashPage from "./components/SplashPage";
+import { SingleGroup } from "./components/SingleGroup";
 
 function App() {
 	const dispatch = useDispatch();
@@ -24,10 +25,15 @@ function App() {
 	}, [dispatch]);
 
 	return (
-		<div className=''>
+		<div className='App'>
 			<Navigation isLoaded={isLoaded} />
 			{isLoaded && (
 				<Switch>
+					<Route
+						exact
+						path='/groups/:id'>
+						<SingleGroup />
+					</Route>
 					<Route path='/login'>
 						<LoginFormPage />
 					</Route>
@@ -40,6 +46,7 @@ function App() {
 					<Route path='/events'>
 						<EventsPage />
 					</Route>
+
 					<Route
 						exact
 						path='/'>
