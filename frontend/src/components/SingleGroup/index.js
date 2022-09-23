@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import GroupUpdate from "../GroupUpdate";
 import EventInput from "../EventInput";
+import * as sessionActions from "../../store/session";
 
 export const SingleGroup = () => {
 	let history = useHistory();
@@ -23,6 +24,15 @@ export const SingleGroup = () => {
 		useState(false);
 	const [showCreateEventForm, setShowCreateEventForm] =
 		useState(false);
+
+	const sessionUser = useSelector(
+		(state) => state.session.user
+	);
+
+	console.log(
+		"this is sessionUser in singleGroup",
+		sessionUser
+	);
 
 	// console.log("this is id", id);
 
@@ -49,7 +59,10 @@ export const SingleGroup = () => {
 
 	let content = null;
 
-	if (showEditGroupForm) {
+	if (
+		showEditGroupForm &&
+		sessionUser.id === group.organizerId
+	) {
 		content = (
 			<GroupUpdate
 				group={group}
@@ -73,26 +86,46 @@ export const SingleGroup = () => {
 
 	let previewImgUrl;
 
+	// if return group has a group images array, find the preview image or set a placeholder
 	if (group.GroupImages) {
 		const { GroupImages } = group;
 
-		const previewImg = GroupImages.find(
-			({ preview }) => preview === true
-		);
-
 		console.log(
-			"this is previewImg.url for the group image",
-			previewImg.url
+			"this is previewImg if group.GroupImages",
+			GroupImages
 		);
+		if (GroupImages.length === 1) {
+			const [groupImageData] = GroupImages;
 
-		previewImgUrl = previewImg.url;
-	} else {
-		console.log(
-			"this is group.previewImage data for the group image",
-			group.previewImage
-		);
-		previewImgUrl = group.previewImage;
+			previewImgUrl = groupImageData.url;
+
+			console.log("this is groupImageData", groupImageData);
+		}
+
+		if (GroupImages.length > 2) {
+			const previewImg = GroupImages.find(
+				({ preview }) => preview === true
+			);
+			previewImgUrl = previewImg.url;
+		}
 	}
+
+	// console.log(
+	// 	"this is previewImg.url for the group image",
+	// 	previewImg.url
+	// );
+
+	// if returned group doesn't have a groupimgages object, display the preview url or return a placeholder
+	// if (group.previewImage && group.GroupImages) {
+	// 	console.log(
+	// 		"this is group.previewImage data for the group image",
+	// 		group.previewImage
+	// 	);
+	// 	previewImgUrl = group.previewImage;
+	// } else {
+	// 	previewImgUrl =
+	// 		"https://via.placeholder.com/255x125?text=Image+not+found";
+	// }
 
 	return (
 		<div>
@@ -106,7 +139,7 @@ export const SingleGroup = () => {
 				id='groupPreviewImg'
 				src={previewImgUrl}
 				alt='a depiction of this group'
-				loading=' eager'
+				loading='lazy'
 			/>
 			<div className='buttons'>
 				<button onClick={() => handleDelete(group.id)}>
