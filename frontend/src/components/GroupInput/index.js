@@ -13,6 +13,7 @@ const GroupInput = ({ hideForm }) => {
 	const [privateVal, setPrivateVal] = useState(true);
 	const [city, setCity] = useState("");
 	const [state, setState] = useState("");
+	const [imageUrl, setImageUrl] = useState("");
 
 	const dispatch = useDispatch();
 
@@ -25,7 +26,8 @@ const GroupInput = ({ hideForm }) => {
 			type,
 			privateVal,
 			city,
-			state
+			state,
+			imageUrl
 		};
 
 		console.log({ newGroup });
@@ -52,6 +54,7 @@ const GroupInput = ({ hideForm }) => {
 		setPrivateVal(true);
 		setCity("");
 		setState("");
+		setImageUrl("");
 	};
 
 	const handleCancelClick = (e) => {
@@ -117,6 +120,15 @@ const GroupInput = ({ hideForm }) => {
 					placeholder='State'
 					name='state'
 				/>
+				<input
+					type='text'
+					onChange={(e) => setImageUrl(e.target.value)}
+					value={imageUrl}
+					// defaultValue={"https://picsum.photos/225/125"}
+					placeholder='Image Url'
+					name='imageUrl'
+				/>
+
 				<button type='submit'>Submit</button>
 				<button
 					type='button'
