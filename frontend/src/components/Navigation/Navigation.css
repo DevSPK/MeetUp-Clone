@@ -24,6 +24,8 @@
 	text-decoration: none;
 	height: auto;
 	cursor: pointer;
+	font-size: 0.875em;
+	font-weight: 700;
 }
 
 .nav-item:hover {
@@ -32,9 +34,20 @@
 
 .login-items {
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
 	align-items: center;
-	margin-right: -24px;
+	text-decoration: none;
+	justify-content: space-between;
+}
+
+.login-items li {
+	padding-left: 1em;
+	font-size: 0.875em;
+	font-weight: 700;
+}
+
+.login-items li:hover {
+	color: rgb(17, 135, 158);
 }
 
 .logo {

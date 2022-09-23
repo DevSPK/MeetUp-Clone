@@ -1,15 +1,27 @@
 // frontend/src/components/Navigation/index.js
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import ProfileButton from "./ProfileButton";
 import "./Navigation.css";
 import logo from "../../assets/treffenklon_padded_logo.narrow.png";
+import * as sessionActions from "../../store/session";
 
 function Navigation({ isLoaded }) {
+	const dispatch = useDispatch();
 	const sessionUser = useSelector(
 		(state) => state.session.user
 	);
+
+	const demoUser = (e) => {
+		e.preventDefault();
+		return dispatch(
+			sessionActions.login({
+				credential: "demo@user.io",
+				password: "password"
+			})
+		);
+	};
 
 	let sessionLinks;
 	let groupsLink;
@@ -37,8 +49,34 @@ function Navigation({ isLoaded }) {
 	} else {
 		sessionLinks = (
 			<div className='login-items'>
-				<NavLink to='/login'>Log In</NavLink>
-				<NavLink to='/signup'>Sign Up</NavLink>
+				<li>
+					<NavLink
+						onClick={demoUser}
+						to={{
+							pathname: "/login",
+							userProps: {
+								credential: "demo@user.io",
+								password: "password"
+							}
+						}}
+						className='nav-item'>
+						Demo User
+					</NavLink>
+				</li>
+				<li>
+					<NavLink
+						to='/login'
+						className='nav-item'>
+						Log In
+					</NavLink>
+				</li>
+				<li>
+					<NavLink
+						to='/signup'
+						className='nav-item'>
+						Sign Up
+					</NavLink>
+				</li>
 			</div>
 		);
 	}
@@ -60,7 +98,7 @@ function Navigation({ isLoaded }) {
 			<ul>
 				<li>{isLoaded && groupsLink}</li>
 				<li>{isLoaded && eventsLink}</li>
-				<li>{isLoaded && sessionLinks}</li>
+				{isLoaded && sessionLinks}
 			</ul>
 		</nav>
 	);
