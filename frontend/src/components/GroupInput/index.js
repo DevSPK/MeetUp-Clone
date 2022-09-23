@@ -40,10 +40,12 @@ const GroupInput = ({ hideForm }) => {
 			thunkAddGroup(newGroup)
 		);
 
+		if (!createdGroup) return null;
+
 		if (createdGroup) {
 			reset();
-			history.push(`/groups/${createdGroup.id}`);
 			hideForm();
+			history.push(`/groups/`);
 		}
 	};
 
@@ -59,6 +61,7 @@ const GroupInput = ({ hideForm }) => {
 
 	const handleCancelClick = (e) => {
 		e.preventDefault();
+		reset();
 		hideForm();
 	};
 
