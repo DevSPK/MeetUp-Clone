@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import "./GroupInput.css";
 import { useDispatch } from "react-redux";
 import { thunkAddGroup } from "../../store/groups";
-import { useHistory } from "react-router-dom";
+import { useHistory, Redirect } from "react-router-dom";
 
 const GroupInput = ({ hideForm }) => {
 	const history = useHistory();
@@ -14,8 +14,20 @@ const GroupInput = ({ hideForm }) => {
 	const [city, setCity] = useState("");
 	const [state, setState] = useState("");
 	const [imageUrl, setImageUrl] = useState("");
+	const [errors, setErrors] = useState([]);
 
 	const dispatch = useDispatch();
+
+	// useEffect(
+	// 	({ hideForm }) => {
+	// 		if (!errors) {
+	// 			reset();
+	// 			hideForm();
+	// 			return <Redirect to='/groups/' />;
+	// 		}
+	// 	},
+	// 	[dispatch]
+	// );
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -30,23 +42,47 @@ const GroupInput = ({ hideForm }) => {
 			imageUrl
 		};
 
-		console.log({ newGroup });
+		setErrors([]);
 
-		// useEffect(() => {
-		// 	dispatch(addGroup(newGroup));
-		// }, [dispatch]);
-
-		const createdGroup = await dispatch(
-			thunkAddGroup(newGroup)
+		return dispatch(thunkAddGroup(newGroup)).catch(
+			async (res) => {
+				const data = await res.json();
+				console.log("this is data1", data);
+				if (data && !data.errors) {
+					console.log("this is data2", data);
+					reset();
+					hideForm();
+					return <Redirect to='/groups/' />;
+				} else if (data && data.errors) {
+					console.log("this is data3", data);
+					return setErrors(data.errors);
+				}
+			}
 		);
 
-		if (!createdGroup) return null;
+		// let createdGroup
 
-		if (createdGroup) {
-			reset();
-			hideForm();
-			history.push(`/groups/`);
-		}
+		// try {
+		// 	createdGroup = await dispatch(thunkAddGroup(newGroup))
+		// } catch()
+
+		// console.log({ newGroup });
+
+		// // useEffect(() => {
+		// // 	dispatch(addGroup(newGroup));
+		// // }, [dispatch]);
+
+		// // const createdGroup = dispatch(
+		// // 	thunkAddGroup(newGroup)
+		// // );
+
+		// if (!createdGroup) return null;
+
+		// if (createdGroup && errors.length === 0) {
+		// 	reset();
+		// 	hideForm();
+		// 	return <Redirect to='/groups/' />;
+		// }
 	};
 
 	const reset = () => {
@@ -61,6 +97,7 @@ const GroupInput = ({ hideForm }) => {
 
 	const handleCancelClick = (e) => {
 		e.preventDefault();
+		setErrors([]);
 		reset();
 		hideForm();
 	};
@@ -69,6 +106,11 @@ const GroupInput = ({ hideForm }) => {
 		<div className='inputBox'>
 			<h1>Create Group</h1>
 			<form onSubmit={handleSubmit}>
+				<ul className='login-errors-ul'>
+					{errors.map((error, idx) => (
+						<li key={idx}>{error}</li>
+					))}
+				</ul>
 				<input
 					type='text'
 					onChange={(e) => setName(e.target.value)}
