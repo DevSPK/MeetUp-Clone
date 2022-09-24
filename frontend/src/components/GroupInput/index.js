@@ -18,12 +18,16 @@ const GroupInput = ({ hideForm }) => {
 
 	const dispatch = useDispatch();
 
-	// useEffect(() => {
-	// 	const errors = [];
-
-	// 	if (name.length > 60)
-	// 		errors.push("Name must be 60 characters or less");
-	// });
+	// useEffect(
+	// 	({ hideForm }) => {
+	// 		if (!errors) {
+	// 			reset();
+	// 			hideForm();
+	// 			return <Redirect to='/groups/' />;
+	// 		}
+	// 	},
+	// 	[dispatch]
+	// );
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -42,10 +46,25 @@ const GroupInput = ({ hideForm }) => {
 
 		return dispatch(thunkAddGroup(newGroup)).catch(
 			async (res) => {
-				const data = await res.jon();
-				if (data && data.errors) setErrors(data.errors);
+				const data = await res.json();
+				console.log("this is data1", data);
+				if (data && !data.errors) {
+					console.log("this is data2", data);
+					reset();
+					hideForm();
+					return <Redirect to='/groups/' />;
+				} else if (data && data.errors) {
+					console.log("this is data3", data);
+					return setErrors(data.errors);
+				}
 			}
 		);
+
+		// let createdGroup
+
+		// try {
+		// 	createdGroup = await dispatch(thunkAddGroup(newGroup))
+		// } catch()
 
 		// console.log({ newGroup });
 
@@ -78,6 +97,7 @@ const GroupInput = ({ hideForm }) => {
 
 	const handleCancelClick = (e) => {
 		e.preventDefault();
+		setErrors([]);
 		reset();
 		hideForm();
 	};
