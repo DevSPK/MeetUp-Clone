@@ -44,21 +44,25 @@ const GroupInput = ({ hideForm }) => {
 
 		setErrors([]);
 
-		return dispatch(thunkAddGroup(newGroup)).catch(
-			async (res) => {
-				const data = await res.json();
-				console.log("this is data1", data);
-				if (data && !data.errors) {
-					console.log("this is data2", data);
+		// have to wait for response from promise, check if it is okay, otherwise will process error
+
+		return dispatch(thunkAddGroup(newGroup))
+			.then(async (res) => {
+				if (res.ok) {
+					console.log("this is res", res);
 					reset();
 					hideForm();
 					return <Redirect to='/groups/' />;
-				} else if (data && data.errors) {
+				}
+			})
+			.catch(async (res) => {
+				const data = await res.json();
+				console.log("this is data1", data);
+				if (data && data.errors) {
 					console.log("this is data3", data);
 					return setErrors(data.errors);
 				}
-			}
-		);
+			});
 
 		// let createdGroup
 
