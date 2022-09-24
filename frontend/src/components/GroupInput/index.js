@@ -47,7 +47,7 @@ const GroupInput = ({ hideForm }) => {
 		// have to wait for response from promise, check if it is okay, otherwise will process error
 
 		return dispatch(thunkAddGroup(newGroup))
-			.then(async (res) => {
+			.then((res) => {
 				if (res.ok) {
 					console.log("this is res", res);
 					reset();
