@@ -29,33 +29,51 @@ export const SingleGroup = () => {
 		(state) => state.session.user
 	);
 
+	const groupsList = useSelector((state) =>
+		Object.values(state.groups)
+	);
+
+	console.log(
+		"this is groupsList from readAllGroups",
+		groupsList
+	);
+
 	console.log(
 		"this is sessionUser in singleGroup",
 		sessionUser
 	);
 
+	let paramId = id;
+
+	let normalizedGroups = {};
+
+	groupsList.forEach(
+		(group) => (normalizedGroups[group.id] = group)
+	);
+
 	// console.log("this is id", id);
 
 	// console.log("this is singleGroup groupsList", groupsList);
+	//
+	// ************** this is not the right return with image info****************
+	// let group = useSelector((state) => state.groups[id]);
 
-	let group = useSelector((state) => state.groups[id]);
+	// console.log("this is group from state.gourps", group);
 
-	// console.log(group);
+	// useEffect(() => {
+	// 	dispatch(thunkGetOneGroup(id));
+	// }, [dispatch, id]);
 
-	useEffect(() => {
-		dispatch(thunkGetOneGroup(id));
-	}, [dispatch, id]);
+	const group = normalizedGroups[paramId];
 
-	//const groupChoice = groupList.find(({id}) => id === groupId)
-
-	console.log("this is group from singlegroup", group);
+	console.log("this is group from normalizedGroups", group);
 
 	async function handleDelete(groupId) {
 		await dispatch(thunkRemoveGroup(groupId));
 		history.push("/");
 	}
 
-	console.log("this is group from singleGroup", group);
+	// console.log("this is group from singleGroup", group);
 
 	let content = null;
 
@@ -84,31 +102,29 @@ export const SingleGroup = () => {
 		return null;
 	}
 
-	let previewImgUrl;
-
 	// if return group has a group images array, find the preview image or set a placeholder
-	if (group.GroupImages) {
-		const { GroupImages } = group;
+	// if (group.GroupImages) {
+	// 	const { GroupImages } = group;
 
-		console.log(
-			"this is previewImg if group.GroupImages",
-			GroupImages
-		);
-		if (GroupImages.length === 1) {
-			const [groupImageData] = GroupImages;
+	// 	console.log(
+	// 		"this is previewImg if group.GroupImages",
+	// 		GroupImages
+	// 	);
+	// 	if (GroupImages.length === 1) {
+	// 		const [groupImageData] = GroupImages;
 
-			previewImgUrl = groupImageData.url;
+	// 		previewImgUrl = groupImageData.url;
 
-			console.log("this is groupImageData", groupImageData);
-		}
+	// 		console.log("this is groupImageData", groupImageData);
+	// 	}
 
-		if (GroupImages.length > 2) {
-			const previewImg = GroupImages.find(
-				({ preview }) => preview === true
-			);
-			previewImgUrl = previewImg.url;
-		}
-	}
+	// 	if (GroupImages.length > 2) {
+	// 		const previewImg = GroupImages.find(
+	// 			({ preview }) => preview === true
+	// 		);
+	// 		previewImgUrl = previewImg.url;
+	// 	}
+	// }
 
 	// console.log(
 	// 	"this is previewImg.url for the group image",
@@ -116,7 +132,7 @@ export const SingleGroup = () => {
 	// );
 
 	// if returned group doesn't have a groupimgages object, display the preview url or return a placeholder
-	// if (group.previewImage && group.GroupImages) {
+	// if (group.previewImage) {
 	// 	console.log(
 	// 		"this is group.previewImage data for the group image",
 	// 		group.previewImage
@@ -137,9 +153,8 @@ export const SingleGroup = () => {
 			<h3>State: {group.state}</h3>
 			<img
 				id='groupPreviewImg'
-				src={previewImgUrl}
+				src={group.previewImage}
 				alt='a depiction of this group'
-				loading='lazy'
 			/>
 			<div className='buttons'>
 				<button onClick={() => handleDelete(group.id)}>

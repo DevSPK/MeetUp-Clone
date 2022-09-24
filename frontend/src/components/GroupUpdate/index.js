@@ -6,21 +6,27 @@ import { useDispatch } from "react-redux";
 import { thunkUpdateGroup } from "../../store/groups";
 
 const GroupUpdate = ({ group, hideForm }) => {
+	let editedGroup = group;
 	const history = useHistory();
-	const [name, setName] = useState(group.name);
-	const [about, setAbout] = useState(group.about);
-	const [type, setType] = useState(group.type);
+	const [name, setName] = useState(editedGroup.name);
+	const [about, setAbout] = useState(editedGroup.about);
+	const [type, setType] = useState(editedGroup.type);
 	const [privateVal, setPrivateVal] = useState(
-		group.private
+		editedGroup.private
 	);
-	const [city, setCity] = useState(group.city);
-	const [state, setState] = useState(group.state);
-
-	console.log("this is group prop", group);
-	console.log("this is privateVal", privateVal);
-	console.log("this is group.privateVal", group.privateVal);
-
+	const [city, setCity] = useState(editedGroup.city);
+	const [state, setState] = useState(editedGroup.state);
+	const [errors, setErrors] = useState([]);
+	// const [previewImage, setPreviewImage] = useState(editedGroup.previewImage)
 	const dispatch = useDispatch();
+
+	console.log("this is editedGroup prop", editedGroup);
+	console.log("this is privateVal", privateVal);
+	console.log(
+		"this is editedGroup.privateVal",
+		editedGroup.privateVal
+	);
+
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
@@ -31,7 +37,7 @@ const GroupUpdate = ({ group, hideForm }) => {
 			privateVal,
 			city,
 			state,
-			id: group.id
+			id: editedGroup.id
 		};
 
 		console.log({ newInfo });
@@ -40,8 +46,13 @@ const GroupUpdate = ({ group, hideForm }) => {
 		// 	dispatch(addGroup(updatedGroup));
 		// }, [dispatch]);
 
-		const updatedGroup = await dispatch(
+		const updatedGroup = dispatch(
 			thunkUpdateGroup(newInfo)
+		);
+
+		console.log(
+			"this is updatedGroup from thunkUpdateGroup",
+			updatedGroup
 		);
 
 		if (updatedGroup) {
