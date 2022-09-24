@@ -6,7 +6,8 @@ import {
 // import { Link } from "react-router-dom";
 import {
 	thunkGetOneGroup,
-	thunkRemoveGroup
+	thunkRemoveGroup,
+	thunkReadAllGroups
 } from "../../store/groups";
 
 import React from "react";
@@ -25,6 +26,8 @@ export const SingleGroup = () => {
 	const [showCreateEventForm, setShowCreateEventForm] =
 		useState(false);
 
+	const paramId = id;
+
 	const sessionUser = useSelector(
 		(state) => state.session.user
 	);
@@ -34,21 +37,28 @@ export const SingleGroup = () => {
 		sessionUser
 	);
 
+	const groupsList = useSelector((state) =>
+		Object.values(state.groups)
+	);
+
+	useEffect(() => {
+		dispatch(thunkReadAllGroups());
+	}, [dispatch]);
+
 	// console.log("this is id", id);
 
 	// console.log("this is singleGroup groupsList", groupsList);
 
-	let group = useSelector((state) => state.groups[id]);
+	let group = groupsList.find(({ id }) => id === paramId);
+	console.log("this is selectedGroup", group);
 
-	// console.log(group);
-
-	useEffect(() => {
-		dispatch(thunkGetOneGroup(id));
-	}, [dispatch, id]);
+	// useEffect(() => {
+	// 	dispatch(thunkGetOneGroup(id));
+	// }, [dispatch, id]);
 
 	//const groupChoice = groupList.find(({id}) => id === groupId)
 
-	console.log("this is group from singlegroup", group);
+	// console.log("this is group from singlegroup", group);
 
 	async function handleDelete(groupId) {
 		await dispatch(thunkRemoveGroup(groupId));
@@ -139,7 +149,6 @@ export const SingleGroup = () => {
 				id='groupPreviewImg'
 				src={previewImgUrl}
 				alt='a depiction of this group'
-				loading='lazy'
 			/>
 			<div className='buttons'>
 				<button onClick={() => handleDelete(group.id)}>

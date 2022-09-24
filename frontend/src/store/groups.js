@@ -152,7 +152,7 @@ export const thunkUpdateGroup =
 
 		if (response.ok) {
 			const data = await response.json();
-			dispatch(actionCreateGroup(data));
+			dispatch(actionUpdateGroup(data));
 			return data;
 		}
 	};

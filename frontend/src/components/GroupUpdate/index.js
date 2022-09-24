@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
 
 import "./GroupUpdate.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { thunkUpdateGroup } from "../../store/groups";
+import { thunkGetOneGroup } from "../../store/groups";
 
 const GroupUpdate = ({ group, hideForm }) => {
 	const history = useHistory();
@@ -20,6 +21,10 @@ const GroupUpdate = ({ group, hideForm }) => {
 	console.log("this is privateVal", privateVal);
 	console.log("this is group.privateVal", group.privateVal);
 
+	let groupState = useSelector(
+		(state) => state.groups[group.id]
+	);
+
 	const dispatch = useDispatch();
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -34,20 +39,30 @@ const GroupUpdate = ({ group, hideForm }) => {
 			id: group.id
 		};
 
+		console.log({ groupState });
 		console.log({ newInfo });
 
 		// useEffect(() => {
 		// 	dispatch(addGroup(updatedGroup));
 		// }, [dispatch]);
 
-		const updatedGroup = await dispatch(
-			thunkUpdateGroup(newInfo)
+		return dispatch(thunkUpdateGroup(newInfo)).then(
+			(res) => {
+				if (res.ok) {
+					console.log("this is res", res);
+
+					hideForm();
+					return (
+						<Redirect to={`/groups/${groupState.id}`} />
+					);
+				}
+			}
 		);
 
-		if (updatedGroup) {
-			history.push(`/groups/${updatedGroup.id}`);
-			hideForm();
-		}
+		// if (updatedGroup) {
+		// 	hideForm();
+		// 	<Redirect to={`/groups/${updatedGroup.id}`} />;
+		// }
 		//reset();
 	};
 
