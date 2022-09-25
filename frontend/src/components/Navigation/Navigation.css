@@ -6,11 +6,17 @@
 
 .nav-list {
 	display: flex;
+	flex-direction: row;
 	justify-content: space-between;
 	height: 64px;
 	align-items: center;
 	gap: 2rem;
 	padding: 0px 16px;
+	position: sticky;
+	top: 0px;
+	width: 100%;
+	z-index: 9999;
+	background-color: white;
 }
 
 .nav-list ul {

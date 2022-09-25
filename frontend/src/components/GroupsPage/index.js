@@ -10,6 +10,7 @@ import {
 } from "react-router-dom";
 import { SingleGroup } from "../SingleGroup";
 import GroupInput from "../GroupInput";
+import "./GroupsPage.css";
 
 const GroupsPage = () => {
 	const [showCreateGroupForm, setShowCreateGroupForm] =
@@ -46,42 +47,45 @@ const GroupsPage = () => {
 	}
 
 	return (
-		<div className='groups-page'>
-			<h1>Groups Page</h1>
-			<ul className='groups-list-item'>
-				{groupsList.map(
-					({
-						id,
-						name,
-						city,
-						state,
-						numMembers,
-						previewImage,
-						about
-					}) => (
-						<Link
-							key={id}
-							to={`/groups/${id}`}>
-							<li>
-								<h1>{name}</h1>
-								<img
-									src={previewImage}
-									alt='a depiction of this group'
-								/>
-							</li>
-						</Link>
-					)
-				)}
-				{/* <li>
+		<div>
+			<div className='groups-page'>
+				<h1>Groups Page</h1>
+				<ul className='groups-list-item'>
+					{groupsList.map(
+						({
+							id,
+							name,
+							city,
+							state,
+							numMembers,
+							previewImage,
+							about
+						}) => (
+							<Link
+								key={id}
+								to={`/groups/${id}`}>
+								<li>
+									<h1>{name}</h1>
+									<img
+										src={previewImage}
+										alt='a depiction of this group'
+									/>
+								</li>
+							</Link>
+						)
+					)}
+					{/* <li>
 					<Link to={"/groups"}>Create a Group</Link>
 				</li> */}
-			</ul>
-			<button onClick={() => setShowCreateGroupForm(true)}>
-				Create New Group
-			</button>
+				</ul>
+				<button
+					onClick={() => setShowCreateGroupForm(true)}>
+					Create New Group
+				</button>
 
-			<Switch></Switch>
-			<div>{content}</div>
+				<Switch></Switch>
+				<div>{content}</div>
+			</div>
 		</div>
 	);
 };

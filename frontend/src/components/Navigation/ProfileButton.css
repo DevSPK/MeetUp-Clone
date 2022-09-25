@@ -7,6 +7,31 @@
 .profile-dropdown {
 	display: flex;
 	flex-direction: column;
+	background-color: white;
+
+	width: max-content;
+
+	background-color: #ffffff;
+	border: 0px;
+	border-radius: 0.25rem;
+
+	box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+		rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+		rgba(0, 0, 0, 0.1) 0px 10px 15px -3px,
+		rgba(0, 0, 0, 0.1) 0px 4px 6px -4px;
+	box-sizing: border-box;
+	position: absolute;
+	font-size: 16px;
+	min-width: 190px;
+	padding-bottom: 0.75rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	padding-top: 0.75rem;
+
+	right: 0px;
+	top: 3rem;
+	/* transform: translate(0px, 48px);
+	z-index: 52; */
 }
 
 /* #initialIcon {
@@ -32,4 +57,21 @@
 	height: 48px;
 	border-radius: 48px;
 	background-color: rgb(179, 196, 172);
+}
+
+.logout-button {
+	background-color: white;
+	border: white 0px;
+	font-family: "Roboto", sans-serif;
+	font-size: 16px;
+	color: black;
+	cursor: pointer;
+}
+
+.drop-down-items:hover {
+	color: rgb(17, 135, 158);
+}
+
+.logout-button:hover {
+	color: rgb(17, 135, 158);
 }
