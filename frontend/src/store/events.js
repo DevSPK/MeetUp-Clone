@@ -44,8 +44,8 @@ export const thunkReadAllEvents =
 			const events = await response.json();
 
 			console.log(
-				"this is events from thunkReadAllEvents",
-				events
+				"this is events.Events from thunkReadAllEvents",
+				events.Events
 			);
 			// console.log()
 
@@ -148,7 +148,8 @@ export default function eventsReducer(
 ) {
 	switch (action.type) {
 		case READ_ALL_EVENTS: {
-			const newState = { ...state };
+			// need to start with an empty state in order to capture updates/deletes
+			const newState = {};
 			console.log(
 				"this is action.events in read all events",
 				action.events
@@ -156,6 +157,10 @@ export default function eventsReducer(
 			action.events.forEach((event) => {
 				newState[event.id] = event;
 			});
+			console.log(
+				"this is newState in read_all_events",
+				newState
+			);
 			return newState;
 		}
 		case READ_EVENT: {

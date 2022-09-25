@@ -12,24 +12,22 @@ import { SingleEvent } from "../SingleEvent";
 import EventInput from "../EventInput";
 
 const EventsPage = () => {
+	const eventsList = useSelector((state) =>
+		// console.log("state",state.events)
+		Object.values(state.events)
+	);
 	const [showCreateEventForm, setShowCreateEventForm] =
 		useState(false);
 
-	let events;
+	// let events;
 
 	const dispatch = useDispatch();
-
-	// forceUpdate();
 
 	useEffect(() => {
 		dispatch(thunkReadAllEvents());
 		console.log("useeffect run");
 	}, [dispatch]);
-
-	const eventsList = useSelector((state) =>
-		// console.log("state",state.events)
-		Object.values(state.events)
-	);
+	// forceUpdate();
 
 	console.log("el", eventsList);
 	console.log(
