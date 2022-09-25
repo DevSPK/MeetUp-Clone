@@ -16,18 +16,18 @@ module.exports = {
 			[
 				{
 					eventId: 1,
-					url: "localfile1",
-					preview: false
+					url: "https://picsum.photos/1080/720",
+					preview: true
 				},
 				{
 					eventId: 2,
-					url: "localfile2",
-					preview: false
+					url: "https://picsum.photos/1080/720",
+					preview: true
 				},
 				{
 					eventId: 3,
-					url: "localfile3",
-					preview: false
+					url: "https://picsum.photos/1080/720",
+					preview: true
 				}
 			],
 			{}
@@ -41,6 +41,10 @@ module.exports = {
 		 * Example:
 		 * await queryInterface.bulkDelete('People', null, {});
 		 */
-		await queryInterface.bulkDelete("EventImages", null, {});
+		await queryInterface.bulkDelete(
+			"EventImages",
+			null,
+			{}
+		);
 	}
 };

@@ -43,14 +43,17 @@ export const thunkReadAllEvents =
 		if (response.ok) {
 			const events = await response.json();
 
-			// // console.log(
-			// 	"this is events from thunkReadAllEvents",
-			// 	events
-			// );
+			console.log(
+				"this is events.Events from thunkReadAllEvents",
+				events.Events
+			);
+			// console.log()
+
 			dispatch(actionReadAllEvents(events.Events));
-		} else {
-			return response;
 		}
+		// else {
+		// 	return response;
+		// }
 	};
 
 export const thunkGetOneEvent =
@@ -77,9 +80,10 @@ export const thunkAddEvent =
 			price,
 			description,
 			startDate,
-			endDate
+			endDate,
+			imageUrl
 		} = event;
-		const response = await csrfFetch(
+		const eventResponse = await csrfFetch(
 			`/api/groups/${groupId}/events`,
 			{
 				method: "POST",
@@ -96,9 +100,28 @@ export const thunkAddEvent =
 				})
 			}
 		);
-		const data = await response.json();
-		dispatch(actionCreateEvent(data));
-		return response;
+		if (eventResponse.ok) {
+			const data = await eventResponse.json();
+
+			const { id } = data;
+
+			const imageResponse = await csrfFetch(
+				`/api/events/${id}/images`,
+				{
+					method: "POST",
+
+					body: JSON.stringify({
+						url: imageUrl,
+						preview: true
+					})
+				}
+			);
+			if (imageResponse.ok) {
+				// const data = await response.json();
+				dispatch(actionCreateEvent(data));
+				return eventResponse;
+			}
+		}
 	};
 
 export const thunkRemoveEvent =
@@ -109,10 +132,10 @@ export const thunkRemoveEvent =
 				method: "DELETE"
 			}
 		);
-		// console.log(
-		// 	"this is response from remove event",
-		// 	response
-		// );
+		console.log(
+			"this is response from remove event",
+			response
+		);
 
 		if (response.ok) dispatch(actionDeleteEvent(eventId));
 	};
@@ -125,28 +148,46 @@ export default function eventsReducer(
 ) {
 	switch (action.type) {
 		case READ_ALL_EVENTS: {
-			const newState = { ...state };
-			// console.log(
-			// 	"this is action.events in read all events",
-			// 	action.events
-			// );
+			// need to start with an empty state in order to capture updates/deletes
+			const newState = {};
+			console.log(
+				"this is action.events in read all events",
+				action.events
+			);
 			action.events.forEach((event) => {
 				newState[event.id] = event;
 			});
+			console.log(
+				"this is newState in read_all_events",
+				newState
+			);
 			return newState;
 		}
 		case READ_EVENT: {
-			const newState = { ...state };
+			let newState = { ...state };
 			newState[action.event.id] = action.event;
 			return newState;
 		}
 		case CREATE_EVENT: {
-			const newState = { ...state };
+			let newState = { ...state };
 			newState[action.event.id] = action.event;
 			return newState;
 		}
 		case DELETE_EVENT: {
-			const newState = { ...state };
+			console.log(
+				"this is action eventid in Delete event reducer",
+				action.eventId
+			);
+
+			let newState = { ...state };
+			console.log(
+				"this is newState in delete event reducer",
+				newState
+			);
+			console.log(
+				" this is newState(action.eventId in delete event reducer",
+				newState[action.eventId]
+			);
 			delete newState[action.eventId];
 			return newState;
 		}

@@ -59,17 +59,17 @@ const GroupsPage = () => {
 						previewImage,
 						about
 					}) => (
-						<li>
-							<Link
-								key={id}
-								to={`/groups/${id}`}>
+						<Link
+							key={id}
+							to={`/groups/${id}`}>
+							<li>
 								<h1>{name}</h1>
 								<img
 									src={previewImage}
 									alt='a depiction of this group'
 								/>
-							</Link>
-						</li>
+							</li>
+						</Link>
 					)
 				)}
 				{/* <li>

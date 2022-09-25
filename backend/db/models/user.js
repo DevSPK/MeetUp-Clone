@@ -74,8 +74,8 @@ module.exports = (sequelize, DataTypes) => {
 			// 	foreignKey: "userId"
 			// });
 			User.hasMany(models.Group, {
-				foreignKey: "organizerId"
-				//onDelete: "CASCADE"
+				foreignKey: "organizerId",
+				onDelete: "CASCADE"
 			});
 			User.hasMany(models.Membership, {
 				foreignKey: "userId",

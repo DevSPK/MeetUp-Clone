@@ -12,23 +12,32 @@ import { SingleEvent } from "../SingleEvent";
 import EventInput from "../EventInput";
 
 const EventsPage = () => {
+	const eventsList = useSelector((state) =>
+		// console.log("state",state.events)
+		Object.values(state.events)
+	);
 	const [showCreateEventForm, setShowCreateEventForm] =
 		useState(false);
 
-	const eventsList = useSelector((state) =>
-		Object.values(state.events)
-	);
+	// let events;
 
 	const dispatch = useDispatch();
 
 	useEffect(() => {
 		dispatch(thunkReadAllEvents());
+		console.log("useeffect run");
 	}, [dispatch]);
+	// forceUpdate();
+
+	console.log("el", eventsList);
+	console.log(
+		"state",
+		useSelector((state) => Object.values(state.events))
+	);
 
 	if (!eventsList) {
 		return null;
 	}
-
 	// console.log("this is eventsList", eventsList);
 
 	let content = null;
@@ -72,11 +81,11 @@ const EventsPage = () => {
 			{/* <button onClick={() => setShowCreateEventForm(true)}>
 				Create New Event
 			</button> */}
-			<Route
+			{/* <Route
 				exact
 				path='/events/:id'>
 				<SingleEvent />
-			</Route>
+			</Route> */}
 			<div>{content}</div>
 		</div>
 	);
