@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./EventInput.css";
 import { useDispatch } from "react-redux";
-import { thunkAddEvent } from "../../store/events";
+import {
+	thunkAddEvent,
+	thunkReadAllEvents
+} from "../../store/events";
 import { useHistory, Redirect } from "react-router-dom";
 
 // const currencyFormat = new Intl.NumberFormat("en-US", {
@@ -23,8 +26,25 @@ const EventInput = ({ hideForm, group }) => {
 	const [description, setDescription] = useState("");
 	const [startDate, setStartDate] = useState("");
 	const [endDate, setEndDate] = useState("");
+	const [errors, setErrors] = useState([]);
+	const [imageUrl, setImageUrl] = useState("");
 
 	const dispatch = useDispatch();
+
+	useEffect(() => {
+		dispatch(thunkReadAllEvents());
+	}, [
+		dispatch,
+		venueId,
+		id,
+		name,
+		capacity,
+		type,
+		price,
+		description,
+		startDate,
+		endDate
+	]);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -38,7 +58,8 @@ const EventInput = ({ hideForm, group }) => {
 			price,
 			description,
 			startDate,
-			endDate
+			endDate,
+			imageUrl
 		};
 
 		// console.log({ newEvent });
@@ -47,17 +68,41 @@ const EventInput = ({ hideForm, group }) => {
 		// 	dispatch(addEvent(newEvent));
 		// }, [dispatch]);
 
-		const createdEvent = await dispatch(
-			thunkAddEvent(newEvent)
-		);
+		// 	const createdEvent = await dispatch(
+		// 		thunkAddEvent(newEvent)
+		// 	);
 
-		if (!createdEvent) return null;
+		// 	if (!createdEvent) return null;
 
-		if (createdEvent) {
-			reset();
-			history.push(`/events`);
-			hideForm();
-		}
+		// 	if (createdEvent) {
+		// 		reset();
+		// 		history.push(`/events`);
+		// 		hideForm();
+		// 	}
+		// };
+
+		setErrors([]);
+
+		return dispatch(thunkAddEvent(newEvent))
+			.then((res) => {
+				if (res.ok) {
+					// console.log("this is res in thunkAddevent", res);
+					reset();
+					hideForm();
+					return <Redirect to='/events/' />;
+				}
+			})
+			.catch(async (res) => {
+				const data = await res.json();
+				// console.log("this is data1 in thunkAddevent", data);
+				if (data && data.errors) {
+					// console.log(
+					// 	"this is data3 in thunkAddevent",
+					// 	data
+					// );
+					return setErrors(data.errors);
+				}
+			});
 	};
 
 	const reset = () => {
@@ -69,6 +114,7 @@ const EventInput = ({ hideForm, group }) => {
 		setDescription("");
 		setStartDate("");
 		setEndDate("");
+		setImageUrl("");
 	};
 
 	const handleCapacity = (event) => {
@@ -106,7 +152,7 @@ const EventInput = ({ hideForm, group }) => {
 		e.preventDefault();
 		console.log("this is handle event cancel click");
 		console.log("this is id", id);
-		history.push(`/groups`);
+		history.push(`/events`);
 		// <Redirect to='/groups' />;
 		// hideForm();
 	};
@@ -115,6 +161,11 @@ const EventInput = ({ hideForm, group }) => {
 		<div className='inputBox'>
 			<h1>Create Event</h1>
 			<form onSubmit={handleSubmit}>
+				<ul className='login-errors-ul errors-ul'>
+					{errors.map((error, idx) => (
+						<li key={idx}>{error}</li>
+					))}
+				</ul>
 				<input
 					type='text'
 					onChange={(e) => setName(e.target.value)}
@@ -195,6 +246,14 @@ const EventInput = ({ hideForm, group }) => {
 					onChange={handleEndDate}
 					placeholder='Please enter the date and time your event ends'
 					name='endDate'
+				/>
+				<input
+					type='text'
+					onChange={(e) => setImageUrl(e.target.value)}
+					value={imageUrl}
+					// defaultValue={"https://picsum.photos/225/125"}
+					placeholder='Image Url'
+					name='imageUrl'
 				/>
 				<button type='submit'>Submit</button>
 				<button

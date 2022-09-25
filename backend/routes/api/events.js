@@ -16,150 +16,178 @@ const {
 	Attendance,
 	Sequelize
 } = require("../../db/models");
-const { check, validationResult } = require("express-validator");
-const { handleValidationErrors } = require("../../utils/validation");
+const {
+	check,
+	validationResult
+} = require("express-validator");
+const {
+	handleValidationErrors
+} = require("../../utils/validation");
 const membership = require("../../db/models/membership");
 const attendance = require("../../db/models/attendance");
 
 const router = express.Router();
 
 // Change the status of an attendance for an event specified by id
-router.put("/:eventId/attendance", requireAuth, async (req, res, next) => {
-	const { eventId } = req.params;
+router.put(
+	"/:eventId/attendance",
+	requireAuth,
+	async (req, res, next) => {
+		const { eventId } = req.params;
 
-	const userId = req.user.id;
+		const userId = req.user.id;
 
-	const event = await Event.findByPk(eventId);
+		const event = await Event.findByPk(eventId);
 
-	if (!event) {
-		res.status(404);
-		return res.json({
-			message: "Event couldn't be found",
-			statusCode: 404
-		});
-	}
-
-	const attendance = await Attendance.findOne({
-		where: {
-			eventId: eventId,
-			status: "pending",
-			userId: userId
+		if (!event) {
+			res.status(404);
+			return res.json({
+				message: "Event couldn't be found",
+				statusCode: 404
+			});
 		}
-	});
 
-	attendance.set({
-		status: "member"
-	});
-	await attendance.save();
+		const attendance = await Attendance.findOne({
+			where: {
+				eventId: eventId,
+				status: "pending",
+				userId: userId
+			}
+		});
 
-	let data = {};
+		attendance.set({
+			status: "member"
+		});
+		await attendance.save();
 
-	data.attendance = {
-		id: attendance.id,
-		eventId: attendance.eventId,
-		userId: attendance.userId,
-		status: attendance.status
-	};
+		let data = {};
 
-	res.json(data.attendance);
-});
+		data.attendance = {
+			id: attendance.id,
+			eventId: attendance.eventId,
+			userId: attendance.userId,
+			status: attendance.status
+		};
+
+		res.json(data.attendance);
+	}
+);
 
 //Request to Attend an Event based on the Event's id
 
-router.post("/:eventId/attendance", requireAuth, async (req, res, next) => {
-	const { eventId } = req.params;
+router.post(
+	"/:eventId/attendance",
+	requireAuth,
+	async (req, res, next) => {
+		const { eventId } = req.params;
 
-	const userId = req.user.id;
+		const userId = req.user.id;
 
-	const event = await Event.findByPk(eventId);
+		const event = await Event.findByPk(eventId);
 
-	if (!event) {
-		res.status(404);
-		return res.json({
-			message: "Event couldn't be found",
-			statusCode: 404
+		if (!event) {
+			res.status(404);
+			return res.json({
+				message: "Event couldn't be found",
+				statusCode: 404
+			});
+		}
+
+		const attendance = await event.createAttendance({
+			status: "pending",
+			userId,
+			eventId
 		});
+
+		const newAttendance = await Attendance.findByPk(
+			attendance.id,
+			{
+				attributes: ["eventId", "userId", "status"]
+			}
+		);
+
+		res.json(newAttendance);
 	}
-
-	const attendance = await event.createAttendance({
-		status: "pending",
-		userId,
-		eventId
-	});
-
-	const newAttendance = await Attendance.findByPk(attendance.id, {
-		attributes: ["eventId", "userId", "status"]
-	});
-
-	res.json(newAttendance);
-});
+);
 
 //Get all Attendees of an Event specified by its id
 
-router.get("/:eventId/attendees", async (req, res, next) => {
-	const { eventId } = req.params;
+router.get(
+	"/:eventId/attendees",
+	async (req, res, next) => {
+		const { eventId } = req.params;
 
-	const event = await Event.findByPk(eventId);
+		const event = await Event.findByPk(eventId);
 
-	if (!event) {
-		res.status(404);
-		return res.json({
-			message: "Event couldn't be found",
-			statusCode: 404
-		});
-	}
-
-	const attendance = await Attendance.findOne({ where: { eventId: eventId } });
-
-	const user = await User.findByPk(attendance.userId);
-
-	let data = {};
-
-	data.Attendees = [
-		{
-			id: user.id,
-			firstName: user.firstName,
-			lastName: user.lastName,
-			Attendance: {
-				status: attendance.status
-			}
+		if (!event) {
+			res.status(404);
+			return res.json({
+				message: "Event couldn't be found",
+				statusCode: 404
+			});
 		}
-	];
 
-	res.json(data);
-});
+		const attendance = await Attendance.findOne({
+			where: { eventId: eventId }
+		});
+
+		const user = await User.findByPk(attendance.userId);
+
+		let data = {};
+
+		data.Attendees = [
+			{
+				id: user.id,
+				firstName: user.firstName,
+				lastName: user.lastName,
+				Attendance: {
+					status: attendance.status
+				}
+			}
+		];
+
+		res.json(data);
+	}
+);
 
 // Delete attendance to an event specified by id
-router.delete("/:eventId/attendance", requireAuth, async (req, res, next) => {
-	const { eventId } = req.params;
+router.delete(
+	"/:eventId/attendance",
+	requireAuth,
+	async (req, res, next) => {
+		const { eventId } = req.params;
 
-	const event = await Event.findByPk(eventId);
+		const event = await Event.findByPk(eventId);
 
-	if (!event) {
-		res.status(404);
-		return res.json({
-			message: "Event couldn't be found",
-			statusCode: 404
+		if (!event) {
+			res.status(404);
+			return res.json({
+				message: "Event couldn't be found",
+				statusCode: 404
+			});
+		}
+
+		const attendance = await Attendance.findOne({
+			where: { eventId: eventId }
 		});
+
+		if (!attendance) {
+			res.status(404);
+			return res.json({
+				message: "Attendance does not exist for this User",
+				statusCode: 404
+			});
+		} else {
+			await attendance.destroy();
+
+			res.status(200);
+			return res.json({
+				message:
+					"Successfully deleted attendance from event"
+			});
+		}
 	}
-
-	const attendance = await Attendance.findOne({ where: { eventId: eventId } });
-
-	if (!attendance) {
-		res.status(404);
-		return res.json({
-			message: "Attendance does not exist for this User",
-			statusCode: 404
-		});
-	} else {
-		await attendance.destroy();
-
-		res.status(200);
-		return res.json({
-			message: "Successfully deleted attendance from event"
-		});
-	}
-});
+);
 
 // edit an event specified by its id
 router.put("/:eventId", async (req, res, next) => {
@@ -202,7 +230,10 @@ router.put("/:eventId", async (req, res, next) => {
 		where: { groupId: event.groupId }
 	});
 
-	if (userId === group.organizerId || membership.status === "co-host") {
+	if (
+		userId === group.organizerId ||
+		membership.status === "co-host"
+	) {
 		event.set({
 			venueId,
 			groupId: group.id,
@@ -242,36 +273,43 @@ router.put("/:eventId", async (req, res, next) => {
 
 //  Delete an Event specified by its id
 
-router.delete("/:eventId", requireAuth, async (req, res, next) => {
-	const { eventId } = req.params;
+router.delete(
+	"/:eventId",
+	requireAuth,
+	async (req, res, next) => {
+		const { eventId } = req.params;
 
-	const event = await Event.findByPk(eventId);
+		const event = await Event.findByPk(eventId);
 
-	if (!event) {
-		res.status(404);
-		return res.json({ message: "Event couldn't be found", statusCode: 404 });
+		if (event) {
+			await event.destroy();
+			res.status(200);
+			return res.json({
+				message: "Successfully deleted",
+				statusCode: 200
+			});
+		}
+
+		if (!event) {
+			res.status(404);
+			return res.json({
+				message: "Event couldn't be found",
+				statusCode: 404
+			});
+		}
+		// const eventImages = await EventImage.findOne({ where: { eventId: eventId } });
+
+		// if (eventImages) {
+		// 	await eventImages.destroy();
+		// 	await event.destroy();
+		// 	res.status(200);
+		// 	return res.json({
+		// 		message: "Successfully deleted",
+		// 		statusCode: 200
+		// 	});
+		// }
 	}
-	const eventImages = await EventImage.findOne({ where: { eventId: eventId } });
-
-	if (!eventImages) {
-		await event.destroy();
-		res.status(200);
-		return res.json({
-			message: "Successfully deleted",
-			statusCode: 200
-		});
-	}
-
-	if (eventImages) {
-		await eventImages.destroy();
-		await event.destroy();
-		res.status(200);
-		return res.json({
-			message: "Successfully deleted",
-			statusCode: 200
-		});
-	}
-});
+);
 
 // Get details of an Event specified by its id
 router.get("/:eventId", async (req, res, next) => {
@@ -297,13 +335,19 @@ router.get("/:eventId", async (req, res, next) => {
 
 	if (!eventCheck) {
 		res.status(404);
-		return res.json({ message: "Event couldn't be found", statusCode: 404 });
+		return res.json({
+			message: "Event couldn't be found",
+			statusCode: 404
+		});
 	} else {
 		const events = await Event.findByPk(eventId, {
 			attributes: {
 				include: [
 					[
-						sequelize.fn("COUNT", sequelize.col("Attendances.id")),
+						sequelize.fn(
+							"COUNT",
+							sequelize.col("Attendances.id")
+						),
 						"numAttending"
 					]
 				],
@@ -317,11 +361,24 @@ router.get("/:eventId", async (req, res, next) => {
 				},
 				{
 					model: Group,
-					attributes: ["id", "name", "private", "city", "state"]
+					attributes: [
+						"id",
+						"name",
+						"private",
+						"city",
+						"state"
+					]
 				},
 				{
 					model: Venue,
-					attributes: ["id", "address", "city", "state", "lat", "lng"]
+					attributes: [
+						"id",
+						"address",
+						"city",
+						"state",
+						"lat",
+						"lng"
+					]
 				},
 				{
 					model: EventImage,
@@ -343,29 +400,36 @@ router.get("/:eventId", async (req, res, next) => {
 });
 
 // Add an Image to a Event based on the Event's id
-router.post("/:eventId/images", requireAuth, async (req, res, next) => {
-	const { eventId } = req.params;
+router.post(
+	"/:eventId/images",
+	requireAuth,
+	async (req, res, next) => {
+		const { eventId } = req.params;
 
-	const { url, preview } = req.body;
+		const { url, preview } = req.body;
 
-	const event = await Event.findByPk(eventId);
+		const event = await Event.findByPk(eventId);
 
-	if (!event) {
-		res.status(404);
-		res.json({ message: "Event couldn't be found", statusCode: 404 });
-	} else {
-		const addImage = await EventImage.create({
-			eventId,
-			url,
-			preview
-		});
+		if (!event) {
+			res.status(404);
+			res.json({
+				message: "Event couldn't be found",
+				statusCode: 404
+			});
+		} else {
+			const addImage = await EventImage.create({
+				eventId,
+				url,
+				preview
+			});
 
-		const image = await EventImage.findByPk(addImage.id, {
-			attributes: ["id", "url", "preview"]
-		});
-		res.json(image);
+			const image = await EventImage.findByPk(addImage.id, {
+				attributes: ["id", "url", "preview"]
+			});
+			res.json(image);
+		}
 	}
-});
+);
 
 // Get all Events
 router.get("/", async (req, res, next) => {
@@ -373,12 +437,21 @@ router.get("/", async (req, res, next) => {
 		attributes: {
 			include: [
 				[
-					sequelize.fn("COUNT", sequelize.col("Attendances.id")),
+					sequelize.fn(
+						"COUNT",
+						sequelize.col("Attendances.id")
+					),
 					"numAttending"
 				],
 				[sequelize.col("EventImages.url"), "previewImage"]
 			],
-			exclude: ["description", "capacity", "price", "createdAt", "updatedAt"]
+			exclude: [
+				"description",
+				"capacity",
+				"price",
+				"createdAt",
+				"updatedAt"
+			]
 		},
 		include: [
 			{
@@ -400,7 +473,12 @@ router.get("/", async (req, res, next) => {
 			}
 		],
 
-		group: ["Event.id", "EventImages.url", "Group.id", "Venue.id"]
+		group: [
+			"Event.id",
+			"EventImages.url",
+			"Group.id",
+			"Venue.id"
+		]
 	});
 	res.json({ Events: events });
 });
