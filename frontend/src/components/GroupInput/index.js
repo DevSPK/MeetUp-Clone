@@ -4,6 +4,7 @@ import "./GroupInput.css";
 import { useDispatch } from "react-redux";
 import { thunkAddGroup } from "../../store/groups";
 import { useHistory, Redirect } from "react-router-dom";
+import { thunkReadAllGroups } from "../../store/groups";
 
 const GroupInput = ({ hideForm }) => {
 	const history = useHistory();
@@ -17,6 +18,19 @@ const GroupInput = ({ hideForm }) => {
 	const [errors, setErrors] = useState([]);
 
 	const dispatch = useDispatch();
+
+	useEffect(() => {
+		dispatch(thunkReadAllGroups());
+	}, [
+		dispatch,
+		name,
+		about,
+		type,
+		privateVal,
+		city,
+		state,
+		errors
+	]);
 
 	// useEffect(
 	// 	({ hideForm }) => {
