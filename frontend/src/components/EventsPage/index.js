@@ -29,7 +29,7 @@ const EventsPage = () => {
 		return null;
 	}
 
-	console.log("this is eventsList", eventsList);
+	// console.log("this is eventsList", eventsList);
 
 	let content = null;
 

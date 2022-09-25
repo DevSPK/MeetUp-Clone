@@ -36,17 +36,17 @@ export const actionDeleteEvent = (eventId) => ({
 export const thunkReadAllEvents =
 	() => async (dispatch) => {
 		const response = await csrfFetch("/api/events");
-		console.log(
-			"This is response from thunkReadAllEvents",
-			response
-		);
+		// console.log(
+		// 	"This is response from thunkReadAllEvents",
+		// 	response
+		// );
 		if (response.ok) {
 			const events = await response.json();
 
-			console.log(
-				"this is events from thunkReadAllEvents",
-				events
-			);
+			// // console.log(
+			// 	"this is events from thunkReadAllEvents",
+			// 	events
+			// );
 			dispatch(actionReadAllEvents(events.Events));
 		} else {
 			return response;
@@ -67,7 +67,7 @@ export const thunkGetOneEvent =
 
 export const thunkAddEvent =
 	(event) => async (dispatch) => {
-		console.log("this is event from thunkAddEvent", event);
+		// console.log("this is event from thunkAddEvent", event);
 		const {
 			venueId,
 			groupId,
@@ -109,10 +109,10 @@ export const thunkRemoveEvent =
 				method: "DELETE"
 			}
 		);
-		console.log(
-			"this is response from remove event",
-			response
-		);
+		// console.log(
+		// 	"this is response from remove event",
+		// 	response
+		// );
 
 		if (response.ok) dispatch(actionDeleteEvent(eventId));
 	};
@@ -126,10 +126,10 @@ export default function eventsReducer(
 	switch (action.type) {
 		case READ_ALL_EVENTS: {
 			const newState = { ...state };
-			console.log(
-				"this is action.events in read all events",
-				action.events
-			);
+			// console.log(
+			// 	"this is action.events in read all events",
+			// 	action.events
+			// );
 			action.events.forEach((event) => {
 				newState[event.id] = event;
 			});

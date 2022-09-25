@@ -1,10 +1,13 @@
 // frontend/src/components/Navigation/ProfileButton.js
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import * as sessionActions from "../../store/session";
 import "./ProfileButton.css";
 
 function ProfileButton({ user }) {
+	let history = useHistory();
+
 	const dispatch = useDispatch();
 	const [showMenu, setShowMenu] = useState(false);
 
@@ -29,11 +32,12 @@ function ProfileButton({ user }) {
 	const logout = (e) => {
 		e.preventDefault();
 		dispatch(sessionActions.logout());
+		history.push("/");
 	};
 
 	let initial;
 	let initialIcon;
-
+	// creates circle with initial of firstName as user icon
 	if (user.firstName !== undefined) {
 		initial = user.firstName[0];
 		initialIcon = (

@@ -18,6 +18,9 @@ const GroupsPage = () => {
 	const groupsList = useSelector((state) =>
 		Object.values(state.groups)
 	);
+
+	// console.log("this is groupsList", groupsList);
+
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -28,9 +31,8 @@ const GroupsPage = () => {
 		return null;
 	}
 
-	//console.log(groupsList.map(group => ));
+	//// console.log(groupsList.map(group => ));
 
-	console.log("this is groupsList", groupsList);
 	let content = null;
 
 	if (showCreateGroupForm) {
@@ -47,25 +49,29 @@ const GroupsPage = () => {
 		<div className='groups-page'>
 			<h1>Groups Page</h1>
 			<ul className='groups-list-item'>
-				<li>
-					{groupsList.map(
-						({
-							id,
-							name,
-							city,
-							state,
-							numMembers,
-							previewImage,
-							about
-						}) => (
+				{groupsList.map(
+					({
+						id,
+						name,
+						city,
+						state,
+						numMembers,
+						previewImage,
+						about
+					}) => (
+						<li>
 							<Link
 								key={id}
 								to={`/groups/${id}`}>
-								{`${name}`}
+								<h1>{name}</h1>
+								<img
+									src={previewImage}
+									alt='a depiction of this group'
+								/>
 							</Link>
-						)
-					)}
-				</li>
+						</li>
+					)
+				)}
 				{/* <li>
 					<Link to={"/groups"}>Create a Group</Link>
 				</li> */}
