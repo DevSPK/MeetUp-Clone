@@ -35,7 +35,7 @@ export const SingleEvent = () => {
 
 	async function handleDelete(eventId, groupId) {
 		await dispatch(thunkRemoveEvent(eventId, groupId));
-		history.push("/");
+		history.push("/events");
 	}
 
 	// console.log("this is Event from singleEvent", event);

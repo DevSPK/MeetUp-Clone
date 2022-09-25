@@ -89,7 +89,7 @@ const EventInput = ({ hideForm, group }) => {
 					// console.log("this is res in thunkAddevent", res);
 					reset();
 					hideForm();
-					return <Redirect to='/events/' />;
+					history.push(`/events`);
 				}
 			})
 			.catch(async (res) => {

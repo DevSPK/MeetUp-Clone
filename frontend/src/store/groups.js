@@ -193,7 +193,7 @@ export default function groupsReducer(
 ) {
 	switch (action.type) {
 		case READ_ALL_GROUPS: {
-			const newState = { ...state };
+			const newState = {};
 			// console.log(
 			// 	"this is action.groups in read all groups",
 			// 	action.groups
