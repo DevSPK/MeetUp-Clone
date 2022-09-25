@@ -1,9 +1,12 @@
-import { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useHistory, Redirect } from "react-router-dom";
 
 import "./GroupUpdate.css";
 import { useDispatch } from "react-redux";
-import { thunkUpdateGroup } from "../../store/groups";
+import {
+	thunkReadAllGroups,
+	thunkUpdateGroup
+} from "../../store/groups";
 
 const GroupUpdate = ({ group, hideForm }) => {
 	let editedGroup = group;
@@ -20,12 +23,25 @@ const GroupUpdate = ({ group, hideForm }) => {
 	// const [previewImage, setPreviewImage] = useState(editedGroup.previewImage)
 	const dispatch = useDispatch();
 
-	console.log("this is editedGroup prop", editedGroup);
-	console.log("this is privateVal", privateVal);
-	console.log(
-		"this is editedGroup.privateVal",
-		editedGroup.privateVal
-	);
+	// // console.log("this is editedGroup prop", editedGroup);
+	// // console.log("this is privateVal", privateVal);
+	// // console.log(
+	// 	"this is editedGroup.privateVal",
+	// 	editedGroup.privateVal
+	// );
+
+	useEffect(() => {
+		dispatch(thunkReadAllGroups());
+	}, [
+		dispatch,
+		name,
+		about,
+		type,
+		privateVal,
+		city,
+		state,
+		errors
+	]);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -40,30 +56,59 @@ const GroupUpdate = ({ group, hideForm }) => {
 			id: editedGroup.id
 		};
 
-		console.log({ newInfo });
+		setErrors([]);
 
-		// useEffect(() => {
-		// 	dispatch(addGroup(updatedGroup));
-		// }, [dispatch]);
+		// console.log({ newInfo });
 
-		const updatedGroup = dispatch(
-			thunkUpdateGroup(newInfo)
-		);
+		return dispatch(thunkUpdateGroup(newInfo))
+			.then((res) => {
+				console.log(
+					"***********************this is res from thunkUpdateGroup",
+					res
+				);
+				if (res) {
+					handleUpdate(res);
+					console.log("inside the if.......");
+					// hideForm();
+					// return <Redirect to='/groups/' />;
+					// history.push("/");
+				}
+			})
+			.catch(async (res) => {
+				const data = await res.json();
+				// console.log("this is data1", data);
+				if (data && data.errors) {
+					// console.log("this is data3", data);
+					return setErrors(data.errors);
+				}
+			});
 
-		console.log(
-			"this is updatedGroup from thunkUpdateGroup",
-			updatedGroup
-		);
+		// const updatedGroup = dispatch(
+		// 	thunkUpdateGroup(newInfo)
+		// );
 
-		if (updatedGroup) {
-			history.push(`/groups/${updatedGroup.id}`);
-			hideForm();
-		}
+		// // console.log(
+		// 	"this is updatedGroup from thunkUpdateGroup",
+		// 	updatedGroup
+		// );
+
+		// if (updatedGroup) {
+		// 	history.push(`/groups/${updatedGroup.id}`);
+		// 	hideForm();
+		// }
 		//reset();
 	};
 
+	function handleUpdate(res) {
+		console.log("inside handle update$$$$$$$$$$$$$");
+		// hideForm();
+		// return <Redirect to='/' />;
+		history.push(`/groups`);
+	}
+
 	const handleCancelClick = (e) => {
 		e.preventDefault();
+		setErrors([]);
 		hideForm();
 	};
 
@@ -71,6 +116,11 @@ const GroupUpdate = ({ group, hideForm }) => {
 		<div className='inputBox'>
 			<h1>Edit Group</h1>
 			<form onSubmit={handleSubmit}>
+				<ul className='editInput-errors-ul errors-ul'>
+					{errors.map((error, idx) => (
+						<li key={idx}>{error}</li>
+					))}
+				</ul>
 				<input
 					type='text'
 					onChange={(e) => setName(e.target.value)}

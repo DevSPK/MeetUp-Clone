@@ -14,6 +14,10 @@ import GroupsPage from "./components/GroupsPage";
 import EventsPage from "./components/EventsPage";
 import SplashPage from "./components/SplashPage";
 import { SingleGroup } from "./components/SingleGroup";
+import GroupInput from "./components/GroupInput";
+import GroupUpdate from "./components/GroupUpdate";
+import { SingleEvent } from "./components/SingleEvent";
+import EventInput from "./components/EventInput";
 
 function App() {
 	const dispatch = useDispatch();
@@ -29,10 +33,11 @@ function App() {
 			<Navigation isLoaded={isLoaded} />
 			{isLoaded && (
 				<Switch>
-					<Route
-						exact
-						path='/groups/:id'>
+					<Route path='/groups/:id'>
 						<SingleGroup />
+					</Route>
+					<Route path='/events/:id'>
+						<SingleEvent />
 					</Route>
 					<Route path='/login'>
 						<LoginFormPage />
@@ -46,7 +51,15 @@ function App() {
 					<Route path='/events'>
 						<EventsPage />
 					</Route>
-
+					<Route path='/start-a-group'>
+						<GroupInput />
+					</Route>
+					<Route path='/edit-a-group/:id'>
+						<GroupUpdate />
+					</Route>
+					<Route path='/start-an-event'>
+						<EventInput />
+					</Route>
 					<Route
 						exact
 						path='/'>

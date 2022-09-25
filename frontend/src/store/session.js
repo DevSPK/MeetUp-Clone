@@ -5,7 +5,7 @@ const SET_USER = "session/setUser";
 const REMOVE_USER = "session/removeUser";
 
 const setUser = (user) => {
-	//console.log("this is user from SetUser", user);
+	//// console.log("this is user from SetUser", user);
 	return {
 		type: SET_USER,
 		payload: user
@@ -29,14 +29,14 @@ export const login = (user) => async (dispatch) => {
 	});
 	if (response.ok) {
 		const data = await response.json();
-		//console.log("this is data.user from login", data.user);
+		//// console.log("this is data.user from login", data.user);
 		dispatch(setUser(data));
 		return response;
 	}
 };
 
 export const restoreUser = () => async (dispatch) => {
-	// console.log("restore user running");
+	// // console.log("restore user running");
 	const response = await csrfFetch("/api/session");
 	const data = await response.json();
 	dispatch(setUser(data));

@@ -17,13 +17,13 @@ export const SingleEvent = () => {
 	// const [showEditEventForm, setShowEditEventForm] =
 	// 	useState(false);
 
-	// console.log("this is id", id);
+	// // console.log("this is id", id);
 
-	// console.log("this is singleEvent EventsList", EventsList);
+	// // console.log("this is singleEvent EventsList", EventsList);
 
 	let event = useSelector((state) => state.events[id]);
 
-	console.log({ event });
+	// console.log({ event });
 
 	useEffect(() => {
 		dispatch(thunkGetOneEvent(id));
@@ -31,14 +31,14 @@ export const SingleEvent = () => {
 
 	//const EventChoice = EventList.find(({id}) => id === EventId)
 
-	// console.log("this is Event from singleEvent", Event);
+	// // console.log("this is Event from singleEvent", Event);
 
 	async function handleDelete(eventId, groupId) {
 		await dispatch(thunkRemoveEvent(eventId, groupId));
 		history.push("/");
 	}
 
-	console.log("this is Event from singleEvent", event);
+	// console.log("this is Event from singleEvent", event);
 
 	let content = null;
 

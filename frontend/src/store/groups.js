@@ -17,10 +17,10 @@ export const actionCreateGroup = (group) => ({
 	group
 });
 
-export const actionReadGroup = (group) => {
+export const actionReadGroup = (groupId) => {
 	return {
 		type: READ_GROUP,
-		group
+		groupId
 	};
 };
 
@@ -43,7 +43,9 @@ export const actionDeleteGroup = (groupId) => ({
 
 export const thunkReadAllGroups =
 	() => async (dispatch) => {
-		const response = await csrfFetch("api/groups");
+		const response = await csrfFetch("/api/groups", {
+			method: "GET"
+		});
 		// console.log(
 		// 	"This is response from thunkReadAllGroups",
 		// 	response
@@ -51,7 +53,7 @@ export const thunkReadAllGroups =
 		if (response.ok) {
 			const groups = await response.json();
 
-			// console.log(
+			// // console.log(
 			// 	"this is groups from thunkReadAllGroups",
 			// 	groups
 			// );
@@ -63,13 +65,21 @@ export const thunkReadAllGroups =
 
 export const thunkGetOneGroup =
 	(groupId) => async (dispatch) => {
-		const response = await csrfFetch(
-			`/api/groups/${groupId}`
+		// console.log(
+		// 	"this is groupId from thunkGetOneGroup",
+		// 	groupId
+		// );
+		const getGroupResponse = await csrfFetch(
+			`api/groups/${groupId}`,
+			{
+				method: "GET"
+			}
 		);
 
-		if (response.ok) {
-			const group = await response.json();
+		if (getGroupResponse.ok) {
+			const group = await getGroupResponse.json();
 			dispatch(actionReadGroup(group));
+			return getGroupResponse;
 		}
 	};
 
@@ -101,8 +111,8 @@ export const thunkAddGroup =
 
 			const { id } = data;
 
-			console.log("this is data from groupResponse", data);
-			console.log("this is id from groupresponse.body", id);
+			// console.log("this is data from groupResponse", data);
+			// console.log("this is id from groupresponse.body", id);
 
 			const imageResponse = await csrfFetch(
 				`api/groups/${id}/images`,
@@ -152,7 +162,7 @@ export const thunkUpdateGroup =
 
 		if (response.ok) {
 			const data = await response.json();
-			dispatch(actionCreateGroup(data));
+			dispatch(actionUpdateGroup(data));
 			return data;
 		}
 	};
@@ -165,10 +175,10 @@ export const thunkRemoveGroup =
 				method: "DELETE"
 			}
 		);
-		console.log(
-			"this is response from remove Group",
-			response
-		);
+		// console.log(
+		// 	"this is response from remove Group",
+		// 	response
+		// );
 
 		if (response.ok) dispatch(actionDeleteGroup(groupId));
 	};
@@ -184,10 +194,10 @@ export default function groupsReducer(
 	switch (action.type) {
 		case READ_ALL_GROUPS: {
 			const newState = { ...state };
-			console.log(
-				"this is action.groups in read all groups",
-				action.groups
-			);
+			// console.log(
+			// 	"this is action.groups in read all groups",
+			// 	action.groups
+			// );
 			action.groups.forEach((group) => {
 				newState[group.id] = group;
 			});
@@ -199,15 +209,19 @@ export default function groupsReducer(
 			// 	"this is action.group in read_group",
 			// 	action.group
 			// );
-			newState[action.group.id] = action.group;
+			newState[action.groupId] = action.group;
+			// console.log(
+			// 	"this is newState in read_group",
+			// 	newState
+			// );
 			return newState;
 		}
 
 		case CREATE_GROUP: {
 			let newState = { ...state };
-			// console.log("this is state in create_group", state);
-			// console.log("this is action in create_group", action);
-			// console.log(
+			// // console.log("this is state in create_group", state);
+			// // console.log("this is action in create_group", action);
+			// // console.log(
 			// 	"this is action.group in create_group",
 			// 	action.group
 			// );
@@ -217,25 +231,25 @@ export default function groupsReducer(
 
 		case DELETE_GROUP: {
 			let newState = { ...state };
-			console.log("this is action in delete_group", action);
-			console.log("this is state in delete_group", state);
+			// console.log("this is action in delete_group", action);
+			// console.log("this is state in delete_group", state);
 
-			console.log(
-				"this is action.groupId in delete_group",
-				action.groupId
-			);
+			// console.log(
+			// 	"this is action.groupId in delete_group",
+			// 	action.groupId
+			// );
 
-			console.log(
-				"this is newState in delete_group",
-				newState
-			);
+			// console.log(
+			// 	"this is newState in delete_group",
+			// 	newState
+			// );
 
 			// ********** not an array so can't use filter
 			// const result = newState.filter(
 			// 	(group) => group !== action.groupId
 			// );
 
-			// console.log(result);
+			// // console.log(result);
 
 			// return result;
 

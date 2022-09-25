@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./EventInput.css";
 import { useDispatch } from "react-redux";
 import { thunkAddEvent } from "../../store/events";
-import { useHistory } from "react-router-dom";
+import { useHistory, Redirect } from "react-router-dom";
 
 // const currencyFormat = new Intl.NumberFormat("en-US", {
 // 	style: "currency",
@@ -12,7 +12,7 @@ import { useHistory } from "react-router-dom";
 const EventInput = ({ hideForm, group }) => {
 	const { id } = group;
 
-	console.log("this is group in EventInput", group);
+	// console.log("this is group in EventInput", group);
 	const history = useHistory();
 
 	const [venueId, setVenueId] = useState(1);
@@ -41,7 +41,7 @@ const EventInput = ({ hideForm, group }) => {
 			endDate
 		};
 
-		console.log({ newEvent });
+		// console.log({ newEvent });
 
 		// useEffect(() => {
 		// 	dispatch(addEvent(newEvent));
@@ -51,9 +51,11 @@ const EventInput = ({ hideForm, group }) => {
 			thunkAddEvent(newEvent)
 		);
 
+		if (!createdEvent) return null;
+
 		if (createdEvent) {
 			reset();
-			history.push(`/events/${createdEvent.id}`);
+			history.push(`/events`);
 			hideForm();
 		}
 	};
@@ -102,7 +104,11 @@ const EventInput = ({ hideForm, group }) => {
 
 	const handleCancelClick = (e) => {
 		e.preventDefault();
-		hideForm();
+		console.log("this is handle event cancel click");
+		console.log("this is id", id);
+		history.push(`/groups`);
+		// <Redirect to='/groups' />;
+		// hideForm();
 	};
 
 	return (

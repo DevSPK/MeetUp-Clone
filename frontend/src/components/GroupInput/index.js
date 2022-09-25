@@ -32,6 +32,8 @@ const GroupInput = ({ hideForm }) => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
+		// console.log("Create Group ran in GroupInput");
+
 		let newGroup = {
 			name,
 			about,
@@ -49,7 +51,7 @@ const GroupInput = ({ hideForm }) => {
 		return dispatch(thunkAddGroup(newGroup))
 			.then((res) => {
 				if (res.ok) {
-					console.log("this is res", res);
+					// console.log("this is res in thunkAddGroup", res);
 					reset();
 					hideForm();
 					return <Redirect to='/groups/' />;
@@ -57,9 +59,12 @@ const GroupInput = ({ hideForm }) => {
 			})
 			.catch(async (res) => {
 				const data = await res.json();
-				console.log("this is data1", data);
+				// console.log("this is data1 in thunkAddGroup", data);
 				if (data && data.errors) {
-					console.log("this is data3", data);
+					// console.log(
+					// 	"this is data3 in thunkAddGroup",
+					// 	data
+					// );
 					return setErrors(data.errors);
 				}
 			});
@@ -70,7 +75,7 @@ const GroupInput = ({ hideForm }) => {
 		// 	createdGroup = await dispatch(thunkAddGroup(newGroup))
 		// } catch()
 
-		// console.log({ newGroup });
+		// // console.log({ newGroup });
 
 		// // useEffect(() => {
 		// // 	dispatch(addGroup(newGroup));
@@ -110,7 +115,7 @@ const GroupInput = ({ hideForm }) => {
 		<div className='inputBox'>
 			<h1>Create Group</h1>
 			<form onSubmit={handleSubmit}>
-				<ul className='login-errors-ul'>
+				<ul className='login-errors-ul errors-ul'>
 					{errors.map((error, idx) => (
 						<li key={idx}>{error}</li>
 					))}
