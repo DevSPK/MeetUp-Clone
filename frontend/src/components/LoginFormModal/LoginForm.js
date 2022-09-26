@@ -41,7 +41,7 @@ function LoginForm() {
 					<NavLink
 						to='/signup'
 						className='nav-item'>
-						Sign Up
+						Sign up
 					</NavLink>
 				</div>
 				<ul>
@@ -72,12 +72,12 @@ function LoginForm() {
 				<button
 					type='submit'
 					className='login-button'>
-					Log In
+					Log in
 				</button>
 				<button
 					onClick={demoUser}
 					className='login-button'>
-					Demo User
+					Demo user
 				</button>
 			</div>
 		</form>

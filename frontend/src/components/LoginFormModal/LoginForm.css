@@ -37,16 +37,16 @@ form {
 	cursor: pointer;
 }
 
-button.loginModalButton {
-	background-color: white;
-	border: 0px solid;
+.loginModalButton {
+	border: 0px;
 	font-size: 0.875em;
-	font-weight: 700;
+	font-weight: 500;
+	text-decoration: none;
+	z-index: 10;
+	line-height: 20px;
+	font-weight: 500;
 }
 
-button.loginModalButton:hover {
+.loginModalButton:hover {
 	color: rgb(17, 135, 158);
-}
-.nav-item {
-	color: aqua;
 }

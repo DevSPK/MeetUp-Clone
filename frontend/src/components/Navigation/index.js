@@ -1,5 +1,5 @@
 // frontend/src/components/Navigation/index.js
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import ProfileButton from "./ProfileButton";
@@ -9,10 +9,26 @@ import * as sessionActions from "../../store/session";
 import LoginFormModal from "../LoginFormModal";
 
 function Navigation({ isLoaded }) {
+	const [background, setBackground] = useState({});
 	const dispatch = useDispatch();
 	const sessionUser = useSelector(
 		(state) => state.session.user
 	);
+
+	useEffect(() => {
+		if (sessionUser) {
+			setBackground({
+				opacity: "1",
+				backgroundColor: "white",
+				zIndex: "1000",
+				position: "sticky",
+				borderBottom: "1px solid  #e6e6e6",
+				borderColor: "rgb(230, 230, 230)"
+			});
+		} else {
+			setBackground({});
+		}
+	}, [sessionUser]);
 
 	const demoUser = (e) => {
 		e.preventDefault();
@@ -64,21 +80,21 @@ function Navigation({ isLoaded }) {
 							}
 						}}
 						className='nav-item'>
-						Demo User
+						Demo user
 					</NavLink>
 				</li>
 				{/* <li>
 					<NavLink
 						to='/login'
 						className='nav-item'>
-						Log In
+						Log in
 					</NavLink>
 				</li> */}
 				<li>
 					<NavLink
 						to='/signup'
 						className='nav-item'>
-						Sign Up
+						Sign up
 					</NavLink>
 				</li>
 			</div>
@@ -86,7 +102,9 @@ function Navigation({ isLoaded }) {
 	}
 
 	return (
-		<nav className='nav-list'>
+		<nav
+			className='nav-list'
+			style={background}>
 			<div className='nav-item'>
 				<NavLink
 					exact
