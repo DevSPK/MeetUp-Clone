@@ -134,13 +134,17 @@ const GroupInput = ({ hideForm }) => {
 						<li key={idx}>{error}</li>
 					))}
 				</ul>
-				<input
-					type='text'
-					onChange={(e) => setName(e.target.value)}
-					value={name}
-					placeholder='Name'
-					name='name'
-				/>
+				<label
+					htmlFor='
+				Your name'>
+					<input
+						type='text'
+						onChange={(e) => setName(e.target.value)}
+						value={name}
+						placeholder='Name'
+						name='name'
+					/>
+				</label>
 				<textarea
 					value={about}
 					onChange={(e) => setAbout(e.target.value)}

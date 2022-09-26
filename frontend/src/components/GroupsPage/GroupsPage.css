@@ -37,9 +37,10 @@
 
 .group-image {
 	border-radius: 0.5rem;
-	width: 180px;
-	height: 100px;
-	top: -2.5rem;
+
+	height: 100%;
+	width: auto;
+	max-width: 180px;
 
 	position: relative;
 }
@@ -47,7 +48,8 @@
 .group-image-container {
 	width: 180px;
 	height: 100px;
-	align-content: flex-start;
+	align-items: flex-start;
+	display: flex;
 
 	border-bottom: 1px solid #d9d9d9;
 }

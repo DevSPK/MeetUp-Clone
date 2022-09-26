@@ -82,11 +82,13 @@ const GroupsPage = () => {
 								to={`/groups/${group.id}`}>
 								<li>
 									<div className='group-image-container'>
-										<img
-											className='group-image'
-											src={group.previewImage}
-											alt='a depiction of this group'
-										/>
+										<div>
+											<img
+												className='group-image'
+												src={group.previewImage}
+												alt='a depiction of this group'
+											/>
+										</div>
 									</div>
 									<div className='group-text-items'>
 										<div className='group-name-container'>
