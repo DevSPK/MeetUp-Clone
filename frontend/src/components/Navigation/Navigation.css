@@ -58,10 +58,21 @@
 
 .logo {
 	height: 34px;
-	margin-left: 1.625rem;
 }
 
 li {
 	display: flex;
 	align-items: center;
+}
+
+@media (min-width: 577px) {
+	.logo {
+		margin-left: 2.25rem;
+	}
+}
+
+@media (min-width: 1201px) {
+	.logo {
+		margin-left: 2rem;
+	}
 }
