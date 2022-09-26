@@ -1,5 +1,75 @@
 .groups-page {
 	z-index: 10;
 	background-color: white;
+}
+
+.groups-events-createGroups-links {
+	text-decoration: none;
+	display: flex;
+	flex-direction: row;
+	position: sticky;
+	padding-bottom: 0.375rem;
+	padding-top: 0.75rem;
+	top: 4rem;
+	border-bottom: 1px solid #d9d9d9;
+	background-color: white;
+	align-content: flex-start;
+}
+
+.top-links {
+	text-decoration: none;
+	margin-right: 1rem;
+	font-size: 1.25;
+	font-weight: 500;
+}
+
+.top-groups-link {
+	text-decoration: none;
+	color: #008294 !important;
+	border-bottom: 4px solid #008294;
+}
+.top-events-link {
+	text-decoration: none;
+}
+.top-create-groups-link {
+	text-decoration: none;
+}
+
+.group-image {
+	border-radius: 0.5rem;
+	width: 180px;
+	height: 100px;
+	top: -2.5rem;
 	position: relative;
+}
+
+.group-image-container {
+	width: 180px;
+	height: 100px;
+	align-content: flex-start;
+}
+
+.groups-list {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100vw;
+	align-content: flex-start;
+}
+
+.groups-list-item {
+	width: 40rem;
+	padding-top: 0.5rem;
+}
+
+.group-text-items {
+	padding-top: 0.5rem;
+	text-decoration: none;
+	padding-left: 1rem;
+	padding-bottom: 1rem;
+	border-bottom: 1px solid #d9d9d9;
+}
+
+.group-city-state {
+	text-transform: uppercase;
 }
