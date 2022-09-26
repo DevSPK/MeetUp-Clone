@@ -40,6 +40,7 @@
 	width: 180px;
 	height: 100px;
 	top: -2.5rem;
+
 	position: relative;
 }
 
@@ -47,6 +48,8 @@
 	width: 180px;
 	height: 100px;
 	align-content: flex-start;
+
+	border-bottom: 1px solid #d9d9d9;
 }
 
 .groups-list {
@@ -72,4 +75,11 @@
 
 .group-city-state {
 	text-transform: uppercase;
+}
+
+.group-name {
+	font-size: 20px;
+	font-weight: 600;
+	line-height: 1.75rem;
+	font-size: 1.25rem;
 }

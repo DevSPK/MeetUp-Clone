@@ -112,7 +112,7 @@ const GroupsPage = () => {
 											style={{ textDecoration: "none" }}
 											className='group-members-type-container'>
 											<p className='group-num-members-type'>
-												{`${group.numMembers} members · `}
+												{`${group.numMembers} member(s) · `}
 												{group.private && "Private"}
 												{!group.private && "Public"}
 											</p>
