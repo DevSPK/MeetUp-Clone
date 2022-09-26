@@ -1,7 +1,7 @@
 // frontend/src/components/Navigation/ProfileButton.js
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import * as sessionActions from "../../store/session";
 import "./ProfileButton.css";
 
@@ -59,12 +59,31 @@ function ProfileButton({ user }) {
 			{showMenu && (
 				<ul className='profile-dropdown'>
 					<li className='drop-down-items'>
+						<NavLink
+							to='/groups'
+							className='drop-down-items'>
+							Groups
+						</NavLink>
+					</li>
+					<li className='drop-down-items'>
+						<div className=''>
+							<NavLink
+								to='/events'
+								className='drop-down-items'>
+								Events
+							</NavLink>
+						</div>
+						<li>
+							<span className='line'></span>
+						</li>
+					</li>
+					<li className='drop-down-items line'>
 						{user.firstName} {user.lastName}
 					</li>
 					<li className='drop-down-items'>{user.email}</li>
 					<li className='drop-down-items'>
 						<button
-							className='logout-button'
+							className='logout-button drop-down-items'
 							onClick={logout}>
 							Log Out
 						</button>

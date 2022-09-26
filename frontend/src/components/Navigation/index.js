@@ -45,23 +45,14 @@ function Navigation({ isLoaded }) {
 	let eventsLink;
 	if (sessionUser) {
 		sessionLinks = <ProfileButton user={sessionUser} />;
-		groupsLink = (
-			<div>
-				<NavLink
-					to='/groups'
-					className='nav-item'>
-					Groups
-				</NavLink>
-			</div>
-		);
+		groupsLink = <div></div>;
 		eventsLink = (
-			<div>
-				<NavLink
-					to='/events'
-					className='nav-item'>
-					Events
-				</NavLink>
-			</div>
+			<div></div>
+			// 	<NavLink
+			// 		to='/groups'
+			// 		className='nav-item'>
+			// 		Start a new group
+			// 	</NavLink>
 		);
 	} else {
 		sessionLinks = (
