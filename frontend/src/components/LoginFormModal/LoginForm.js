@@ -35,16 +35,16 @@ function LoginForm() {
 	return (
 		<form onSubmit={handleSubmit}>
 			<div className='loginDiv'>
-				<h1>Log In</h1>
-				<div>
+				<h1 className='modal-header'>Log in</h1>
+				<div className='login-modal-signup'>
 					Not a member yet?{" "}
 					<NavLink
-						to='/signup'
-						className='nav-item'>
+						className='sign-up-link'
+						to='/signup'>
 						Sign up
 					</NavLink>
 				</div>
-				<ul>
+				<ul className='error-messages'>
 					{errors.map((error, idx) => (
 						<li key={idx}>{error}</li>
 					))}
