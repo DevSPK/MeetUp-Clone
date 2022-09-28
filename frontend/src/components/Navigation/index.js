@@ -9,112 +9,118 @@ import * as sessionActions from "../../store/session";
 import LoginFormModal from "../LoginFormModal";
 
 function Navigation({ isLoaded }) {
-	const [background, setBackground] = useState({});
-	const dispatch = useDispatch();
-	const sessionUser = useSelector(
-		(state) => state.session.user
-	);
+  const [background, setBackground] = useState({});
+  const [arrowFlip, setArrowFlip] = useState("false");
+  const dispatch = useDispatch();
+  const sessionUser = useSelector((state) => state.session.user);
 
-	useEffect(() => {
-		if (sessionUser) {
-			setBackground({
-				opacity: "1",
-				backgroundColor: "white",
-				zIndex: "1000",
-				position: "sticky",
-				borderBottom: "1px solid  #e6e6e6",
-				borderColor: "rgb(230, 230, 230)"
-			});
-		} else {
-			setBackground({});
-		}
-	}, [sessionUser]);
+  useEffect(() => {
+    if (sessionUser) {
+      setBackground({
+        opacity: "1",
+        backgroundColor: "white",
+        zIndex: "1000",
+        position: "sticky",
+        borderBottom: "1px solid  #e6e6e6",
+        borderColor: "rgb(230, 230, 230)"
+      });
+    } else {
+      setBackground({});
+    }
+  }, [sessionUser]);
 
-	const demoUser = (e) => {
-		e.preventDefault();
-		return dispatch(
-			sessionActions.login({
-				credential: "demo@user.io",
-				password: "password"
-			})
-		);
-	};
+  const demoUser = (e) => {
+    e.preventDefault();
+    return dispatch(
+      sessionActions.login({
+        credential: "demo@user.io",
+        password: "password"
+      })
+    );
+  };
 
-	let sessionLinks;
-	let groupsLink;
-	let eventsLink;
-	if (sessionUser) {
-		sessionLinks = <ProfileButton user={sessionUser} />;
-		groupsLink = <div></div>;
-		eventsLink = (
-			<div></div>
-			// 	<NavLink
-			// 		to='/groups'
-			// 		className='nav-item'>
-			// 		Start a new group
-			// 	</NavLink>
-		);
-	} else {
-		sessionLinks = (
-			<div className='login-items'>
-				<li>
-					<LoginFormModal className='nav-item' />
-				</li>
-				<li>
-					<NavLink
-						onClick={demoUser}
-						to={{
-							pathname: "/login",
-							userProps: {
-								credential: "demo@user.io",
-								password: "password"
-							}
-						}}
-						className='nav-item'>
-						Demo user
-					</NavLink>
-				</li>
-				{/* <li>
+  let sessionLinks;
+  let groupsLink;
+  let eventsLink;
+  if (sessionUser) {
+    sessionLinks = (
+      <div className='profile__container'>
+        <ProfileButton
+          user={sessionUser}
+          className='profile--button'
+        />
+      </div>
+    );
+    groupsLink = (
+      <div className='header-create-groups-link-container  header-links'>
+        <NavLink
+          to='/start-a-group'
+          className='header-create-groups-link'>
+          Start a new group
+        </NavLink>
+      </div>
+    );
+  } else {
+    sessionLinks = (
+      <div className='login-items'>
+        <li>
+          <LoginFormModal className='nav-item' />
+        </li>
+        <li>
+          <NavLink
+            onClick={demoUser}
+            to={{
+              pathname: "/login",
+              userProps: {
+                credential: "demo@user.io",
+                password: "password"
+              }
+            }}
+            className='nav-item'>
+            Demo user
+          </NavLink>
+        </li>
+        {/* <li>
 					<NavLink
 						to='/login'
 						className='nav-item'>
 						Log in
 					</NavLink>
 				</li> */}
-				<li>
-					<NavLink
-						to='/signup'
-						className='nav-item'>
-						Sign up
-					</NavLink>
-				</li>
-			</div>
-		);
-	}
+        <li>
+          <NavLink
+            to='/signup'
+            className='nav-item'>
+            Sign up
+          </NavLink>
+        </li>
+      </div>
+    );
+  }
 
-	return (
-		<nav
-			className='nav-list'
-			style={background}>
-			<div className='nav-item'>
-				<NavLink
-					exact
-					to='/'
-					className='nav-item'>
-					<img
-						src={logo}
-						alt='Treffenklon logo'
-						className='logo'
-					/>
-				</NavLink>
-			</div>
-			<ul>
-				<li>{isLoaded && groupsLink}</li>
-				<li>{isLoaded && eventsLink}</li>
-				{isLoaded && sessionLinks}
-			</ul>
-		</nav>
-	);
+  return (
+    <nav
+      className='nav-list'
+      style={background}>
+      <div className='nav-item'>
+        <NavLink
+          exact
+          to='/'
+          className='nav-item'>
+          <img
+            src={logo}
+            alt='Treffenklon logo'
+            className='logo'
+          />
+        </NavLink>
+      </div>
+      <ul>
+        <li>{isLoaded && groupsLink}</li>
+
+        {isLoaded && sessionLinks}
+      </ul>
+    </nav>
+  );
 }
 
 export default Navigation;

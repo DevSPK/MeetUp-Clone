@@ -10,13 +10,14 @@
 .groups-page-header-container {
   text-decoration: none;
   position: sticky;
+  top: 4rem;
   z-index: 100;
   padding-bottom: 0.75rem;
   padding-top: 0.75rem;
-  top: 4rem;
+
   border-bottom: 1px solid #d9d9d9;
   background-color: white;
-
+  min-height: 53px;
   display: grid;
   grid-template-columns: 28% 44% 28%;
   grid-template-rows: auto;
@@ -25,16 +26,13 @@
 
 .header-links {
   text-decoration: none;
-  margin-right: 1rem;
+  margin-right: 2rem;
   font-size: 1.25;
   font-weight: 500;
   justify-content: safe flex-start;
   grid-area: links;
   display: flex;
   flex-direction: row;
-}
-
-.header--container__links {
 }
 
 .header-groups-link {
@@ -45,10 +43,6 @@
 
 .header-create-groups-link {
   text-decoration: none;
-}
-
-.header-create-groups-link:hover {
-  color: #008294 !important;
 }
 
 /*------------------------------------*/
@@ -154,7 +148,7 @@
   line-height: 1.25rem;
 
   outline: none;
-
+  top: 0;
   align-items: start;
   align-self: start;
   margin: 0;

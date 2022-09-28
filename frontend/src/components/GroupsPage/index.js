@@ -50,23 +50,16 @@ const GroupsPage = () => {
         <div className='header-groups-link-container  header-links'>
           <div className='header--container__links header-links'>
             <NavLink
-              to='/groups'
-              className='header-groups-link'>
-              Groups
-            </NavLink>
-          </div>
-          <div className='header-events-link-container  header-links'>
-            <NavLink
               to='/events'
               className='header-events-link'>
               Events
             </NavLink>
           </div>
-          <div className='header-create-groups-link-container  header-links'>
+          <div className='header-events-link-container  header-links'>
             <NavLink
-              to='/start-a-group'
-              className='header-create-groups-link'>
-              Start a new group
+              to='/groups'
+              className='header-groups-link'>
+              Groups
             </NavLink>
           </div>
         </div>
