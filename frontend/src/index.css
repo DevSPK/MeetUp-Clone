@@ -16,6 +16,12 @@ CSS ul {
 	list-style-type: none;
 }
 
+a {
+	text-decoration: none;
+
+	color: inherit;
+}
+
 a:visited {
 	color: #212121;
 }
