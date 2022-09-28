@@ -7,12 +7,35 @@ import "./Navigation.css";
 import logo from "../../assets/treffenklon_padded_logo.narrow.png";
 import * as sessionActions from "../../store/session";
 import LoginFormModal from "../LoginFormModal";
+import { useLocation } from "react-router-dom";
 
 function Navigation({ isLoaded }) {
   const [background, setBackground] = useState({});
-  const [arrowFlip, setArrowFlip] = useState("false");
+  const [showCreateGroupLink, setShowCreateGroupLink] = useState("true");
   const dispatch = useDispatch();
   const sessionUser = useSelector((state) => state.session.user);
+
+  // function handleStartGroup() {
+  //   if (showCreateGroupLink) {
+  //     setShowCreateGroupLink(false);
+  //     return;
+  //   } else {
+  //     setShowCreateGroupLink(true);
+  //     return;
+  //   }
+  // }
+
+  let location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname === "/start-a-group") {
+      setShowCreateGroupLink(false);
+      return;
+    } else {
+      setShowCreateGroupLink(true);
+      return;
+    }
+  }, [location]);
 
   useEffect(() => {
     if (sessionUser) {
@@ -42,7 +65,7 @@ function Navigation({ isLoaded }) {
   let sessionLinks;
   let groupsLink;
   let eventsLink;
-  if (sessionUser) {
+  if (sessionUser && showCreateGroupLink) {
     sessionLinks = (
       <div className='profile__container'>
         <ProfileButton
@@ -55,11 +78,23 @@ function Navigation({ isLoaded }) {
       <div className='header-create-groups-link-container  header-links'>
         <NavLink
           to='/start-a-group'
-          className='header-create-groups-link'>
+          className='header-create-groups-link'
+          // onClick={handleStartGroup}
+        >
           Start a new group
         </NavLink>
       </div>
     );
+  } else if (sessionUser && !showCreateGroupLink) {
+    sessionLinks = (
+      <div className='profile__container'>
+        <ProfileButton
+          user={sessionUser}
+          className='profile--button'
+        />
+      </div>
+    );
+    groupsLink = null;
   } else {
     sessionLinks = (
       <div className='login-items'>
