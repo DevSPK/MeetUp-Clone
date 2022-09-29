@@ -3,6 +3,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  height: 100%;
 }
 
 .group--form .errors-container {
@@ -40,7 +41,7 @@
   border-radius: 5px;
   border: 1px solid #ddd;
   margin: 0.25rem 0 1.25rem 0;
-  padding: 1rem;
+  /* padding: 1rem; */
   box-sizing: border-box;
   display: block;
   width: 100%;
@@ -56,6 +57,7 @@
   box-sizing: border-box;
   display: block;
   width: 10rem;
+  padding-left: 0.5rem;
 }
 
 .form--textarea {
@@ -66,8 +68,8 @@
   height: 2.5rem;
   border-radius: 5px;
   border: 1px solid #ddd;
-  margin: 0.25rem 0 1.25rem 0;
-  padding: 1.25rem;
+  margin: 0.25rem 0 1rem 0;
+  padding: 0.75rem;
   box-sizing: border-box;
   font-family: inherit;
 }
