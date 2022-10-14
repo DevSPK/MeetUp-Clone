@@ -3,18 +3,18 @@ import { useSelector, useDispatch } from "react-redux";
 import { thunkReadAllGroups } from "../../store/groups";
 import { useEffect, useState } from "react";
 import {
-  Route,
-  Switch,
+  // Route,
+  // Switch,
   // NavLink,
   Link,
   NavLink
 } from "react-router-dom";
-import { SingleGroup } from "../SingleGroup";
-import GroupInput from "../GroupInput";
+// import { SingleGroup } from "../SingleGroup";
+// import GroupInput from "../GroupInput";
 import "./GroupsPage.css";
 
 const GroupsPage = () => {
-  const [showCreateGroupForm, setShowCreateGroupForm] = useState(false);
+  // const [showCreateGroupForm, setShowCreateGroupForm] = useState(false);
 
   const groupsList = useSelector((state) => Object.values(state.groups));
 
