@@ -6,8 +6,25 @@
 	left: 0;
 	bottom: 0;
 	display: flex;
+
+	flex-direction: column;
+	align-content: center;
 	justify-content: center;
 	align-items: center;
+
+	box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+		rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+		rgba(0, 0, 0, 0.1) 0px 10px 15px -3px,
+		rgba(0, 0, 0, 0.1) 0px 4px 6px -4px;
+
+	border-radius: 0.5rem;
+	max-height: 100vh;
+	min-width: 31.25rem;
+	max-width: 100%;
+
+	/* background-color: white; */
+	overflow: hidden;
+	padding: 2.25rem 2.5rem 2rem 3rem;
 }
 
 #modal-background {
@@ -17,13 +34,10 @@
 	left: 0;
 	bottom: 0;
 	background-color: rgba(0, 0, 0, 0.7);
+	z-index: 500;
 }
 
 #modal-content {
-	/* top: 0;
-	right: 0;
-	left: 0;
-	bottom: 0; */
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -32,23 +46,19 @@
 	border: 0px;
 	border-radius: 0.5rem;
 	bottom: 0px;
-	box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px,
-		rgba(0, 0, 0, 0) 0px 0px 0px 0px,
-		rgba(0, 0, 0, 0.1) 0px 10px 15px -3px,
-		rgba(0, 0, 0, 0.1) 0px 4px 6px -4px;
 	box-sizing: border-box;
 	font-size: 16px;
 	left: 0px;
 	line-height: 24px;
 	max-height: 100vh;
-	max-width: 20%;
+	max-width: 80%;
 	min-width: 50px;
 	opacity: 1;
 	overflow: auto;
-	overflow-y: auto;
-	padding-bottom: 2rem;
-	padding-left: 2rem;
-	padding-right: 2rem;
-	padding-top: 2rem;
-	z-index: 50;
+	position: relative;
+	padding: 2rem 2rem 2rem 2rem;
+	z-index: 600;
+}
+
+.modal-container {
 }

@@ -72,12 +72,12 @@ function LoginFormPage() {
 			<button
 				className='login-button'
 				type='submit'>
-				Log In
+				Log in
 			</button>
 			<button
 				onClick={demoUser}
 				className='login-button'>
-				Demo User
+				Demo user
 			</button>
 		</form>
 	);

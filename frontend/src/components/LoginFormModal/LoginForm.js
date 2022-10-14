@@ -35,16 +35,16 @@ function LoginForm() {
 	return (
 		<form onSubmit={handleSubmit}>
 			<div className='loginDiv'>
-				<h1>Log In</h1>
-				<div>
+				<h1 className='modal-header'>Log in</h1>
+				<div className='login-modal-signup'>
 					Not a member yet?{" "}
 					<NavLink
-						to='/signup'
-						className='nav-item'>
-						Sign Up
+						className='sign-up-link'
+						to='/signup'>
+						Sign up
 					</NavLink>
 				</div>
-				<ul>
+				<ul className='error-messages'>
 					{errors.map((error, idx) => (
 						<li key={idx}>{error}</li>
 					))}
@@ -72,12 +72,12 @@ function LoginForm() {
 				<button
 					type='submit'
 					className='login-button'>
-					Log In
+					Log in
 				</button>
 				<button
 					onClick={demoUser}
 					className='login-button'>
-					Demo User
+					Demo user
 				</button>
 			</div>
 		</form>

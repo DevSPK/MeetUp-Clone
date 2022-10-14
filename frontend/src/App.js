@@ -18,6 +18,7 @@ import GroupInput from "./components/GroupInput";
 import GroupUpdate from "./components/GroupUpdate";
 import { SingleEvent } from "./components/SingleEvent";
 import EventInput from "./components/EventInput";
+import LoginFormModal from "./components/LoginFormModal";
 
 function App() {
 	const dispatch = useDispatch();
@@ -40,7 +41,7 @@ function App() {
 						<SingleEvent />
 					</Route>
 					<Route path='/login'>
-						<LoginFormPage />
+						<LoginFormModal />
 					</Route>
 					<Route path='/signup'>
 						<SignupFormPage />
@@ -60,6 +61,7 @@ function App() {
 					<Route path='/start-an-event'>
 						<EventInput />
 					</Route>
+
 					<Route
 						exact
 						path='/'>

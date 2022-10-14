@@ -110,6 +110,7 @@ const GroupUpdate = ({ group, hideForm }) => {
 		e.preventDefault();
 		setErrors([]);
 		hideForm();
+		history.push(`/groups`);
 	};
 
 	return (

@@ -1,5 +1,5 @@
 // frontend/src/components/Navigation/index.js
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import ProfileButton from "./ProfileButton";
@@ -7,105 +7,155 @@ import "./Navigation.css";
 import logo from "../../assets/treffenklon_padded_logo.narrow.png";
 import * as sessionActions from "../../store/session";
 import LoginFormModal from "../LoginFormModal";
+import { useLocation } from "react-router-dom";
 
 function Navigation({ isLoaded }) {
-	const dispatch = useDispatch();
-	const sessionUser = useSelector(
-		(state) => state.session.user
-	);
+  const [background, setBackground] = useState({});
+  const [showCreateGroupLink, setShowCreateGroupLink] = useState("true");
+  const dispatch = useDispatch();
+  const sessionUser = useSelector((state) => state.session.user);
 
-	const demoUser = (e) => {
-		e.preventDefault();
-		return dispatch(
-			sessionActions.login({
-				credential: "demo@user.io",
-				password: "password"
-			})
-		);
-	};
+  // function handleStartGroup() {
+  //   if (showCreateGroupLink) {
+  //     setShowCreateGroupLink(false);
+  //     return;
+  //   } else {
+  //     setShowCreateGroupLink(true);
+  //     return;
+  //   }
+  // }
 
-	let sessionLinks;
-	let groupsLink;
-	let eventsLink;
-	if (sessionUser) {
-		sessionLinks = <ProfileButton user={sessionUser} />;
-		groupsLink = (
-			<div>
-				<NavLink
-					to='/groups'
-					className='nav-item'>
-					Groups
-				</NavLink>
-			</div>
-		);
-		eventsLink = (
-			<div>
-				<NavLink
-					to='/events'
-					className='nav-item'>
-					Events
-				</NavLink>
-			</div>
-		);
-	} else {
-		sessionLinks = (
-			<div className='login-items'>
-				<li>
-					<LoginFormModal className='nav-item' />
-				</li>
-				<li>
-					<NavLink
-						onClick={demoUser}
-						to={{
-							pathname: "/login",
-							userProps: {
-								credential: "demo@user.io",
-								password: "password"
-							}
-						}}
-						className='nav-item'>
-						Demo User
-					</NavLink>
-				</li>
-				{/* <li>
+  let location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname === "/start-a-group") {
+      setShowCreateGroupLink(false);
+      return;
+    } else {
+      setShowCreateGroupLink(true);
+      return;
+    }
+  }, [location]);
+
+  useEffect(() => {
+    if (sessionUser) {
+      setBackground({
+        opacity: "1",
+        backgroundColor: "white",
+        zIndex: "1000",
+        position: "sticky",
+        borderBottom: "1px solid  #e6e6e6",
+        borderColor: "rgb(230, 230, 230)"
+      });
+    } else {
+      setBackground({});
+    }
+  }, [sessionUser]);
+
+  const demoUser = (e) => {
+    e.preventDefault();
+    return dispatch(
+      sessionActions.login({
+        credential: "demo@user.io",
+        password: "password"
+      })
+    );
+  };
+
+  let sessionLinks;
+  let groupsLink;
+  let eventsLink;
+  if (sessionUser && showCreateGroupLink) {
+    sessionLinks = (
+      <div className='profile__container'>
+        <ProfileButton
+          user={sessionUser}
+          className='profile--button'
+        />
+      </div>
+    );
+    groupsLink = (
+      <div className='header-create-groups-link-container  header-links'>
+        <NavLink
+          to='/start-a-group'
+          className='header-create-groups-link'
+          // onClick={handleStartGroup}
+        >
+          Start a new group
+        </NavLink>
+      </div>
+    );
+  } else if (sessionUser && !showCreateGroupLink) {
+    sessionLinks = (
+      <div className='profile__container'>
+        <ProfileButton
+          user={sessionUser}
+          className='profile--button'
+        />
+      </div>
+    );
+    groupsLink = null;
+  } else {
+    sessionLinks = (
+      <div className='login-items'>
+        <li>
+          <LoginFormModal className='nav-item' />
+        </li>
+        <li>
+          <NavLink
+            onClick={demoUser}
+            to={{
+              pathname: "/login",
+              userProps: {
+                credential: "demo@user.io",
+                password: "password"
+              }
+            }}
+            className='nav-item'>
+            Demo user
+          </NavLink>
+        </li>
+        {/* <li>
 					<NavLink
 						to='/login'
 						className='nav-item'>
-						Log In
+						Log in
 					</NavLink>
 				</li> */}
-				<li>
-					<NavLink
-						to='/signup'
-						className='nav-item'>
-						Sign Up
-					</NavLink>
-				</li>
-			</div>
-		);
-	}
+        <li>
+          <NavLink
+            to='/signup'
+            className='nav-item'>
+            Sign up
+          </NavLink>
+        </li>
+      </div>
+    );
+  }
 
-	return (
-		<nav className='nav-list'>
-			<div className='nav-item'>
-				<NavLink
-					exact
-					to='/'
-					className='nav-item'>
-					<img
-						src={logo}
-						alt='Treffenklon logo'
-						className='logo'
-					/>
-				</NavLink>
-			</div>
-			<ul>
-				<li>{isLoaded && groupsLink}</li>
-				<li>{isLoaded && eventsLink}</li>
-				{isLoaded && sessionLinks}
-			</ul>
-		</nav>
-	);
+  return (
+    <nav
+      className='nav-list'
+      style={background}>
+      <div className='nav-item'>
+        <NavLink
+          exact
+          to='/'
+          className='nav-item'>
+          <img
+            src={logo}
+            alt='Treffenklon logo'
+            className='logo'
+          />
+        </NavLink>
+      </div>
+      <ul>
+        <li>{isLoaded && groupsLink}</li>
+
+        {isLoaded && sessionLinks}
+      </ul>
+    </nav>
+  );
 }
 
 export default Navigation;
