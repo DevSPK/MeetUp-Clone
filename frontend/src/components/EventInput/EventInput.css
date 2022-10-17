@@ -1,0 +1,96 @@
+.event--form--container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.event--form .errors-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+}
+
+.event--form {
+  width: 100%;
+  max-width: 44rem;
+  padding: 0.5rem;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+.errors {
+  color: red;
+}
+
+.event--form--labels {
+  margin: 0;
+}
+
+.inputs--container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  justify-items: flex-start;
+}
+
+.form--input {
+  background-color: white;
+  height: 2.5rem;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  margin: 0.25rem 0 1.25rem 0;
+  /* padding: 1rem; */
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+}
+
+.form--select {
+  background-color: white;
+  height: 2.5rem;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  margin: 0.25rem 0 1.25rem 0;
+  /* padding: 1rem; */
+  box-sizing: border-box;
+  display: block;
+  width: 10rem;
+  padding-left: 0.5rem;
+}
+
+.form--textarea {
+  background-color: white;
+  width: 100%;
+  min-height: 6.25rem;
+  resize: none;
+  height: 2.5rem;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  margin: 0.25rem 0 1rem 0;
+  padding: 0.75rem;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.form--button--container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin: 1rem;
+}
+
+.form--button {
+  background: #f34f51;
+  border-radius: 10px;
+  box-sizing: border-box;
+  color: #f6f6f6;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  height: 3rem;
+  border: 1px solid #ddd;
+  width: 16rem;
+}
