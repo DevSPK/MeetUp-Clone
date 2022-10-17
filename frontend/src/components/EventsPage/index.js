@@ -2,93 +2,133 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { thunkReadAllEvents } from "../../store/events";
 import { useEffect, useState } from "react";
-import {
-	Route,
-	Switch,
-	// NavLink,
-	Link
-} from "react-router-dom";
-import { SingleEvent } from "../SingleEvent";
-import EventInput from "../EventInput";
+import { NavLink, Link } from "react-router-dom";
+
+import "../EventsPage/EventsPage.css";
 
 const EventsPage = () => {
-	const eventsList = useSelector((state) =>
-		// console.log("state",state.events)
-		Object.values(state.events)
-	);
-	const [showCreateEventForm, setShowCreateEventForm] =
-		useState(false);
+  const eventsList = useSelector((state) =>
+    // console.log("state",state.events)
+    Object.values(state.events)
+  );
+  // const [showCreateEventForm, setShowCreateEventForm] =
+  // 	useState(false);
 
-	// let events;
+  // let events;
 
-	const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-	useEffect(() => {
-		dispatch(thunkReadAllEvents());
-		console.log("useeffect run");
-	}, [dispatch]);
-	// forceUpdate();
+  useEffect(() => {
+    dispatch(thunkReadAllEvents());
+    // console.log("useeffect run");
+  }, [dispatch]);
+  // forceUpdate();
 
-	console.log("el", eventsList);
-	console.log(
-		"state",
-		useSelector((state) => Object.values(state.events))
-	);
+  // console.log("el", eventsList);
+  // console.log(
+  // 	"state",
+  // 	useSelector((state) => Object.values(state.events))
+  // );
 
-	if (!eventsList) {
-		return null;
-	}
-	// console.log("this is eventsList", eventsList);
+  if (!eventsList) {
+    return null;
+  }
+  // console.log("this is eventsList", eventsList);
 
-	let content = null;
+  // let content = null;
 
-	if (showCreateEventForm) {
-		content = (
-			<Route path='/events/'>
-				<EventInput
-					hideForm={() => setShowCreateEventForm(false)}
-				/>
-			</Route>
-		);
-	}
+  // if (showCreateEventForm) {
+  // 	content = (
+  // 		<Route path='/events/'>
+  // 			<EventInput
+  // 				hideForm={() => setShowCreateEventForm(false)}
+  // 			/>
+  // 		</Route>
+  // 	);
+  // }
 
-	return (
-		<div className='events-page'>
-			<h1>Events Page</h1>
-			<ul className='events-list'>
-				{eventsList.map(
-					({
-						id,
-						name,
-						city,
-						state,
-						numMembers,
-						previewImage,
-						about
-					}) => (
-						<li
-							key={id}
-							className='events-list-item'>
-							<Link to={`/events/${id}`}>{`${name}`}</Link>
-						</li>
-					)
-				)}
+  const optionsDate = {
+    weekday: "short",
+    month: "short",
+    day: "numeric"
+  };
 
-				{/* <li>
-					<Link to={"/events"}>Create an Event</Link>
-				</li> */}
-			</ul>
-			{/* <button onClick={() => setShowCreateEventForm(true)}>
-				Create New Event
-			</button> */}
-			{/* <Route
-				exact
-				path='/events/:id'>
-				<SingleEvent />
-			</Route> */}
-			<div>{content}</div>
-		</div>
-	);
+  const optionsTime = {
+    timeZoneName: "short",
+    hour: "numeric",
+    minute: "2-digit"
+  };
+
+  return (
+    <div className='events-page-container'>
+      <div className='events-page-header-container'>
+        <div className='header-events-link-container  header-links'>
+          <div className='header--container__links header-links'>
+            <NavLink
+              to='/events'
+              className='header-selected-link'>
+              Events
+            </NavLink>
+          </div>
+          <div className='header-events-link-container  header-links'>
+            <NavLink
+              to='/groups'
+              className='header-groups-link'>
+              Groups
+            </NavLink>
+          </div>
+        </div>
+      </div>
+
+      <div className='grid--column__middle'>
+        {eventsList.map((event) => (
+          <div
+            style={{ textDecoration: "none" }}
+            key={event.id}
+            to={`/events/${event.id}`}
+            className='grid-card--container'>
+            <Link to={`/events/${event.id}`}>
+              <div className='grid-card--text__container'>
+                <img
+                  class='grid-card--image__preview'
+                  src={event.previewImage}
+                  alt='a depiction of this event'
+                />
+                <p
+                  style={{ textDecoration: "none" }}
+                  className='grid-card--text__start-time  uppercase'>
+                  {new Date(event.startDate).toLocaleDateString(
+                    "en-US",
+                    optionsDate
+                  )}{" "}
+                  ·{" "}
+                  {new Date(event.startDate).toLocaleTimeString(
+                    "en-US",
+                    optionsTime
+                  )}
+                </p>
+                <p
+                  className='grid-card--text__event-name'
+                  style={{ textDecoration: "none" }}>
+                  {event.name}
+                </p>
+                <p
+                  style={{ textDecoration: "none" }}
+                  className='grid-card--text__group-name'>
+                  {event.Group.name}
+                </p>
+                <p
+                  className='grid-card--text__members-type'
+                  style={{ textDecoration: "none" }}>
+                  {`${event.numAttending} attendee(s)`}
+                </p>
+              </div>
+            </Link>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 };
 
 export default EventsPage;

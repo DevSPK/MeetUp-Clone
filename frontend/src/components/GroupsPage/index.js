@@ -58,7 +58,7 @@ const GroupsPage = () => {
           <div className='header-events-link-container  header-links'>
             <NavLink
               to='/groups'
-              className='header-groups-link'>
+              className='header-selected-link'>
               Groups
             </NavLink>
           </div>
