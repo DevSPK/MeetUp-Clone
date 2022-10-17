@@ -23,14 +23,24 @@ const EventInput = ({ hideForm, group }) => {
   const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [errors, setErrors] = useState([]);
+  // const [errors, setErrors] = useState([]);
   const [imageUrl, setImageUrl] = useState("");
 
   //custom validation errors
 
-  // const []
-
+  const [validationErrors, setValidationErrors] = useState([]);
+  const [hasSubmitted, setHasSubmitted] = useState(false);
   const dispatch = useDispatch();
+  useEffect(() => {
+    const errors = [];
+
+    if (name.length < 5) errors.push("Name must be at least 5 characters");
+    if (!description.length) errors.push("Description is required");
+    if (!startDate.length) errors.push("Start date and time is required");
+    if (!endDate.length) errors.push("End date and time is required");
+    if (!imageUrl.length) errors.push("Please provide a valid image URL");
+    setValidationErrors(errors);
+  }, [name, description, startDate, endDate]);
 
   useEffect(() => {
     dispatch(thunkReadAllEvents());
@@ -49,6 +59,11 @@ const EventInput = ({ hideForm, group }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setHasSubmitted(true);
+    // if (validationErrors.length) {
+    //   alert("Cannot Submit, please fix errors");
+    // }
 
     let newEvent = {
       venueId,
@@ -82,14 +97,14 @@ const EventInput = ({ hideForm, group }) => {
     // 	}
     // };
 
-    setErrors([]);
+    // setErrors([]);
 
     return dispatch(thunkAddEvent(newEvent))
       .then((res) => {
         if (res.ok) {
           // console.log("this is res in thunkAddevent", res);
           reset();
-          hideForm();
+          // hideForm();
           history.push(`/events`);
         }
       })
@@ -101,7 +116,7 @@ const EventInput = ({ hideForm, group }) => {
           // 	"this is data3 in thunkAddevent",
           // 	data
           // );
-          return setErrors(data.errors);
+          return console.log("Cannot Submit, please fix errors");
         }
       });
   };
@@ -116,6 +131,8 @@ const EventInput = ({ hideForm, group }) => {
     setStartDate("");
     setEndDate("");
     setImageUrl("");
+    setValidationErrors([]);
+    setHasSubmitted(false);
   };
 
   const handleCapacity = (event) => {
@@ -313,9 +330,18 @@ const EventInput = ({ hideForm, group }) => {
         />
         <div className='error--item  errors  event--form__shared  errors--container '>
           <ul className='event--form__shared   errors'>
-            {errors.map((error, idx) => (
+            {/* {errors.map((error, idx) => (
               <li key={idx}>{error}</li>
-            ))}
+            ))} */}
+            {hasSubmitted && validationErrors.length > 0 && (
+              <div>
+                <ul>
+                  {validationErrors.map((error) => (
+                    <li key={error}>{error}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </ul>
         </div>
         <div className='form--button--container'>
