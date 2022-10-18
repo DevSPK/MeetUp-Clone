@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useHistory, Redirect, useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 
 import "./GroupUpdate.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,7 +8,7 @@ import { thunkReadAllGroups, thunkUpdateGroup } from "../../store/groups";
 const GroupUpdate = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  console.log("this is id in groupupdate", id);
+  // console.log("this is id in groupupdate", id);
   useEffect(() => {
     dispatch(thunkReadAllGroups());
   }, [dispatch, id]);
@@ -63,13 +63,13 @@ const GroupUpdate = () => {
 
     return dispatch(thunkUpdateGroup(newInfo))
       .then((res) => {
-        console.log(
-          "***********************this is res from thunkUpdateGroup",
-          res
-        );
+        // console.log(
+        //   "***********************this is res from thunkUpdateGroup",
+        //   res
+        // );
         if (res) {
           handleUpdate(res);
-          console.log("inside the if.......");
+          // console.log("inside the if.......");
           // hideForm();
           // return <Redirect to='/groups/' />;
           // history.push("/");
@@ -101,7 +101,7 @@ const GroupUpdate = () => {
   };
 
   function handleUpdate(res) {
-    console.log("inside handle update$$$$$$$$$$$$$");
+    // console.log("inside handle update$$$$$$$$$$$$$");
     // hideForm();
     // return <Redirect to='/' />;
     history.push(`/groups`);
@@ -115,29 +115,44 @@ const GroupUpdate = () => {
   };
 
   return (
-    <div className='inputBox'>
-      <h1>Edit Group</h1>
-      <form onSubmit={handleSubmit}>
-        <ul className='editInput-errors-ul errors-ul'>
-          {errors.map((error, idx) => (
-            <li key={idx}>{error}</li>
-          ))}
-        </ul>
+    <div className='group--form--container  group--form__shared'>
+      <h1 className='group--form--title'>Edit Group</h1>
+      <form
+        onSubmit={handleSubmit}
+        className='group--form__shared  group--form'>
+        <label
+          htmlFor='name'
+          className='group--form--labels'>
+          Name
+        </label>
         <input
           type='text'
           onChange={(e) => setName(e.target.value)}
           value={name}
           placeholder='Name'
           name='name'
+          className='form--input  group--form__shared'
         />
+        <label
+          htmlFor='about'
+          className='group--form--labels'>
+          About your group
+        </label>
         <textarea
           value={about}
           onChange={(e) => setAbout(e.target.value)}
           name='about'
-          placeholder='About your group'
-          rows='10'></textarea>
+          placeholder='Please provide at least 50 characters'
+          rows='10'
+          className='form--textarea  group--form__shared'></textarea>
+        <label
+          htmlFor='type'
+          className='group--form--labels'>
+          Group type
+        </label>
         <select
           name='type'
+          className='form--select  group--form__shared'
           onChange={(e) => {
             setType(e.target.value);
           }}>
@@ -149,39 +164,72 @@ const GroupUpdate = () => {
           <option value='In person'>In Person</option>
           <option value='Online'>Online</option>
         </select>
+        <label
+          htmlFor='private'
+          className='group--form--labels'>
+          Private?
+        </label>
+
         <select
-          name='type'
+          className='form--select  group--form__shared'
+          name='private'
           onChange={(e) => {
             setPrivateVal(e.target.value);
           }}>
           <option
             value=''
             disabled>
-            Private Group?
+            Is this a private group?
           </option>
           <option value={true}>Yes</option>
           <option value={false}>No</option>
         </select>
+        <label
+          htmlFor='city'
+          className='group--form--labels'>
+          City
+        </label>
         <input
           type='text'
           onChange={(e) => setCity(e.target.value)}
           value={city}
           placeholder='City'
           name='city'
+          className='form--input  group--form__shared'
         />
+        <label
+          htmlFor='state'
+          className='group--form--labels'>
+          State
+        </label>
         <input
           type='text'
           onChange={(e) => setState(e.target.value)}
           value={state}
           placeholder='State'
           name='state'
+          className='form--input  group--form__shared'
         />
-        <button type='submit'>Submit</button>
-        <button
-          type='button'
-          onClick={handleCancelClick}>
-          Cancel
-        </button>
+        <div className='error--item  errors  group--form__shared  errors--container '>
+          <ul className='group--form__shared   errors'>
+            {errors.map((error, idx) => (
+              <li key={idx}>{error}</li>
+            ))}
+          </ul>
+        </div>
+        <div className='form--button--container'>
+          <button
+            type='submit'
+            className='form--button  group--form__shared'>
+            Submit
+          </button>
+          <button
+            type='button'
+            onClick={handleCancelClick}
+            className='form--button  group--form__shared'>
+            Cancel
+          </button>
+        </div>
       </form>
     </div>
   );
