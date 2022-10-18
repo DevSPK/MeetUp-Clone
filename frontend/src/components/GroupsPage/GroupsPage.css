@@ -35,7 +35,7 @@
   flex-direction: row;
 }
 
-.header-groups-link {
+.header-selected-link {
   text-decoration: none;
   color: #008294 !important;
   border-bottom: 4px solid #008294;

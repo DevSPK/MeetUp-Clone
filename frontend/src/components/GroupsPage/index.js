@@ -58,7 +58,7 @@ const GroupsPage = () => {
           <div className='header-events-link-container  header-links'>
             <NavLink
               to='/groups'
-              className='header-groups-link'>
+              className='header-selected-link'>
               Groups
             </NavLink>
           </div>
@@ -105,16 +105,7 @@ const GroupsPage = () => {
             </Link>
           </div>
         ))}
-        {/* <li>
-					<Link to={"/groups"}>Create a Group</Link>
-				</li> */}
       </div>
-      {/* <button
-					onClick={() => setShowCreateGroupForm(true)}>
-					Create New Group
-				</button>
-
-				<div>{content}</div> */}
     </div>
   );
 };
