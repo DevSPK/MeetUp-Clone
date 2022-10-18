@@ -1,4 +1,4 @@
-import { useParams, useHistory, Route, Redirect } from "react-router-dom";
+import { useParams, useHistory, Route, Redirect, Link } from "react-router-dom";
 // import { Link } from "react-router-dom";
 import {
   thunkGetOneGroup,
@@ -95,38 +95,36 @@ export const SingleGroup = () => {
 
   let content = null;
 
-  if (showEditGroupForm && sessionUser.id === group.organizerId) {
-    content = (
-      <>
-        <GroupUpdate
-          group={group}
-          hideForm={() => setShowEditGroupForm(false)}
-        />
-      </>
-    );
-  }
+  // if (showEditGroupForm && sessionUser.id === group.organizerId) {
+  //   content = (
+  //     <>
+  //       <GroupUpdate
+  //         group={group}
+  //         hideForm={() => setShowEditGroupForm(false)}
+  //       />
+  //     </>
+  //   );
+  // }
 
-  const handleEditGroupForm = () => {
-    setShowEditGroupForm(true);
-    setShowGroupContent(false);
-    setShow((prev) => !prev);
-  };
+  // const handleCreateEventFormClick = (e) => {
+  //   console.log("this works at least");
+  //   setShowCreateEventForm(true);
+  //   setShowGroupContent(false);
+  //   setShow((prev) => !prev);
+  // };
 
-  const handleCreateEventFormClick = (e) => {
-    console.log("this works at least");
-    setShowCreateEventForm(true);
-    setShowGroupContent(false);
-    setShow((prev) => !prev);
-  };
+  const handleCreateEventFormClick = (e) => {};
 
-  if (showCreateEventForm) {
-    content = (
-      <EventInput
-        group={group}
-        hideForm={() => setShowCreateEventForm(false)}
-      />
-    );
-  }
+  const handleEditGroupForm = (e) => {};
+
+  // if (showCreateEventForm) {
+  //   content = (
+  //     <EventInput
+  //       group={group}
+  //       hideForm={() => setShowCreateEventForm(false)}
+  //     />
+  //   );
+  // }
 
   if (!group || !group.previewImage) {
     return null;
@@ -189,16 +187,14 @@ export const SingleGroup = () => {
           </button>
         )}
         {show && (
-          <button
-            className='edit-group-button button form--button'
-            onClick={() => handleEditGroupForm()}>
-            Edit Group
+          <button className='edit-group-button button form--button'>
+            <Link to='/edit-a-group/:id'>Edit Group</Link>
           </button>
         )}
         {show && (
           <button
             className='create-event-button button form--button'
-            onClick={() => handleCreateEventFormClick()}>
+            onClick={<Link to='/groups/:groupId/events' />}>
             Create New Event
           </button>
         )}

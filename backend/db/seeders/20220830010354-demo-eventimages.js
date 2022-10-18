@@ -21,7 +21,7 @@ module.exports = {
         },
         {
           eventId: 2,
-          url: "https://picsum.photos/id/224/1080/720",
+          url: "https://picsum.photos/id/227/1080/720",
           preview: true
         },
         {

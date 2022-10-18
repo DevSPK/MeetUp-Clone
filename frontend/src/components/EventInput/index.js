@@ -40,7 +40,7 @@ const EventInput = ({ hideForm, group }) => {
     if (!endDate.length) errors.push("End date and time is required");
     if (!imageUrl.length) errors.push("Please provide a valid image URL");
     setValidationErrors(errors);
-  }, [name, description, startDate, endDate]);
+  }, [name, description, startDate, endDate, imageUrl]);
 
   useEffect(() => {
     dispatch(thunkReadAllEvents());
@@ -54,7 +54,8 @@ const EventInput = ({ hideForm, group }) => {
     price,
     description,
     startDate,
-    endDate
+    endDate,
+    imageUrl
   ]);
 
   const handleSubmit = async (e) => {
@@ -84,41 +85,46 @@ const EventInput = ({ hideForm, group }) => {
     // 	dispatch(addEvent(newEvent));
     // }, [dispatch]);
 
-    // 	const createdEvent = await dispatch(
-    // 		thunkAddEvent(newEvent)
-    // 	);
+    // const createdEvent = await dispatch(thunkAddEvent(newEvent));
 
-    // 	if (!createdEvent) return null;
+    // if (!createdEvent) return null;
 
-    // 	if (createdEvent) {
-    // 		reset();
-    // 		history.push(`/events`);
-    // 		hideForm();
-    // 	}
+    // if (createdEvent) {
+    //   reset();
+    //   history.push(`/events`);
+    // }
     // };
+
+    return dispatch(thunkAddEvent(newEvent)).then((res) => {
+      if (res.ok) {
+        console.log("this is res from thunkAddEvent", res);
+        reset();
+        history.push("/events");
+      }
+    });
 
     // setErrors([]);
 
-    return dispatch(thunkAddEvent(newEvent))
-      .then((res) => {
-        if (res.ok) {
-          // console.log("this is res in thunkAddevent", res);
-          reset();
-          // hideForm();
-          history.push(`/events`);
-        }
-      })
-      .catch(async (res) => {
-        const data = await res.json();
-        // console.log("this is data1 in thunkAddevent", data);
-        if (data && data.errors) {
-          // console.log(
-          // 	"this is data3 in thunkAddevent",
-          // 	data
-          // );
-          return console.log("Cannot Submit, please fix errors");
-        }
-      });
+    // return dispatch(thunkAddEvent(newEvent))
+    //   .then((res) => {
+    //     if (res.ok) {
+    //       console.log("this is res in thunkAddevent", res);
+    //       reset();
+    //       // hideForm();
+    //       history.push(`/events`);
+    //     }
+    //   })
+    //   .catch(async (res) => {
+    //     const data = await res.json();
+    //     // console.log("this is data1 in thunkAddevent", data);
+    //     if (data && data.errors) {
+    //       // console.log(
+    //       // 	"this is data3 in thunkAddevent",
+    //       // 	data
+    //       // );
+    //       return console.log("Cannot Submit, please fix errors");
+    //     }
+    //   });
   };
 
   const reset = () => {

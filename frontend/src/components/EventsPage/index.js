@@ -90,7 +90,7 @@ const EventsPage = () => {
             <Link to={`/events/${event.id}`}>
               <div className='grid-card--text__container'>
                 <img
-                  class='grid-card--image__preview'
+                  className='grid-card--image__preview'
                   src={event.previewImage}
                   alt='a depiction of this event'
                 />
