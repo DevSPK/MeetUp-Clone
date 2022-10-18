@@ -105,16 +105,7 @@ const GroupsPage = () => {
             </Link>
           </div>
         ))}
-        {/* <li>
-					<Link to={"/groups"}>Create a Group</Link>
-				</li> */}
       </div>
-      {/* <button
-					onClick={() => setShowCreateGroupForm(true)}>
-					Create New Group
-				</button>
-
-				<div>{content}</div> */}
     </div>
   );
 };

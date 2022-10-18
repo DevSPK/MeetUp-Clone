@@ -46,10 +46,9 @@ export const thunkReadAllEvents = () => async (dispatch) => {
     // console.log()
 
     dispatch(actionReadAllEvents(events.Events));
+  } else {
+    return response;
   }
-  // else {
-  // 	return response;
-  // }
 };
 
 export const thunkGetOneEvent = (eventId) => async (dispatch) => {
@@ -62,7 +61,7 @@ export const thunkGetOneEvent = (eventId) => async (dispatch) => {
 };
 
 export const thunkAddEvent = (event) => async (dispatch) => {
-  // console.log("this is event from thunkAddEvent", event);
+  console.log("this is event from thunkAddEvent", event);
   const {
     venueId,
     groupId,
@@ -104,7 +103,8 @@ export const thunkAddEvent = (event) => async (dispatch) => {
     });
     if (imageResponse.ok) {
       // const data = await response.json();
-      dispatch(actionCreateEvent(data));
+      await dispatch(actionCreateEvent(data));
+      await dispatch(thunkReadAllEvents());
       return eventResponse;
     }
   }

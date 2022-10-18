@@ -7,45 +7,15 @@ import { NavLink, Link } from "react-router-dom";
 import "../EventsPage/EventsPage.css";
 
 const EventsPage = () => {
-  const eventsList = useSelector((state) =>
-    // console.log("state",state.events)
-    Object.values(state.events)
-  );
-  // const [showCreateEventForm, setShowCreateEventForm] =
-  // 	useState(false);
-
-  // let events;
-
   const dispatch = useDispatch();
+
+  const eventsList = useSelector((state) => Object.values(state.events));
 
   useEffect(() => {
     dispatch(thunkReadAllEvents());
-    // console.log("useeffect run");
   }, [dispatch]);
-  // forceUpdate();
 
-  // console.log("el", eventsList);
-  // console.log(
-  // 	"state",
-  // 	useSelector((state) => Object.values(state.events))
-  // );
-
-  if (!eventsList) {
-    return null;
-  }
-  // console.log("this is eventsList", eventsList);
-
-  // let content = null;
-
-  // if (showCreateEventForm) {
-  // 	content = (
-  // 		<Route path='/events/'>
-  // 			<EventInput
-  // 				hideForm={() => setShowCreateEventForm(false)}
-  // 			/>
-  // 		</Route>
-  // 	);
-  // }
+  console.log("this is events list in eventsPage", eventsList);
 
   const optionsDate = {
     weekday: "short",
@@ -58,6 +28,10 @@ const EventsPage = () => {
     hour: "numeric",
     minute: "2-digit"
   };
+
+  if (!eventsList) {
+    return null;
+  }
 
   return (
     <div className='events-page-container'>
@@ -79,7 +53,6 @@ const EventsPage = () => {
           </div>
         </div>
       </div>
-
       <div className='grid--column__middle'>
         {eventsList.map((event) => (
           <div

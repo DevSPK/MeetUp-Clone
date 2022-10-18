@@ -2,17 +2,18 @@ import { useState, useEffect } from "react";
 import "./EventInput.css";
 import { useDispatch } from "react-redux";
 import { thunkAddEvent, thunkReadAllEvents } from "../../store/events";
-import { useHistory, Redirect } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 
 // const currencyFormat = new Intl.NumberFormat("en-US", {
 // 	style: "currency",
 // 	currency: "USD"
 // });
 
-const EventInput = ({ hideForm, group }) => {
-  const { id } = group;
+const EventInput = () => {
+  const { id } = useParams();
 
-  // console.log("this is group in EventInput", group);
+  console.log("this is id from eventInput useParams", id);
+
   const history = useHistory();
 
   const [venueId, setVenueId] = useState(1);
@@ -23,7 +24,7 @@ const EventInput = ({ hideForm, group }) => {
   const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  // const [errors, setErrors] = useState([]);
+  const [errors, setErrors] = useState([]);
   const [imageUrl, setImageUrl] = useState("");
 
   //custom validation errors
@@ -31,32 +32,20 @@ const EventInput = ({ hideForm, group }) => {
   const [validationErrors, setValidationErrors] = useState([]);
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const dispatch = useDispatch();
-  useEffect(() => {
-    const errors = [];
 
-    if (name.length < 5) errors.push("Name must be at least 5 characters");
-    if (!description.length) errors.push("Description is required");
-    if (!startDate.length) errors.push("Start date and time is required");
-    if (!endDate.length) errors.push("End date and time is required");
-    if (!imageUrl.length) errors.push("Please provide a valid image URL");
-    setValidationErrors(errors);
+  useEffect(() => {
+    const customErrors = [];
+
+    if (name.length < 5)
+      customErrors.push("Name must be at least 5 characters");
+    if (!description.length) customErrors.push("Description is required");
+    if (!startDate.length) customErrors.push("Start date and time is required");
+    if (!endDate.length) customErrors.push("End date and time is required");
+    if (!imageUrl.length) customErrors.push("Please provide a valid image URL");
+    setValidationErrors(customErrors);
   }, [name, description, startDate, endDate, imageUrl]);
 
-  useEffect(() => {
-    dispatch(thunkReadAllEvents());
-  }, [
-    dispatch,
-    venueId,
-    id,
-    name,
-    capacity,
-    type,
-    price,
-    description,
-    startDate,
-    endDate,
-    imageUrl
-  ]);
+  let createdEvent = {};
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -85,60 +74,72 @@ const EventInput = ({ hideForm, group }) => {
     // 	dispatch(addEvent(newEvent));
     // }, [dispatch]);
 
-    // const createdEvent = await dispatch(thunkAddEvent(newEvent));
+    createdEvent = await dispatch(thunkAddEvent(newEvent));
+    console.log("this is createdEvent", createdEvent);
 
-    // if (!createdEvent) return null;
+    if (!createdEvent) return null;
 
-    // if (createdEvent) {
-    //   reset();
-    //   history.push(`/events`);
-    // }
-    // };
+    if (createdEvent) {
+      reset();
+      dispatch(thunkReadAllEvents());
 
-    return dispatch(thunkAddEvent(newEvent)).then((res) => {
-      if (res.ok) {
-        console.log("this is res from thunkAddEvent", res);
-        reset();
-        history.push("/events");
-      }
-    });
-
-    // setErrors([]);
-
-    // return dispatch(thunkAddEvent(newEvent))
-    //   .then((res) => {
-    //     if (res.ok) {
-    //       console.log("this is res in thunkAddevent", res);
-    //       reset();
-    //       // hideForm();
-    //       history.push(`/events`);
-    //     }
-    //   })
-    //   .catch(async (res) => {
-    //     const data = await res.json();
-    //     // console.log("this is data1 in thunkAddevent", data);
-    //     if (data && data.errors) {
-    //       // console.log(
-    //       // 	"this is data3 in thunkAddevent",
-    //       // 	data
-    //       // );
-    //       return console.log("Cannot Submit, please fix errors");
-    //     }
-    //   });
+      history.push(`/events`);
+    }
   };
 
+  // return dispatch(thunkAddEvent(newEvent))
+  //   .then((res) => {
+  //     if (res.ok) {
+  //       console.log(
+  //         "this is res from thunkAddEvent***********************",
+  //         res
+  //       );
+  //       reset();
+  //       history.push("/events");
+  //     }
+  //   })
+  // .catch(async (res) => {
+  //   const data = await res.json();
+  //   if (data && data.errors) {
+  //     return setErrors(data.errors);
+  //   }
+  // });
+
+  // setErrors([]);
+
+  // return dispatch(thunkAddEvent(newEvent))
+  //   .then((res) => {
+  //     if (res.ok) {
+  //       console.log("this is res in thunkAddevent", res);
+  //       reset();
+  //       // hideForm();
+  //       history.push(`/events`);
+  //     }
+  //   })
+  //   .catch(async (res) => {
+  //     const data = await res.json();
+  //     // console.log("this is data1 in thunkAddevent", data);
+  //     if (data && data.errors) {
+  //       // console.log(
+  //       // 	"this is data3 in thunkAddevent",
+  //       // 	data
+  //       // );
+  //       return console.log("Cannot Submit, please fix errors");
+  //     }
+  //   });
   const reset = () => {
     setVenueId(1);
     setName("");
-    setCapacity(10);
+    setCapacity();
     setType("In person");
-    setPrice(18.5);
+    setPrice();
     setDescription("");
     setStartDate("");
     setEndDate("");
     setImageUrl("");
     setValidationErrors([]);
     setHasSubmitted(false);
+    setErrors([]);
   };
 
   const handleCapacity = (event) => {
@@ -181,17 +182,28 @@ const EventInput = ({ hideForm, group }) => {
     // hideForm();
   };
 
+  useEffect(() => {
+    dispatch(thunkReadAllEvents());
+  }, [
+    dispatch,
+    venueId,
+    id,
+    name,
+    capacity,
+    type,
+    price,
+    description,
+    startDate,
+    endDate,
+    imageUrl
+  ]);
+
   return (
     <div className='event--form--container event--form__shared'>
       <h1 className='event--form--title'>Create your event</h1>
       <form
         className='event--form__shared event--form'
         onSubmit={handleSubmit}>
-        {/* <ul className='login-errors-ul errors-ul'>
-          {errors.map((error, idx) => (
-            <li key={idx}>{error}</li>
-          ))}
-        </ul> */}
         <label
           htmlFor='name'
           className='event--form--labels'>

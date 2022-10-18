@@ -28,6 +28,12 @@ function App() {
       <Navigation isLoaded={isLoaded} />
       {isLoaded && (
         <Switch>
+          <Route
+            path='/groups/:id/events'
+            // /api/groups/:groupId/events
+          >
+            <EventInput />
+          </Route>
           <Route path='/groups/:id'>
             <SingleGroup />
           </Route>
@@ -52,21 +58,15 @@ function App() {
           <Route path='/edit-a-group/:id'>
             <GroupUpdate />
           </Route>
-          <Route
-            path='/groups/:groupId/events'
-            // /api/groups/:groupId/events
-          >
-            <EventInput />
-          </Route>
 
           <Route
             exact
             path='/'>
             <SplashPage />
           </Route>
-          <Route path=''>
+          {/* <Route path=''>
             <SplashPage />
-          </Route>
+          </Route> */}
         </Switch>
       )}
     </div>
