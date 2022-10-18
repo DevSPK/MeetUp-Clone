@@ -15,6 +15,7 @@ import GroupUpdate from "./components/GroupUpdate";
 import { SingleEvent } from "./components/SingleEvent";
 import EventInput from "./components/EventInput";
 import LoginFormModal from "./components/LoginFormModal";
+import SignupFormModal from "./components/SignupFormModal";
 
 function App() {
   const dispatch = useDispatch();
@@ -44,7 +45,7 @@ function App() {
             <LoginFormModal />
           </Route>
           <Route path='/signup'>
-            <SignupFormPage />
+            <SignupFormModal />
           </Route>
           <Route path='/groups'>
             <GroupsPage />
@@ -64,9 +65,9 @@ function App() {
             path='/'>
             <SplashPage />
           </Route>
-          {/* <Route path=''>
+          <Route path=''>
             <SplashPage />
-          </Route> */}
+          </Route>
         </Switch>
       )}
     </div>
