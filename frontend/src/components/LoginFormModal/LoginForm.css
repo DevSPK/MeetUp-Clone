@@ -26,12 +26,12 @@
   min-width: 27em;
 } */
 
-.login--form--div {
+/* .login--form--div {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
   justify-content: center;
-}
+} */
 
 .login--form--container {
   align-items: center;
@@ -60,7 +60,7 @@
 
 .modal-header {
   font-size: 1.75rem;
-  line-height: 2.25rem;
+
   font-weight: 600;
 }
 
@@ -89,19 +89,37 @@
   font-size: medium;
 }
 
-.login--form--container form {
+.login--form {
   border: 0px;
   box-sizing: border-box;
   font-size: 16px;
   line-height: 24px;
   outline: none;
   width: 100%;
-}
-.login--form--button__div {
+
+  display: flex;
+  flex-direction: column;
+
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  gap: 1em;
 }
 
-.login--form--input__div {
+.login--form--button__div {
   display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.login--form--input__div__wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.initial-logo {
+  width: 40px;
+  height: 40px;
 }
 /* label {
   border: 0px;
@@ -135,6 +153,32 @@
   padding-top: 0.5rem;
   min-width: 100%;
 } */
+
+.login--item--input {
+  align-self: auto;
+
+  color: inherit;
+
+  font-family: inherit;
+  font-size: 100%;
+
+  line-height: inherit;
+
+  outline: transparent solid 2px;
+  outline-offset: 2px;
+
+  min-width: 100%;
+
+  background-color: white;
+  height: 2.5rem;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  margin: 0.25rem 0 1.25rem 0;
+  /* padding: 1rem; */
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+}
 
 .loginModalButton {
   font-size: 0.875em;
