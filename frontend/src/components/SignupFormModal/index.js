@@ -21,17 +21,9 @@ function SignupFormModal() {
     <>
       <Link
         to='/'
+        className='signupModalButton--hover'
         onClick={() => setShowModal(true)}>
-        <div
-          style={{
-            fontSize: "0.875em",
-            fontWeight: "500",
-            textDecoration: "none",
-            zIndex: "0",
-            lineHeight: "20px"
-          }}>
-          Sign up
-        </div>
+        Sign up
       </Link>
       {showModal && (
         <Modal onClose={() => setShowModal(false)}>

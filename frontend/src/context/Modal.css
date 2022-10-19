@@ -1,63 +1,81 @@
 /* frontend/src/context/Modal.css */
 #modal {
-	position: fixed;
-	top: 0;
-	right: 0;
-	left: 0;
-	bottom: 0;
-	display: flex;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  display: flex;
 
-	flex-direction: column;
-	align-content: center;
-	justify-content: center;
-	align-items: center;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
 
-	box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px,
-		rgba(0, 0, 0, 0) 0px 0px 0px 0px,
-		rgba(0, 0, 0, 0.1) 0px 10px 15px -3px,
-		rgba(0, 0, 0, 0.1) 0px 4px 6px -4px;
+  box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+    rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.1) 0px 4px 6px -4px;
 
-	border-radius: 0.5rem;
-	max-height: 100vh;
-	min-width: 31.25rem;
-	max-width: 100%;
+  border-radius: 0.5rem;
+  max-height: 100vh;
+  min-width: 31.25rem;
+  max-width: 100%;
 
-	/* background-color: white; */
-	overflow: hidden;
-	padding: 2.25rem 2.5rem 2rem 3rem;
+  /* background-color: white; */
+  overflow: hidden;
+  padding: 2.25rem 2.5rem 2rem 3rem;
 }
 
 #modal-background {
-	position: fixed;
-	top: 0;
-	right: 0;
-	left: 0;
-	bottom: 0;
-	background-color: rgba(0, 0, 0, 0.7);
-	z-index: 500;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 500;
 }
 
 #modal-content {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	background-color: #ffffff;
-	border: 0px;
-	border-radius: 0.5rem;
-	bottom: 0px;
-	box-sizing: border-box;
-	font-size: 16px;
-	left: 0px;
-	line-height: 24px;
-	max-height: 100vh;
-	max-width: 80%;
-	min-width: 50px;
-	opacity: 1;
-	overflow: auto;
-	position: relative;
-	padding: 2rem 2rem 2rem 2rem;
-	z-index: 600;
+  background-color: #ffffff;
+  border: px;
+  border-radius: 0.5rem;
+  bottom: px;
+  box-shadow: rgba(0, 0, 0, 0) px px px px, rgba(0, 0, 0, 0) px px px 0px,
+    rgba(0, 0, 0, 0.1) px 10px 15px -3px, rgba(0, 0, 0, 0.1) px 4px 6px -4px;
+  box-sizing: border-box;
+  display: none;
+  font-size: 16px;
+  left: px;
+  line-height: 24px;
+  max-height: 100vh;
+  max-width: 80%;
+  min-width: 500px;
+  opacity: 1;
+  outline: none;
+  overflow: auto;
+  overflow-y: auto;
+  padding-bottom: 2rem;
+  padding-left: 3rem;
+  padding-right: 2.5rem;
+  padding-top: 2.25rem;
+  position: relative;
+  right: px;
+  top: px;
+  transform: none;
+  z-index: 600;
+}
+@media (min-width: 577px) {
+  #modal-content {
+    display: block;
+    min-width: 484px;
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+}
+@media (min-width: 769px) {
+  #modal-content {
+    max-width: 65ch;
+  }
 }
 
 .modal-container {

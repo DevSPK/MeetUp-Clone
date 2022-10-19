@@ -22,19 +22,11 @@ a {
   color: inherit;
 }
 
-a:visited {
+/* a:visited {
   color: #212121;
-}
+} */
 
 /* :root {
 	margin-left: calc(100vw - 100%);
 	margin-right: 0;
 } */
-
-.sign-up-link {
-  text-decoration: none !important;
-  color: rgb(17, 135, 158) !important;
-  line-height: 36px !important;
-  margin-bottom: 5rem !important;
-  font-weight: 300 !important;
-}

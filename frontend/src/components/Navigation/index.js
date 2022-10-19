@@ -119,16 +119,9 @@ function Navigation({ isLoaded }) {
         </li>
 
         <li>
-          <SignupFormModal
-            className='nav-item'
-            style={{
-              paddingLeft: "1em",
-              fontSize: "0.875em",
-              fontWeight: "500",
-              lineHeight: "20px"
-            }}>
-            <div>Sign up</div>
-          </SignupFormModal>
+          <div className='nav-item signupModalButton'>
+            <SignupFormModal />
+          </div>
         </li>
       </div>
     );
