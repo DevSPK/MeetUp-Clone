@@ -8,6 +8,8 @@ import logo from "../../assets/treffenklon_padded_logo.narrow.png";
 import * as sessionActions from "../../store/session";
 import LoginFormModal from "../LoginFormModal";
 import { useLocation } from "react-router-dom";
+import SignupFormModal from "../SignupFormModal";
+import "../SignupFormModal/SignupForm.css";
 
 function Navigation({ isLoaded }) {
   const [background, setBackground] = useState({});
@@ -115,19 +117,18 @@ function Navigation({ isLoaded }) {
             Demo user
           </NavLink>
         </li>
-        {/* <li>
-					<NavLink
-						to='/login'
-						className='nav-item'>
-						Log in
-					</NavLink>
-				</li> */}
+
         <li>
-          <NavLink
-            to='/signup'
-            className='nav-item'>
-            Sign up
-          </NavLink>
+          <SignupFormModal
+            className='nav-item'
+            style={{
+              paddingLeft: "1em",
+              fontSize: "0.875em",
+              fontWeight: "500",
+              lineHeight: "20px"
+            }}>
+            <div>Sign up</div>
+          </SignupFormModal>
         </li>
       </div>
     );

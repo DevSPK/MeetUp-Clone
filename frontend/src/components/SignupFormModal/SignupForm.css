@@ -8,7 +8,7 @@
 /*------------------------------------*/
 /* #LOGIN-FORM*/
 /*------------------------------------*/
-.login-item {
+.signup-item {
   display: flex;
   flex-direction: column;
 
@@ -16,7 +16,7 @@
   margin: 0.25em;
 }
 
-.loginDiv {
+.signupDiv {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
@@ -31,7 +31,7 @@
   font-weight: 600;
 }
 
-.login-button {
+.signup-button {
   border-radius: 8px;
   cursor: pointer;
   color: #fff;
@@ -93,7 +93,7 @@ input {
   padding-top: 0.5rem;
 }
 
-.loginModalButton {
+.signupModalButton {
   font-size: 0.875em;
   font-weight: 500;
   text-decoration: none;
@@ -102,13 +102,12 @@ input {
 }
 
 .sign-up-link {
-  text-decoration: none !important;
+  text-decoration: none;
   color: rgb(17, 135, 158) !important;
-  line-height: 36px !important;
-  margin-bottom: 5rem !important;
-  font-weight: 300 !important;
+  line-height: 36px;
+  margin-bottom: 5rem;
 }
 
-.loginModalButton:hover {
+.signupModalButton:hover {
   color: rgb(17, 135, 158);
 }
