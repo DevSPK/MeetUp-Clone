@@ -3,8 +3,7 @@ import React, { useState } from "react";
 import * as sessionActions from "../../store/session";
 import { useDispatch } from "react-redux";
 import "./LoginForm.css";
-import { Link, NavLink } from "react-router-dom";
-import SignupFormModal from "../SignupFormModal";
+import { NavLink } from "react-router-dom";
 
 function LoginForm() {
   const dispatch = useDispatch();
@@ -39,10 +38,16 @@ function LoginForm() {
         <h1 className='modal-header'>Log in</h1>
         <div className='login-modal-signup'>
           Not a member yet?{" "}
-          <Link
-            to='/signup'
+          <NavLink
             className='sign-up-link'
-          />
+            to={{
+              pathname: "/signup",
+              state: {
+                modalState: true
+              }
+            }}>
+            Sign up
+          </NavLink>
         </div>
         <ul className='error-messages'>
           {errors.map((error, idx) => (

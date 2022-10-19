@@ -126,8 +126,9 @@ function Navigation({ isLoaded }) {
               fontSize: "0.875em",
               fontWeight: "500",
               lineHeight: "20px"
-            }}
-          />
+            }}>
+            <div>Sign up</div>
+          </SignupFormModal>
         </li>
       </div>
     );
