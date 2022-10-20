@@ -8,15 +8,25 @@ import { thunkReadAllGroups, thunkUpdateGroup } from "../../store/groups";
 const GroupUpdate = () => {
   const history = useHistory();
   const { id } = useParams();
-  let editedGroup;
 
   const dispatch = useDispatch();
 
   console.log("this is id in groupupdate", id);
+
   useEffect(() => {
+    console.log("this is useEffect in groupUpdate");
     dispatch(thunkReadAllGroups());
-  }, [dispatch]);
+  }, [dispatch, id]);
+
   const groupsList = useSelector((state) => Object.values(state.groups));
+
+  // useEffect(() => {
+  //   if (!groupsList) {
+  //     return;
+  //   }
+  // });
+
+  console.log("this is groupsList in groupUpdate", groupsList);
 
   let paramId = id;
 
@@ -39,7 +49,7 @@ const GroupUpdate = () => {
   //   dispatch(thunkReadAllGroups());
   // }, [dispatch]);
 
-  editedGroup = group;
+  let editedGroup = group;
 
   const [name, setName] = useState(editedGroup.name);
   const [about, setAbout] = useState(editedGroup.about);
@@ -126,6 +136,10 @@ const GroupUpdate = () => {
 
     history.push(`/groups`);
   };
+
+  if (!editedGroup) {
+    return null;
+  }
 
   return (
     <div className='group--form--container  group--form__shared'>
