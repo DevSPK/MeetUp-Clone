@@ -3,11 +3,12 @@ import React, { useState } from "react";
 import * as sessionActions from "../../store/session";
 import { useDispatch } from "react-redux";
 import "./LoginForm.css";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, useHistory } from "react-router-dom";
 import SignupFormModal from "../SignupFormModal";
 import initial from "../../assets/initial.png";
 
 function LoginForm() {
+  const history = useHistory();
   const dispatch = useDispatch();
   const [credential, setCredential] = useState("");
   const [password, setPassword] = useState("");
@@ -26,12 +27,14 @@ function LoginForm() {
 
   const demoUser = (e) => {
     e.preventDefault();
-    return dispatch(
+
+    dispatch(
       sessionActions.login({
         credential: "demo@user.io",
         password: "password"
       })
     );
+    history.push("/groups");
   };
 
   return (
@@ -109,7 +112,7 @@ function LoginForm() {
           <button
             onClick={demoUser}
             className='login--form--button'>
-            Demo user
+            <Link to='/groups'>Demo user</Link>
           </button>
         </div>
       </form>

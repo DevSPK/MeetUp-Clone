@@ -90,36 +90,27 @@ function ProfileButton({ user }) {
       {arrow}
       {showMenu && (
         <ul className='profile-dropdown'>
-          <li className='drop-down-items'>
-            <NavLink
-              to='/groups'
-              className='drop-down-items'>
-              Groups
-            </NavLink>
-          </li>
-          <li className='drop-down-items'>
-            <div className=''>
-              <NavLink
-                to='/events'
-                className='drop-down-items'>
-                Events
-              </NavLink>
-            </div>
-          </li>
-          <li>
-            <span className='line'></span>
-          </li>
-          <li className='drop-down-items line'>
+          <NavLink
+            to='/groups'
+            className='drop-down-items hover'>
+            <li className='drop-down-items hover'>Groups</li>
+          </NavLink>
+          <NavLink
+            to='/events'
+            className='drop-down-items hover'>
+            <li className='drop-down-items hover'>Events</li>
+          </NavLink>
+
+          <li className='drop-down-items--notlink line'>
             {user.firstName} {user.lastName}
           </li>
-          <li className='drop-down-items'>{user.email}</li>
-          <li className='drop-down-items'>
-            <Link
-              className='logout-button drop-down-items'
-              onClick={logout}>
-              Log Out
-            </Link>
-          </li>
+          <li className='drop-down-items--notlink'>{user.email}</li>
+          <Link
+            to='/'
+            className='logout-button drop-down-items'
+            onClick={logout}>
+            <li className='drop-down-items'>Log Out</li>
+          </Link>
         </ul>
       )}
     </>
