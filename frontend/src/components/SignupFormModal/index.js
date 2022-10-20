@@ -7,15 +7,12 @@ function SignupFormModal() {
   const location = useLocation();
   const [showModal, setShowModal] = useState(false);
 
-  // console.log(location.state);
+  let hasState = location.state;
 
-  // const { modalState } = location.state;
-
-  // console.log(modalState);
-
-  // useEffect(() => {
-  //   setShowModal(modalState);
-  // }, [modalState]);
+  if (hasState) {
+    const { modalState } = location.state;
+    return setShowModal(modalState);
+  }
 
   return (
     <>

@@ -6,6 +6,7 @@ import middleImage from "../../assets/ticket.svg";
 import rightImage from "../../assets/joinGroup.svg";
 import { Link } from "react-router-dom";
 import LoginFormModal from "../LoginFormModal";
+import SignupFormModal from "../SignupFormModal/SignupForm";
 
 const SplashPage = () => {
   return (
@@ -112,8 +113,14 @@ const SplashPage = () => {
         </div>
         <div className='middle-bottom-sign-up-button-container'>
           <div className='bottom-space-container'>
-            <Link to='/signup'>
-              <button className='action-signup-button'>Join Treffenklon</button>
+            {" "}
+            <Link
+              to={{
+                pathname: "/signup",
+
+                state: { modalState: true }
+              }}>
+              <div className='action-signup-button'>Join Teffenklon</div>
             </Link>
           </div>
         </div>
