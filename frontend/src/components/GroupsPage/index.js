@@ -75,7 +75,7 @@ const GroupsPage = () => {
             <Link to={`/groups/${group.id}`}>
               <div className='grid-card--text__container'>
                 <img
-                  class='grid-card--image__preview'
+                  className='grid-card--image__preview'
                   src={group.previewImage}
                   alt='a depiction of this group'
                 />
