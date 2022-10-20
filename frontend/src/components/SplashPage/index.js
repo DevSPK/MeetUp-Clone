@@ -99,6 +99,7 @@ const SplashPage = ({ setShowSignupModal }) => {
             </div>
             <div className='link-container'>
               <Link
+                to='/'
                 onClick={() => setShowSignupModal(true)}
                 className='action-link'>
                 Start a group
