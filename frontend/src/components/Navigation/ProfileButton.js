@@ -1,7 +1,7 @@
 // frontend/src/components/Navigation/ProfileButton.js
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { NavLink, useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, NavLink, useHistory } from "react-router-dom";
 import * as sessionActions from "../../store/session";
 import "./ProfileButton.css";
 
@@ -9,7 +9,16 @@ function ProfileButton({ user }) {
   let history = useHistory();
 
   const dispatch = useDispatch();
+  const sessionUser = useSelector((state) => state.session.user);
   const [showMenu, setShowMenu] = useState(false);
+
+  // useEffect(() => {
+  //   dispatch();
+
+  //   return () => {
+  //     second;
+  //   };
+  // }, [third]);
 
   const openMenu = () => {
     if (showMenu) return;
@@ -38,6 +47,8 @@ function ProfileButton({ user }) {
   let initialIcon;
   let arrow;
 
+  console.log("this is sessionUser in profile button", sessionUser);
+
   // creates circle with initial of firstName as user icon
   if (user.firstName !== undefined) {
     initial = user.firstName[0];
@@ -47,7 +58,12 @@ function ProfileButton({ user }) {
       </div>
     );
   } else {
-    initialIcon = <i className='fas fa-user-circle' />;
+    initial = user.email[0];
+    initialIcon = (
+      <div id='initialIcon'>
+        <div id='initial'>{initial}</div>
+      </div>
+    );
   }
 
   if (showMenu) {
@@ -89,20 +105,20 @@ function ProfileButton({ user }) {
                 Events
               </NavLink>
             </div>
-            <li>
-              <span className='line'></span>
-            </li>
+          </li>
+          <li>
+            <span className='line'></span>
           </li>
           <li className='drop-down-items line'>
             {user.firstName} {user.lastName}
           </li>
           <li className='drop-down-items'>{user.email}</li>
           <li className='drop-down-items'>
-            <button
+            <Link
               className='logout-button drop-down-items'
               onClick={logout}>
               Log Out
-            </button>
+            </Link>
           </li>
         </ul>
       )}

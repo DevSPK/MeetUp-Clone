@@ -6,12 +6,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { thunkReadAllGroups, thunkUpdateGroup } from "../../store/groups";
 
 const GroupUpdate = () => {
+  const history = useHistory();
   const { id } = useParams();
+  let editedGroup;
+
   const dispatch = useDispatch();
-  // console.log("this is id in groupupdate", id);
+
+  console.log("this is id in groupupdate", id);
   useEffect(() => {
     dispatch(thunkReadAllGroups());
-  }, [dispatch, id]);
+  }, [dispatch]);
   const groupsList = useSelector((state) => Object.values(state.groups));
 
   let paramId = id;
@@ -22,15 +26,6 @@ const GroupUpdate = () => {
 
   const group = normalizedGroups[paramId];
 
-  let editedGroup = group;
-  const history = useHistory();
-  const [name, setName] = useState(editedGroup.name);
-  const [about, setAbout] = useState(editedGroup.about);
-  const [type, setType] = useState(editedGroup.type);
-  const [privateVal, setPrivateVal] = useState(editedGroup.private);
-  const [city, setCity] = useState(editedGroup.city);
-  const [state, setState] = useState(editedGroup.state);
-  const [errors, setErrors] = useState([]);
   // const [previewImage, setPreviewImage] = useState(editedGroup.previewImage)
 
   // // console.log("this is editedGroup prop", editedGroup);
@@ -40,9 +35,25 @@ const GroupUpdate = () => {
   // 	editedGroup.privateVal
   // );
 
+  // useEffect(() => {
+  //   dispatch(thunkReadAllGroups());
+  // }, [dispatch]);
+
+  editedGroup = group;
+
+  const [name, setName] = useState(editedGroup.name);
+  const [about, setAbout] = useState(editedGroup.about);
+  const [type, setType] = useState(editedGroup.type);
+  const [privateVal, setPrivateVal] = useState(editedGroup.private);
+  const [city, setCity] = useState(editedGroup.city);
+  const [state, setState] = useState(editedGroup.state);
+  const [errors, setErrors] = useState([]);
+
   useEffect(() => {
-    dispatch(thunkReadAllGroups());
-  }, [dispatch, name, about, type, privateVal, city, state, errors]);
+    if (!editedGroup) {
+      return;
+    }
+  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -58,6 +69,8 @@ const GroupUpdate = () => {
     };
 
     setErrors([]);
+
+    console.log({ editedGroup });
 
     // console.log({ newInfo });
 
