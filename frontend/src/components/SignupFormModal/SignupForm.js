@@ -3,6 +3,8 @@ import * as sessionActions from "../../store/session";
 import { useDispatch, useSelector } from "react-redux";
 import "./SignupForm.css";
 import { NavLink, Redirect } from "react-router-dom";
+import initial from "../../assets/initial.png";
+import LoginFormModal from "../LoginFormModal";
 
 function SignupForm() {
   const dispatch = useDispatch();
@@ -40,68 +42,128 @@ function SignupForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <ul className='signup-errors'>
-        {errors.map((error, idx) => (
-          <li key={idx}>{error}</li>
-        ))}
-      </ul>
-      <label>
-        Email
-        <input
-          type='text'
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-      </label>
-      <label>
-        First Name
-        <input
-          type='text'
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-          required
-        />
-      </label>
-      <label>
-        Last Name
-        <input
-          type='text'
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-          required
-        />
-      </label>
-      <label>
-        Username
-        <input
-          type='text'
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-        />
-      </label>
-      <label>
-        Password
-        <input
-          type='password'
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-      </label>
-      <label>
-        Confirm Password
-        <input
-          type='password'
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          required
-        />
-      </label>
-      <button type='submit'>Sign Up</button>
-    </form>
+    <div className='login--form--container'>
+      <form
+        onSubmit={handleSubmit}
+        className='login-form'>
+        <div className='login--form--header'>
+          <div>
+            <NavLink
+              exact
+              to='/'>
+              <img
+                src={initial}
+                alt='Treffenklon initial logo'
+                className='initial-logo'
+              />
+            </NavLink>
+          </div>
+
+          <h1 className='modal-header'>Sign up</h1>
+
+          <div className='login-modal-signup__call-to-action'>
+            Already a member?{" "}
+            <span className='sign-up-link'>
+              <LoginFormModal />
+            </span>
+          </div>
+        </div>
+
+        <ul className='signup-errors'>
+          {errors.map((error, idx) => (
+            <li key={idx}>{error}</li>
+          ))}
+        </ul>
+        <div className='login--form--input__div__wrapper'>
+          <div className='login--form--input__div'>
+            <label
+              className='login--form--label'
+              htmlFor='name'>
+              Email
+            </label>
+            <input
+              type='text'
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              name='email'
+            />
+          </div>
+
+          <div className='login--form--input__div'>
+            <label
+              className='login--form--label'
+              htmlFor='firstName'>
+              First Name
+            </label>
+            <input
+              type='text'
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              required
+              name='firstName'
+            />
+          </div>
+          <div className='login--form--input__div'>
+            <label
+              className='login--form--label'
+              htmlFor='lastName'>
+              Last Name
+            </label>
+            <input
+              type='text'
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              required
+              name='lastName'
+            />
+          </div>
+          <div className='login--form--input__div'>
+            <label
+              className='login--form--label'
+              htmlFor='userName'>
+              Username
+            </label>
+            <input
+              type='text'
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+              name='userName'
+            />
+          </div>
+          <div className='login--form--input__div'>
+            <label
+              className='login--form--label'
+              htmlFor='password'>
+              Password
+            </label>
+            <input
+              type='password'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              name='password'
+            />
+          </div>
+          <div className='login--form--input__div'>
+            <label
+              className='login--form--label'
+              htmlFor='confirmPassword'>
+              Confirm Password
+            </label>
+            <input
+              type='password'
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+              name='confirmPassword'
+            />
+          </div>
+        </div>
+        <button type='submit'>Sign Up</button>
+      </form>
+    </div>
   );
 }
 

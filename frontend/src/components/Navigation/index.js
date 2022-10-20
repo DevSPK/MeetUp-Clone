@@ -11,7 +11,7 @@ import { useLocation } from "react-router-dom";
 import SignupFormModal from "../SignupFormModal";
 import "../SignupFormModal/SignupForm.css";
 
-function Navigation({ isLoaded }) {
+function Navigation({ isLoaded, showSignupModal, setShowSignupModal }) {
   const [background, setBackground] = useState({});
   const [showCreateGroupLink, setShowCreateGroupLink] = useState("true");
   const dispatch = useDispatch();
@@ -120,7 +120,10 @@ function Navigation({ isLoaded }) {
 
         <li>
           <div className='nav-item signupModalButton'>
-            <SignupFormModal />
+            <SignupFormModal
+              showSignupModal={showSignupModal}
+              setShowSignupModal={setShowSignupModal}
+            />
           </div>
         </li>
       </div>

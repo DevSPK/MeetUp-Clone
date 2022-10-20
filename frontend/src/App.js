@@ -20,13 +20,18 @@ import SignupFormModal from "./components/SignupFormModal";
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
+  const [showSignupModal, setShowSignupModal] = useState(false);
   useEffect(() => {
     dispatch(sessionActions.restoreUser()).then(() => setIsLoaded(true));
   }, [dispatch]);
 
   return (
     <div className='App'>
-      <Navigation isLoaded={isLoaded} />
+      <Navigation
+        isLoaded={isLoaded}
+        showSignupModal={showSignupModal}
+        setShowSignupModal={setShowSignupModal}
+      />
       {isLoaded && (
         <Switch>
           <Route
@@ -44,9 +49,9 @@ function App() {
           <Route path='/login'>
             <LoginFormModal />
           </Route>
-          <Route path='/signup'>
+          {/* <Route path='/signup'>
             <SignupFormModal />
-          </Route>
+          </Route> */}
           <Route path='/groups'>
             <GroupsPage />
           </Route>
@@ -63,11 +68,9 @@ function App() {
           <Route
             exact
             path='/'>
-            <SplashPage />
+            <SplashPage setShowSignupModal={setShowSignupModal} />
           </Route>
-          <Route path=''>
-            <SplashPage />
-          </Route>
+          <Route path=''>Error Message</Route>
         </Switch>
       )}
     </div>

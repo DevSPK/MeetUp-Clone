@@ -29,7 +29,9 @@ const validateLogin = [
 router.get("/", restoreUser, (req, res) => {
   // console.log("in get api/session");
   const { user } = req;
+
   if (user) {
+    console.log("this is user in restoreUser", user);
     return res.json(user.toSafeObject());
   } else return res.json(null);
 });

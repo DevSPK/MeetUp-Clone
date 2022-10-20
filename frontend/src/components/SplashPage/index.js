@@ -7,7 +7,7 @@ import rightImage from "../../assets/joinGroup.svg";
 import { Link } from "react-router-dom";
 import LoginFormModal from "../LoginFormModal";
 
-const SplashPage = () => {
+const SplashPage = ({ setShowSignupModal }) => {
   return (
     <main className='flexContainer'>
       <div className='middleVerticalContainer'>
@@ -99,8 +99,8 @@ const SplashPage = () => {
             </div>
             <div className='link-container'>
               <Link
-                className='action-link'
-                to='/signup'>
+                onClick={() => setShowSignupModal(true)}
+                className='action-link'>
                 Start a group
               </Link>
             </div>
@@ -112,9 +112,11 @@ const SplashPage = () => {
         </div>
         <div className='middle-bottom-sign-up-button-container'>
           <div className='bottom-space-container'>
-            <Link to='/signup'>
-              <button className='action-signup-button'>Join Treffenklon</button>
-            </Link>
+            <button
+              onClick={() => setShowSignupModal(true)}
+              className='action-signup-button'>
+              Join Treffenklon
+            </button>
           </div>
         </div>
       </div>
