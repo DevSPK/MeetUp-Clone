@@ -9,7 +9,7 @@
 .group--form .errors-container {
   display: flex;
   flex-direction: column;
-  justify-content: start;
+  justify-content: flex-start;
 }
 
 .group--form {
