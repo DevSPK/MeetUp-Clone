@@ -71,7 +71,7 @@ const GroupsPage = () => {
             style={{ textDecoration: "none" }}
             key={group.id}
             to={`/groups/${group.id}`}
-            className='grid-card--container'>
+            className='grid-card--container top'>
             <Link to={`/groups/${group.id}`}>
               <div className='grid-card--text__container'>
                 <img

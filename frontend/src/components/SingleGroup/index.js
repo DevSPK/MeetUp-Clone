@@ -27,7 +27,7 @@ export const SingleGroup = () => {
   const dispatch = useDispatch();
 
   const { id } = useParams();
-  console.log(id);
+  // console.log(id);
   // const [showEditGroupForm, setShowEditGroupForm] = useState(false);
   // const [showCreateEventForm, setShowCreateEventForm] = useState(false);
   // const [showGroupContent, setShowGroupContent] = useState(true);
@@ -183,7 +183,7 @@ export const SingleGroup = () => {
   // 		"https://via.placeholder.com/255x125?text=Image+not+found";
   // }
 
-  console.log(`sessionUser`, { sessionUser });
+  // console.log(`sessionUser`, { sessionUser });
 
   // groupButtons = (
   //   <>

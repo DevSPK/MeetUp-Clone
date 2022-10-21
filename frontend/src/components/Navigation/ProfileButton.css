@@ -11,7 +11,6 @@
 
   width: max-content;
 
-  background-color: #ffffff;
   border: 1px solid #e6e6e6;
   border-radius: 0.25rem;
 
@@ -29,12 +28,14 @@
   line-height: 1rem;
   right: 1rem;
   top: 4rem;
+  cursor: default;
 }
 
 .line {
   border-top: 1px #d9d9d9 solid;
 
   padding-top: 1rem;
+  cursor: default;
 }
 
 /* #initialIcon {
@@ -60,7 +61,6 @@
   height: 48px;
   border-radius: 48px;
   background-color: rgb(179, 196, 172);
-  cursor: pointer;
 }
 
 .logout-button {
@@ -76,9 +76,17 @@
   text-decoration: none;
   line-height: 1.25rem;
   font-size: 0.875rem;
+  cursor: pointer;
 }
 
-.drop-down-items:hover {
+.drop-down-items--notlink {
+  text-decoration: none;
+  line-height: 1.25rem;
+  font-size: 0.875rem;
+  cursor: default;
+}
+
+.hover:hover {
   color: rgb(17, 135, 158);
 }
 

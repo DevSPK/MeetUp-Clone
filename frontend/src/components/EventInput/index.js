@@ -12,7 +12,7 @@ import { useHistory, useParams } from "react-router-dom";
 const EventInput = () => {
   const { id } = useParams();
 
-  console.log("this is id from eventInput useParams", id);
+  // console.log("this is id from eventInput useParams", id);
 
   const history = useHistory();
 
@@ -75,7 +75,7 @@ const EventInput = () => {
     // }, [dispatch]);
 
     createdEvent = await dispatch(thunkAddEvent(newEvent));
-    console.log("this is createdEvent", createdEvent);
+    // console.log("this is createdEvent", createdEvent);
 
     if (!createdEvent) return null;
 
@@ -175,8 +175,8 @@ const EventInput = () => {
 
   const handleCancelClick = (e) => {
     e.preventDefault();
-    console.log("this is handle event cancel click");
-    console.log("this is id", id);
+    // console.log("this is handle event cancel click");
+    // console.log("this is id", id);
     history.push(`/events`);
     // <Redirect to='/groups' />;
     // hideForm();

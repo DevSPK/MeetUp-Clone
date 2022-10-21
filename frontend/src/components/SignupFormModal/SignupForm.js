@@ -45,7 +45,7 @@ function SignupForm() {
     <div className='login--form--container'>
       <form
         onSubmit={handleSubmit}
-        className='login-form'>
+        className='login--form'>
         <div className='login--form--header'>
           <div>
             <NavLink
@@ -68,12 +68,6 @@ function SignupForm() {
             </span>
           </div>
         </div>
-
-        <ul className='signup-errors'>
-          {errors.map((error, idx) => (
-            <li key={idx}>{error}</li>
-          ))}
-        </ul>
         <div className='login--form--input__div__wrapper'>
           <div className='login--form--input__div'>
             <label
@@ -82,6 +76,7 @@ function SignupForm() {
               Email
             </label>
             <input
+              className='login--item--input'
               type='text'
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -97,6 +92,7 @@ function SignupForm() {
               First Name
             </label>
             <input
+              className='login--item--input'
               type='text'
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
@@ -111,6 +107,7 @@ function SignupForm() {
               Last Name
             </label>
             <input
+              className='login--item--input'
               type='text'
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
@@ -125,6 +122,7 @@ function SignupForm() {
               Username
             </label>
             <input
+              className='login--item--input'
               type='text'
               value={username}
               onChange={(e) => setUsername(e.target.value)}
@@ -139,6 +137,7 @@ function SignupForm() {
               Password
             </label>
             <input
+              className='login--item--input'
               type='password'
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -153,6 +152,7 @@ function SignupForm() {
               Confirm Password
             </label>
             <input
+              className='login--item--input'
               type='password'
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
@@ -161,7 +161,20 @@ function SignupForm() {
             />
           </div>
         </div>
-        <button type='submit'>Sign Up</button>
+        <div className='login--form--errors'>
+          <ul>
+            {errors.map((error, idx) => (
+              <li key={idx}>{error}</li>
+            ))}
+          </ul>
+        </div>
+        <div className='login--form--button__div'>
+          <button
+            className='login--form--button'
+            type='submit'>
+            Sign Up
+          </button>
+        </div>
       </form>
     </div>
   );

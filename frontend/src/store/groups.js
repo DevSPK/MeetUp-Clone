@@ -178,7 +178,7 @@ export default function groupsReducer(state = initialState, action) {
       // 	action.group
       // );
       newState[action.groupId] = action.group;
-      console.log("this is newState in read_group", newState);
+      // console.log("this is newState in read_group", newState);
       return newState;
     }
 

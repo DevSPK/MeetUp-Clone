@@ -15,7 +15,7 @@ const EventsPage = () => {
     dispatch(thunkReadAllEvents());
   }, [dispatch]);
 
-  console.log("this is events list in eventsPage", eventsList);
+  // console.log("this is events list in eventsPage", eventsList);
 
   const optionsDate = {
     weekday: "short",
@@ -59,15 +59,15 @@ const EventsPage = () => {
             style={{ textDecoration: "none" }}
             key={event.id}
             to={`/events/${event.id}`}
-            className='grid-card--container'>
+            className='grid-card--container top'>
             <Link to={`/events/${event.id}`}>
-              <div className='grid-card--text__container'>
+              <div className='grid-card--text__container--events'>
                 <img
                   className='grid-card--image__preview'
                   src={event.previewImage}
                   alt='a depiction of this event'
                 />
-                <p
+                <div
                   style={{ textDecoration: "none" }}
                   className='grid-card--text__start-time  uppercase'>
                   {new Date(event.startDate).toLocaleDateString(
@@ -79,22 +79,22 @@ const EventsPage = () => {
                     "en-US",
                     optionsTime
                   )}
-                </p>
-                <p
+                </div>
+                <div
                   className='grid-card--text__event-name'
                   style={{ textDecoration: "none" }}>
                   {event.name}
-                </p>
-                <p
+                </div>
+                <div
                   style={{ textDecoration: "none" }}
                   className='grid-card--text__group-name'>
-                  {event.Group.name}
-                </p>
-                <p
-                  className='grid-card--text__members-type'
+                  {event.Group.name} · {event.Group.city}, {event.Group.state}
+                </div>
+                <div
+                  className='grid-card--text__members'
                   style={{ textDecoration: "none" }}>
                   {`${event.numAttending} attendee(s)`}
-                </p>
+                </div>
               </div>
             </Link>
           </div>
