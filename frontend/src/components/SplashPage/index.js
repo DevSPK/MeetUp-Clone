@@ -5,7 +5,6 @@ import leftImage from "../../assets/handsUp.svg";
 import middleImage from "../../assets/ticket.svg";
 import rightImage from "../../assets/joinGroup.svg";
 import { Link } from "react-router-dom";
-import LoginFormModal from "../LoginFormModal";
 
 const SplashPage = ({ setShowSignupModal }) => {
   return (
