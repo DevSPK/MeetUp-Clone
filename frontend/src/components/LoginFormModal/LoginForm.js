@@ -7,7 +7,7 @@ import { NavLink, Link, useHistory } from "react-router-dom";
 import SignupFormModal from "../SignupFormModal";
 import initial from "../../assets/initial.png";
 
-function LoginForm() {
+function LoginForm({}) {
   const history = useHistory();
   const dispatch = useDispatch();
   const [credential, setCredential] = useState("");
@@ -58,10 +58,7 @@ function LoginForm() {
           <h1 className='modal-header'>Log in</h1>
 
           <div className='login-modal-signup__call-to-action'>
-            Not a member yet?{" "}
-            <span className='sign-up-link'>
-              <SignupFormModal />
-            </span>
+            Not a member yet? <span className='sign-up-link'></span>
           </div>
         </div>
         <div className='login--form--input__div__wrapper'>

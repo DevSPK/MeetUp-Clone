@@ -5,23 +5,23 @@ import { Modal } from "../../context/Modal";
 import LoginForm from "./LoginForm";
 
 function LoginFormModal() {
-	const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
-	return (
-		<>
-			<Link
-				to='/'
-				onClick={() => setShowModal(true)}
-				className='loginModalButton'>
-				Log in
-			</Link>
-			{showModal && (
-				<Modal onClose={() => setShowModal(false)}>
-					<LoginForm />
-				</Modal>
-			)}
-		</>
-	);
+  return (
+    <>
+      <Link
+        to='/'
+        onClick={() => setShowModal(true)}
+        className='loginModalButton'>
+        Log in
+      </Link>
+      {showModal && (
+        <Modal onClose={() => setShowModal(false)}>
+          <LoginForm />
+        </Modal>
+      )}
+    </>
+  );
 }
 
 export default LoginFormModal;
