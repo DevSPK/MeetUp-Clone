@@ -4,7 +4,7 @@
 }
 
 /*------------------------------------*/
-/* #events-MENU */
+/* #EVENTS-MENU */
 /*------------------------------------*/
 
 .events-page-header-container {
@@ -60,7 +60,7 @@
 } */
 
 .grid--column__middle {
-  grid-template-columns: 28% 44% 28%;
+  grid-template-columns: auto 49% auto;
 
   display: grid;
   grid-template-rows: auto;
@@ -99,16 +99,16 @@
   cursor: pointer;
 }
 
-.grid-card--text__container {
+.grid-card--text__container--events {
   display: grid;
   grid-auto-columns: 30% 70%;
-  grid-auto-rows: 19% 15% 26% 13%;
+  grid-auto-rows: auto;
 
   grid-template-areas:
-    "photo name"
-    "photo city-state"
-    "photo about"
-    "photo num-members-type";
+    "photo start-time"
+    "photo event-name"
+    "photo group-name"
+    "photo members";
   border-bottom: 1px solid #d9d9d9;
   column-gap: 2rem;
   min-height: 162px;
@@ -127,67 +127,68 @@
   margin: 0;
 }
 
-.grid-card--text__name {
-  grid-area: name;
+.grid-card--text__start-time {
+  grid-area: start-time;
   margin: 0;
-  font-size: 20px;
-  font-weight: 600;
-  line-height: 1.75rem;
+
   width: 100%;
   /* text-overflow: ellipsis; */
   white-space: normal;
   /* word-break: break-word; */
   /* word-wrap: break-word; */
   overflow: hidden;
-}
-
-.grid-card--text__city-state {
-  grid-area: city-state;
-  font-size: 14px;
   color: #877457;
 
+  font-size: 14px;
   font-weight: 500;
-  line-height: 1.25rem;
+  letter-spacing: -0.35px;
+  line-height: 20px;
+  text-transform: uppercase;
+  height: 28px;
+}
+
+.grid-card--text__group-name {
+  grid-area: group-name;
+  /* border: 1px solid red; */
+
+  width: 100%;
+  white-space: normal;
+  color: #757575;
+  font-size: 14px;
+  line-height: 20px;
+
+  word-wrap: break-word;
+}
+
+.grid-card--text__event-name {
+  grid-area: event-name;
 
   outline: none;
-  top: 0;
-  align-items: start;
-  align-self: start;
-  margin: 0;
-  padding-bottom: 1.125rem;
+
+  font-size: 16px;
+  font-weight: 500;
+
+  width: 100%;
+  overflow: hidden;
+
+  word-wrap: break-word;
 }
 
 .uppercase {
   text-transform: uppercase;
 }
 
-.grid-card--text__about {
-  grid-area: about;
-  margin: 0;
-  color: #757575;
-
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-
-  max-height: 2.8em;
-  outline: none;
-  overflow: hidden;
-  padding-bottom: 0.25rem;
-  text-overflow: ellipsis;
-}
-
-.grid-card--text__members-type {
-  grid-area: num-members-type;
+.grid-card--text__members {
+  grid-area: members;
   margin: 0;
   border: 0;
 
   color: #757575;
 
-  display: flex;
   font-size: 0.875rem;
-  justify-content: space-between;
+
   line-height: 1.25rem;
   outline: none;
-  padding-top: 1.5rem;
+
   width: 100%;
 }
