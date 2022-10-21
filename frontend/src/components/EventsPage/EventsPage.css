@@ -15,7 +15,7 @@
   padding-bottom: 0.75rem;
   padding-top: 0.75rem;
   border-top: 1px solid #d9d9d9;
-  border-bottom: 1px solid #d9d9d9;
+
   background-color: white;
   min-height: 53px;
   display: grid;
@@ -99,17 +99,21 @@
   cursor: pointer;
 }
 
+.grid-card--container.top {
+  border-top: 1px solid #d9d9d9;
+}
+
 .grid-card--text__container--events {
   display: grid;
   grid-auto-columns: 30% 70%;
-  grid-auto-rows: auto;
+  grid-auto-rows: 25% 25% 25% 25%;
 
   grid-template-areas:
     "photo start-time"
     "photo event-name"
     "photo group-name"
     "photo members";
-  border-bottom: 1px solid #d9d9d9;
+  /* border-bottom: 1px solid #d9d9d9; */
   column-gap: 2rem;
   min-height: 162px;
   padding-top: 1rem;
@@ -150,7 +154,7 @@
 .grid-card--text__group-name {
   grid-area: group-name;
   /* border: 1px solid red; */
-
+  margin-top: -1rem;
   width: 100%;
   white-space: normal;
   color: #757575;
@@ -162,9 +166,9 @@
 
 .grid-card--text__event-name {
   grid-area: event-name;
-
+  margin-top: -10px;
   outline: none;
-
+  line-height: 1.5rem;
   font-size: 16px;
   font-weight: 500;
 
@@ -180,7 +184,7 @@
 
 .grid-card--text__members {
   grid-area: members;
-  margin: 0;
+  margin-top: 0.75rem;
   border: 0;
 
   color: #757575;

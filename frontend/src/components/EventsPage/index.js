@@ -59,7 +59,7 @@ const EventsPage = () => {
             style={{ textDecoration: "none" }}
             key={event.id}
             to={`/events/${event.id}`}
-            className='grid-card--container'>
+            className='grid-card--container top'>
             <Link to={`/events/${event.id}`}>
               <div className='grid-card--text__container--events'>
                 <img
