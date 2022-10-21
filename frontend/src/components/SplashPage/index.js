@@ -6,7 +6,33 @@ import middleImage from "../../assets/ticket.svg";
 import rightImage from "../../assets/joinGroup.svg";
 import { Link } from "react-router-dom";
 
+import { useSelector } from "react-redux";
+
 const SplashPage = ({ setShowSignupModal }) => {
+  const sessionUser = useSelector((state) => state.session.user);
+  console.log(sessionUser);
+
+  let startAGroupLink = null;
+
+  if (!sessionUser) {
+    startAGroupLink = (
+      <Link
+        to='/'
+        onClick={() => setShowSignupModal(true)}
+        className='action-link'>
+        Start a group
+      </Link>
+    );
+  } else if (sessionUser) {
+    startAGroupLink = (
+      <Link
+        to='/start-a-group'
+        className='action-link'>
+        Start a group
+      </Link>
+    );
+  }
+
   return (
     <main className='flexContainer'>
       <div className='middleVerticalContainer'>
@@ -96,14 +122,7 @@ const SplashPage = ({ setShowSignupModal }) => {
                 className='action-link-images'
               />
             </div>
-            <div className='link-container'>
-              <Link
-                to='/'
-                onClick={() => setShowSignupModal(true)}
-                className='action-link'>
-                Start a group
-              </Link>
-            </div>
+            <div className='link-container'>{startAGroupLink}</div>
             <div className='paragraph-container'>
               You don't have to be an expert to gather people together and
               explore shared interests.
