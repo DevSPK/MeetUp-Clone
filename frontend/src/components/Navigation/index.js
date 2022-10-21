@@ -68,7 +68,7 @@ function Navigation({ isLoaded, showSignupModal, setShowSignupModal }) {
 
   let sessionLinks;
   let groupsLink;
-  let eventsLink;
+
   if (sessionUser && showCreateGroupLink) {
     sessionLinks = (
       <div className='profile__container'>

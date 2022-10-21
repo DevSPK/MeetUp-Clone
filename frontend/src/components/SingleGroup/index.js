@@ -3,11 +3,9 @@ import { useParams, useHistory, Link } from "react-router-dom";
 import { thunkReadAllGroups, thunkRemoveGroup } from "../../store/groups";
 
 import React from "react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import GroupUpdate from "../GroupUpdate";
-import EventInput from "../EventInput";
-import * as sessionActions from "../../store/session";
+
 import "./SingleGroup.css";
 
 export const SingleGroup = () => {

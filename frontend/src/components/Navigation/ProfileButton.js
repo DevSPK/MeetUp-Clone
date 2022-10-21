@@ -9,7 +9,7 @@ function ProfileButton({ user }) {
   let history = useHistory();
 
   const dispatch = useDispatch();
-  const sessionUser = useSelector((state) => state.session.user);
+  // const sessionUser = useSelector((state) => state.session.user);
   const [showMenu, setShowMenu] = useState(false);
 
   // useEffect(() => {
