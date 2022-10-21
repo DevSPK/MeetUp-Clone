@@ -87,11 +87,11 @@ const sessionReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_USER:
       newState = Object.assign({}, state);
-      console.log("this is newState in setUser", newState);
+      // console.log("this is newState in setUser", newState);
       newState.user = action.payload;
-      console.log("this is action.payload in setUser", action.payload);
-      console.log("this is newState.user in setUser", newState.user);
-      console.log("this is newState after action in setUser", newState);
+      // console.log("this is action.payload in setUser", action.payload);
+      // console.log("this is newState.user in setUser", newState.user);
+      // console.log("this is newState after action in setUser", newState);
       return newState;
 
     case REMOVE_USER:

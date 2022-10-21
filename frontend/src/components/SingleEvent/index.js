@@ -40,7 +40,7 @@ export const SingleEvent = () => {
 
   if (!event) return null;
 
-  console.log({ event });
+  // console.log({ event });
 
   if (!event.previewImage) {
     const { EventImages } = event;

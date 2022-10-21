@@ -15,7 +15,7 @@ const EventsPage = () => {
     dispatch(thunkReadAllEvents());
   }, [dispatch]);
 
-  console.log("this is events list in eventsPage", eventsList);
+  // console.log("this is events list in eventsPage", eventsList);
 
   const optionsDate = {
     weekday: "short",

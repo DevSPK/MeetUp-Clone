@@ -42,7 +42,7 @@ export const thunkReadAllEvents = () => async (dispatch) => {
   if (response.ok) {
     const events = await response.json();
 
-    console.log("this is events.Events from thunkReadAllEvents", events.Events);
+    // console.log("this is events.Events from thunkReadAllEvents", events.Events);
     // console.log()
 
     dispatch(actionReadAllEvents(events.Events));
@@ -61,7 +61,7 @@ export const thunkGetOneEvent = (eventId) => async (dispatch) => {
 };
 
 export const thunkAddEvent = (event) => async (dispatch) => {
-  console.log("this is event from thunkAddEvent", event);
+  // console.log("this is event from thunkAddEvent", event);
   const {
     venueId,
     groupId,
@@ -114,7 +114,7 @@ export const thunkRemoveEvent = (eventId, groupId) => async (dispatch) => {
   const response = await csrfFetch(`/api/events/${eventId}`, {
     method: "DELETE"
   });
-  console.log("this is response from remove event", response);
+  // console.log("this is response from remove event", response);
 
   if (response.ok) dispatch(actionDeleteEvent(eventId));
 };
@@ -126,17 +126,17 @@ export default function eventsReducer(state = initialState, action) {
     case READ_ALL_EVENTS: {
       // need to start with an empty state in order to capture updates/deletes
       const newState = {};
-      console.log("this is action.events in read all events", action.events);
+      // console.log("this is action.events in read all events", action.events);
       action.events.forEach((event) => {
         newState[event.id] = event;
       });
-      console.log("this is newState in read_all_events", newState);
+      // console.log("this is newState in read_all_events", newState);
       return newState;
     }
     case READ_EVENT: {
       let newState = { ...state };
       newState[action.event.id] = action.event;
-      console.log("this is newState in read_event", newState);
+      // console.log("this is newState in read_event", newState);
       return newState;
     }
     case CREATE_EVENT: {
@@ -145,17 +145,17 @@ export default function eventsReducer(state = initialState, action) {
       return newState;
     }
     case DELETE_EVENT: {
-      console.log(
-        "this is action eventid in Delete event reducer",
-        action.eventId
-      );
+      // console.log(
+      //   "this is action eventid in Delete event reducer",
+      //   action.eventId
+      // );
 
       let newState = { ...state };
-      console.log("this is newState in delete event reducer", newState);
-      console.log(
-        " this is newState(action.eventId in delete event reducer",
-        newState[action.eventId]
-      );
+      // console.log("this is newState in delete event reducer", newState);
+      // console.log(
+      //   " this is newState(action.eventId in delete event reducer",
+      //   newState[action.eventId]
+      // );
       delete newState[action.eventId];
       return newState;
     }

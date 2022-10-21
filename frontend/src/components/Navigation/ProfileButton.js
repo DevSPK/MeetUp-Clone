@@ -47,7 +47,7 @@ function ProfileButton({ user }) {
   let initialIcon;
   let arrow;
 
-  console.log("this is sessionUser in profile button", sessionUser);
+  // console.log("this is sessionUser in profile button", sessionUser);
 
   // creates circle with initial of firstName as user icon
   if (user.firstName !== undefined) {

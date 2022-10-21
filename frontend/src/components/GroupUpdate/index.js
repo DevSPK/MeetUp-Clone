@@ -12,7 +12,7 @@ const GroupUpdate = () => {
 
   const dispatch = useDispatch();
 
-  console.log("this is id in groupupdate", id);
+  // console.log("this is id in groupupdate", id);
 
   useEffect(() => {
     dispatch(thunkReadAllGroups());
@@ -76,7 +76,7 @@ const GroupUpdate = () => {
 
     setErrors([]);
 
-    console.log({ editedGroup });
+    // console.log({ editedGroup });
 
     // console.log({ newInfo });
 
