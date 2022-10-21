@@ -7,12 +7,14 @@ import { NavLink, Link, useHistory } from "react-router-dom";
 import SignupFormModal from "../SignupFormModal";
 import initial from "../../assets/initial.png";
 
-function LoginForm() {
+function LoginForm({ showSignupModal, setShowSignupModal }) {
   const history = useHistory();
   const dispatch = useDispatch();
   const [credential, setCredential] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState([]);
+
+  console.log(setShowSignupModal);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -60,7 +62,10 @@ function LoginForm() {
           <div className='login-modal-signup__call-to-action'>
             Not a member yet?{" "}
             <span className='sign-up-link'>
-              <SignupFormModal />
+              <SignupFormModal
+                showSignupModal={showSignupModal}
+                setShowSignupModal={setShowSignupModal}
+              />
             </span>
           </div>
         </div>

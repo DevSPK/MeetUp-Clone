@@ -103,7 +103,11 @@ function Navigation({ isLoaded, showSignupModal, setShowSignupModal }) {
     sessionLinks = (
       <div className='login-items'>
         <li>
-          <LoginFormModal className='nav-item' />
+          <LoginFormModal
+            className='nav-item'
+            showSignupModal={showSignupModal}
+            setShowSignupModal={setShowSignupModal}
+          />
         </li>
         <li>
           <NavLink

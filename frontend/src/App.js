@@ -47,10 +47,13 @@ function App() {
             <SingleEvent />
           </Route>
           <Route path='/login'>
-            <LoginFormModal />
+            <LoginFormModal
+              showSignupModal={showSignupModal}
+              setShowSignupModal={setShowSignupModal}
+            />
           </Route>
           {/* <Route path='/signup'>
-            <SignupFormModal />
+            <SignupFormPage />
           </Route> */}
           <Route path='/groups'>
             <GroupsPage />

@@ -4,24 +4,27 @@ import { Link } from "react-router-dom";
 import { Modal } from "../../context/Modal";
 import LoginForm from "./LoginForm";
 
-function LoginFormModal() {
-	const [showModal, setShowModal] = useState(false);
+function LoginFormModal({ showSignupModal, setShowSignupModal }) {
+  const [showModal, setShowModal] = useState(false);
 
-	return (
-		<>
-			<Link
-				to='/'
-				onClick={() => setShowModal(true)}
-				className='loginModalButton'>
-				Log in
-			</Link>
-			{showModal && (
-				<Modal onClose={() => setShowModal(false)}>
-					<LoginForm />
-				</Modal>
-			)}
-		</>
-	);
+  return (
+    <>
+      <Link
+        to='/'
+        onClick={() => setShowModal(true)}
+        className='loginModalButton'>
+        Log in
+      </Link>
+      {showModal && (
+        <Modal onClose={() => setShowModal(false)}>
+          <LoginForm
+            showSignupModal={showSignupModal}
+            setShowSignupModal={setShowSignupModal}
+          />
+        </Modal>
+      )}
+    </>
+  );
 }
 
 export default LoginFormModal;
