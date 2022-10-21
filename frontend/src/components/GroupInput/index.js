@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import "./GroupInput.css";
 import { useDispatch } from "react-redux";
 import { thunkAddGroup } from "../../store/groups";
-import { useHistory, Redirect } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { thunkReadAllGroups } from "../../store/groups";
 
 const GroupInput = ({ hideForm }) => {

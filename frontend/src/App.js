@@ -2,8 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import LoginFormPage from "./components/LoginFormPage";
-import SignupFormPage from "./components/SignupFormPage";
+
 import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
 import GroupsPage from "./components/GroupsPage";
@@ -15,7 +14,6 @@ import GroupUpdate from "./components/GroupUpdate";
 import { SingleEvent } from "./components/SingleEvent";
 import EventInput from "./components/EventInput";
 import LoginFormModal from "./components/LoginFormModal";
-import SignupFormModal from "./components/SignupFormModal";
 
 function App() {
   const dispatch = useDispatch();

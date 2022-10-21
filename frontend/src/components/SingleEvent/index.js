@@ -3,7 +3,7 @@ import { useParams, useHistory } from "react-router-dom";
 import { thunkGetOneEvent, thunkRemoveEvent } from "../../store/events";
 
 import React from "react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./SingleEvent.css";
 //import EventUpdate from "../EventUpdate";

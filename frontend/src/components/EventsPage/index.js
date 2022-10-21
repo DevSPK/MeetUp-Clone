@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { thunkReadAllEvents } from "../../store/events";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { NavLink, Link } from "react-router-dom";
 
 import "../EventsPage/EventsPage.css";
