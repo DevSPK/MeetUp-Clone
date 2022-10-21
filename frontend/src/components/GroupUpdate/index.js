@@ -13,10 +13,16 @@ const GroupUpdate = () => {
   const dispatch = useDispatch();
 
   console.log("this is id in groupupdate", id);
+
   useEffect(() => {
     dispatch(thunkReadAllGroups());
-  }, [dispatch]);
+  }, [dispatch, id]);
+
   const groupsList = useSelector((state) => Object.values(state.groups));
+
+  // useEffect(() => {
+  //   if (!groupsList) return null;
+  // }, [groupsList]);
 
   let paramId = id;
 
@@ -41,19 +47,19 @@ const GroupUpdate = () => {
 
   editedGroup = group;
 
-  const [name, setName] = useState(editedGroup.name);
-  const [about, setAbout] = useState(editedGroup.about);
-  const [type, setType] = useState(editedGroup.type);
-  const [privateVal, setPrivateVal] = useState(editedGroup.private);
-  const [city, setCity] = useState(editedGroup.city);
-  const [state, setState] = useState(editedGroup.state);
+  const [name, setName] = useState(editedGroup?.name);
+  const [about, setAbout] = useState(editedGroup?.about);
+  const [type, setType] = useState(editedGroup?.type);
+  const [privateVal, setPrivateVal] = useState(editedGroup?.private);
+  const [city, setCity] = useState(editedGroup?.city);
+  const [state, setState] = useState(editedGroup?.state);
   const [errors, setErrors] = useState([]);
 
   useEffect(() => {
     if (!editedGroup) {
       return;
     }
-  });
+  }, [dispatch, id, editedGroup]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -126,6 +132,8 @@ const GroupUpdate = () => {
 
     history.push(`/groups`);
   };
+
+  if (!editedGroup) return null;
 
   return (
     <div className='group--form--container  group--form__shared'>
