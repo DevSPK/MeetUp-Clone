@@ -226,6 +226,7 @@ const GroupInput = ({ hideForm }) => {
           placeholder='Place image link here'
           name='imageUrl'
           className='form--input  group--form__shared'
+          required
         />
 
         <div className='error--item  errors  group--form__shared  errors--container '>

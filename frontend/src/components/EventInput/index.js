@@ -24,7 +24,7 @@ const EventInput = () => {
   const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [errors, setErrors] = useState([]);
+  // const [errors, setErrors] = useState([]);
   const [imageUrl, setImageUrl] = useState("");
 
   //custom validation errors
@@ -41,6 +41,8 @@ const EventInput = () => {
     if (!description.length) customErrors.push("Description is required");
     if (!startDate.length) customErrors.push("Start date and time is required");
     if (!endDate.length) customErrors.push("End date and time is required");
+    if (new Date(startDate) > new Date(endDate))
+      customErrors.push("Start time must be before end time");
     if (!imageUrl.length) customErrors.push("Please provide a valid image URL");
     setValidationErrors(customErrors);
   }, [name, description, startDate, endDate, imageUrl]);
@@ -54,6 +56,13 @@ const EventInput = () => {
     // if (validationErrors.length) {
     //   alert("Cannot Submit, please fix errors");
     // }
+
+    // let compareStart = new Date(startDate);
+    // let compareEnd = new Date(endDate);
+    // console.log(
+    //   "this is startDate lt endDate",
+    //   new Date(startDate) < new Date(endDate)
+    // );
 
     let newEvent = {
       venueId,
@@ -74,16 +83,21 @@ const EventInput = () => {
     // 	dispatch(addEvent(newEvent));
     // }, [dispatch]);
 
-    createdEvent = await dispatch(thunkAddEvent(newEvent));
-    // console.log("this is createdEvent", createdEvent);
+    if (validationErrors.length !== 0) {
+      return setValidationErrors(validationErrors);
+    } else {
+      createdEvent = await dispatch(thunkAddEvent(newEvent));
+      // console.log("this is createdEvent", createdEvent);
 
-    if (!createdEvent) return null;
-
-    if (createdEvent) {
-      reset();
-      dispatch(thunkReadAllEvents());
-
-      history.push(`/events`);
+      if (!createdEvent) return null;
+      if (createdEvent && validationErrors.length !== 0) {
+        return setValidationErrors(validationErrors);
+      } else if (createdEvent && validationErrors.length === 0) {
+        reset();
+        dispatch(thunkReadAllEvents());
+        // console.log("this is ve", validationErrors);
+        history.push(`/events`);
+      }
     }
   };
 
@@ -139,7 +153,7 @@ const EventInput = () => {
     setImageUrl("");
     setValidationErrors([]);
     setHasSubmitted(false);
-    setErrors([]);
+    // setErrors([]);
   };
 
   const handleCapacity = (event) => {
@@ -345,6 +359,7 @@ const EventInput = () => {
           placeholder='Image Url'
           name='imageUrl'
           className='form--input  event--form__shared'
+          required
         />
         <div className='error--item  errors  event--form__shared  errors--container '>
           <ul className='event--form__shared   errors'>
