@@ -4,14 +4,16 @@ import videoMeeting from "../../assets/online_events.svg";
 import leftImage from "../../assets/handsUp.svg";
 import middleImage from "../../assets/ticket.svg";
 import rightImage from "../../assets/joinGroup.svg";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 import { useSelector } from "react-redux";
 
 const SplashPage = ({ setShowSignupModal }) => {
+  const history = useHistory();
   const sessionUser = useSelector((state) => state.session.user);
 
   let startAGroupLink = null;
+  let joinTreffenklonButton = null;
 
   if (!sessionUser) {
     startAGroupLink = (
@@ -22,6 +24,13 @@ const SplashPage = ({ setShowSignupModal }) => {
         Start a group
       </Link>
     );
+    joinTreffenklonButton = (
+      <button
+        onClick={() => setShowSignupModal(true)}
+        className='action-signup-button'>
+        Join Treffenklon
+      </button>
+    );
   } else if (sessionUser) {
     startAGroupLink = (
       <Link
@@ -29,6 +38,13 @@ const SplashPage = ({ setShowSignupModal }) => {
         className='action-link'>
         Start a group
       </Link>
+    );
+    joinTreffenklonButton = (
+      <button
+        onClick={() => history.push("/start-a-group")}
+        className='action-signup-button'>
+        Join Treffenklon
+      </button>
     );
   }
 
@@ -129,13 +145,7 @@ const SplashPage = ({ setShowSignupModal }) => {
           </div>
         </div>
         <div className='middle-bottom-sign-up-button-container'>
-          <div className='bottom-space-container'>
-            <button
-              onClick={() => setShowSignupModal(true)}
-              className='action-signup-button'>
-              Join Treffenklon
-            </button>
-          </div>
+          <div className='bottom-space-container'>{joinTreffenklonButton}</div>
         </div>
       </div>
       {/* <footer className='bottom-container'>
