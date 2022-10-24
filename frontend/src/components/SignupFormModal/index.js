@@ -24,7 +24,10 @@ function SignupFormModal({ showSignupModal, setShowSignupModal }) {
       </Link>
       {showSignupModal && (
         <Modal onClose={() => setShowSignupModal(false)}>
-          <SignupForm />
+          <SignupForm
+            showSignupModal={showSignupModal}
+            setShowSignupModal={setShowSignupModal}
+          />
         </Modal>
       )}
     </>

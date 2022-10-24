@@ -61,6 +61,21 @@ const GroupUpdate = () => {
     }
   }, [dispatch, id, editedGroup]);
 
+  useEffect(() => {
+    const customErrors = [];
+
+    if (name.length > 255 || name.length < 5)
+      customErrors.push(
+        "Name must be more than 5 and less than 255 characters"
+      );
+    if (!about.length)
+      customErrors.push("Please provide information about your group");
+    if (!city.length) customErrors.push("Please provide your group's city");
+    if (!state.length) customErrors.push("Please provide your group's state");
+
+    setErrors(customErrors);
+  }, [name, about, city, state]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -74,34 +89,37 @@ const GroupUpdate = () => {
       id: editedGroup.id
     };
 
-    setErrors([]);
-
     // console.log({ editedGroup });
 
     // console.log({ newInfo });
 
-    return dispatch(thunkUpdateGroup(newInfo))
-      .then((res) => {
-        // console.log(
-        //   "***********************this is res from thunkUpdateGroup",
-        //   res
-        // );
-        if (res) {
-          handleUpdate(res);
-          // console.log("inside the if.......");
-          // hideForm();
-          // return <Redirect to='/groups/' />;
-          // history.push("/");
-        }
-      })
-      .catch(async (res) => {
-        const data = await res.json();
-        // console.log("this is data1", data);
-        if (data && data.errors) {
-          // console.log("this is data3", data);
-          return setErrors(data.errors);
-        }
-      });
+    if (errors.length !== 0) {
+      return setErrors(errors);
+    } else {
+      setErrors([]);
+      return dispatch(thunkUpdateGroup(newInfo))
+        .then((res) => {
+          // console.log(
+          //   "***********************this is res from thunkUpdateGroup",
+          //   res
+          // );
+          if (res) {
+            handleUpdate(res);
+            // console.log("inside the if.......");
+            // hideForm();
+            // return <Redirect to='/groups/' />;
+            // history.push("/");
+          }
+        })
+        .catch(async (res) => {
+          const data = await res.json();
+          // console.log("this is data1", data);
+          if (data && data.errors) {
+            // console.log("this is data3", data);
+            return setErrors(data.errors);
+          }
+        });
+    }
 
     // const updatedGroup = dispatch(
     // 	thunkUpdateGroup(newInfo)

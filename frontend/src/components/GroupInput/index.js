@@ -21,7 +21,7 @@ const GroupInput = ({ hideForm }) => {
 
   useEffect(() => {
     dispatch(thunkReadAllGroups());
-  }, [dispatch, name, about, type, privateVal, city, state, errors]);
+  }, [dispatch, name, about, type, privateVal, city, state, imageUrl, errors]);
 
   // useEffect(
   // 	({ hideForm }) => {
@@ -33,6 +33,22 @@ const GroupInput = ({ hideForm }) => {
   // 	},
   // 	[dispatch]
   // );
+
+  useEffect(() => {
+    const customErrors = [];
+
+    if (name.length > 255 || name.length < 5)
+      customErrors.push(
+        "Name must be more than 5 and less than 255 characters"
+      );
+    if (!imageUrl.length) customErrors.push("Please provide a valid image URL");
+    if (!type) customErrors.push("Please provide a group type");
+    if (!privateVal)
+      customErrors.push("Please indicate if your group is private");
+    if (!city) customErrors.push("Please provide your group's city");
+    if (!state) customErrors.push("Please provide your group's state");
+    setErrors(customErrors);
+  }, [name, about, type, privateVal, city, state, imageUrl]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -49,30 +65,34 @@ const GroupInput = ({ hideForm }) => {
       imageUrl
     };
 
-    setErrors([]);
-
     // have to wait for response from promise, check if it is okay, otherwise will process error
 
-    return dispatch(thunkAddGroup(newGroup))
-      .then((res) => {
-        if (res.ok) {
-          // console.log("this is res in thunkAddGroup", res);
-          reset();
+    // ######## Example of create feature using .then promise
+    if (errors.length !== 0) {
+      return setErrors(errors);
+    } else {
+      setErrors([]);
+      return dispatch(thunkAddGroup(newGroup))
+        .then((res) => {
+          if (res.ok) {
+            // console.log("this is res in thunkAddGroup", res);
+            reset();
 
-          history.push("/groups");
-        }
-      })
-      .catch(async (res) => {
-        const data = await res.json();
-        // console.log("this is data1 in thunkAddGroup", data);
-        if (data && data.errors) {
-          // console.log(
-          // 	"this is data3 in thunkAddGroup",
-          // 	data
-          // );
-          return setErrors(data.errors);
-        }
-      });
+            history.push("/groups");
+          }
+        })
+        .catch(async (res) => {
+          const data = await res.json();
+          // console.log("this is data1 in thunkAddGroup", data);
+          if (data && data.errors) {
+            // console.log(
+            // 	"this is data3 in thunkAddGroup",
+            // 	data
+            // );
+            return setErrors(data.errors);
+          }
+        });
+    }
 
     // let createdGroup
 
@@ -226,6 +246,7 @@ const GroupInput = ({ hideForm }) => {
           placeholder='Place image link here'
           name='imageUrl'
           className='form--input  group--form__shared'
+          required
         />
 
         <div className='error--item  errors  group--form__shared  errors--container '>

@@ -24,7 +24,7 @@ export const SingleGroup = () => {
     dispatch(thunkReadAllGroups());
   }, [dispatch, id]);
 
-  const sessionUser = useSelector((state) => state.session.user);
+  // const sessionUser = useSelector((state) => state.session.user);
 
   const groupsList = useSelector((state) => Object.values(state.groups));
 
@@ -196,7 +196,7 @@ export const SingleGroup = () => {
             <span className='group--details--text__name'>{group.name}</span>
             <span className='group--details--text__city-state'>
               <span className='icon--location-dot'>
-                <i class='fa-solid fa-location-dot'></i>
+                <i className='fa-solid fa-location-dot'></i>
               </span>
               {`${group.city}, ${group.state}`}
             </span>
