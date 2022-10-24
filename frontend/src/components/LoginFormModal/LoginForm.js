@@ -19,12 +19,16 @@ function LoginForm({ showSignupModal, setShowSignupModal }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     setErrors([]);
-    return dispatch(sessionActions.login({ credential, password })).catch(
-      async (res) => {
+    return dispatch(sessionActions.login({ credential, password }))
+      .then((res) => {
+        if (res.ok) {
+          history.push("/groups");
+        }
+      })
+      .catch(async (res) => {
         const data = await res.json();
         if (data && data.errors) setErrors(data.errors);
-      }
-    );
+      });
   };
 
   const demoUser = (e) => {

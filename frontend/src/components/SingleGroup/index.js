@@ -24,7 +24,7 @@ export const SingleGroup = () => {
     dispatch(thunkReadAllGroups());
   }, [dispatch, id]);
 
-  const sessionUser = useSelector((state) => state.session.user);
+  // const sessionUser = useSelector((state) => state.session.user);
 
   const groupsList = useSelector((state) => Object.values(state.groups));
 

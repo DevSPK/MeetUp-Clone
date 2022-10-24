@@ -37,9 +37,16 @@ const GroupInput = ({ hideForm }) => {
   useEffect(() => {
     const customErrors = [];
 
-    if (name.length > 255)
-      customErrors.push("Name must be less than 255 characters");
+    if (name.length > 255 || name.length < 5)
+      customErrors.push(
+        "Name must be more than 5 and less than 255 characters"
+      );
     if (!imageUrl.length) customErrors.push("Please provide a valid image URL");
+    if (!type) customErrors.push("Please provide a group type");
+    if (!privateVal)
+      customErrors.push("Please indicate if your group is private");
+    if (!city) customErrors.push("Please provide your group's city");
+    if (!state) customErrors.push("Please provide your group's state");
     setErrors(customErrors);
   }, [name, about, type, privateVal, city, state, imageUrl]);
 
