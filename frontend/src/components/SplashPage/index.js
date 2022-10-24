@@ -10,7 +10,6 @@ import { useSelector } from "react-redux";
 
 const SplashPage = ({ setShowSignupModal }) => {
   const sessionUser = useSelector((state) => state.session.user);
-  console.log(sessionUser);
 
   let startAGroupLink = null;
 

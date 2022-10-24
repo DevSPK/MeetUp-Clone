@@ -91,7 +91,7 @@ export const SingleEvent = () => {
             <span className='group--details--text__name'>{event.name}</span>
             <span className='group--details--text__city-state'>
               <span className='icon--location-dot'>
-                <i class='fa-solid fa-location-dot'></i>
+                <i className='fa-solid fa-location-dot'></i>
               </span>
               {`${event.Group.city}, ${event.Group.state}`}
             </span>
@@ -105,7 +105,7 @@ export const SingleEvent = () => {
               style={{ textDecoration: "none" }}>
               {" "}
               <span className='icon--user-group'>
-                <i class='fa-solid fa-user-group'></i>
+                <i className='fa-solid fa-user-group'></i>
               </span>
               {`${event.numAttending} attending · `}
               {event.type}
@@ -117,7 +117,7 @@ export const SingleEvent = () => {
             </h3>
             <div className='event--start--end__wrapper'>
               <div className='event-time-icon'>
-                <i class='fa-solid fa-clock'></i>
+                <i className='fa-solid fa-clock'></i>
               </div>
               <div className='event--start--end'>
                 {new Date(event.startDate).toLocaleDateString(

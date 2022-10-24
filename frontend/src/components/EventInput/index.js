@@ -83,6 +83,8 @@ const EventInput = () => {
     // 	dispatch(addEvent(newEvent));
     // }, [dispatch]);
 
+    // ######## Example of create feature using async await
+
     if (validationErrors.length !== 0) {
       return setValidationErrors(validationErrors);
     } else {
