@@ -2,6 +2,7 @@
 ## Meetup Clone project
 
 [Database Schema](https://github.com/DevSPK/MeetUp-Clone/blob/main/assets/meetup_dbdiagram.png)
+![Database Schema](https://github.com/DevSPK/MeetUp-Clone/blob/main/assets/meetup_dbdiagram.png)
 
 ## API Documentation
 
