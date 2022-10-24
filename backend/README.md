@@ -1,10 +1,8 @@
-# Meetup Clone
+# Treffenklon 
+## Meetup Clone project
 
-## Database Schema Design
-
-![meetup-dbdiagram]
-
-[meetup-dbdiagram]: ./assets/meetup_dbdiagram.png
+[Database Schema](https://github.com/DevSPK/MeetUp-Clone/blob/main/assets/meetup_dbdiagram.png)
+![Database Schema](https://github.com/DevSPK/MeetUp-Clone/blob/main/assets/meetup_dbdiagram.png)
 
 ## API Documentation
 
